@@ -1,6 +1,6 @@
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50  bg-[#0C1117]/80 backdrop-blur-md   py-2 ">
+    <nav className="fixed top-0 left-0 right-0 z-90  bg-[#0C1117]/80 backdrop-blur-md   py-2 ">
       <div className="max-w-6xl mx-auto px-6 py-4">
         <ul className="flex items-center justify-center gap-8  text-gray-500 font-semibold ">
           <li className="">
