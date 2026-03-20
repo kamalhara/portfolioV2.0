@@ -22,7 +22,23 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        <title>Kamalveer Singh</title>
+        <meta
+          name="description"
+          content="Personal portfolio of Kamalveer Singh"
+        />
+        <style>
+          @import
+          url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+        </style>
+      </head>
+      <body
+        className="min-h-full flex flex-col space-grotesk bg-[#0C1117] text-gray-300"
+        suppressHydrationWarning={true}
+      >
+        {children}
+      </body>
     </html>
   );
 }
