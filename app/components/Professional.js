@@ -5,7 +5,7 @@ import { experiences } from "../data/experience";
 export default function Professional() {
   return (
     <div
-      className="z-50 h-screen relative  px-6 py-20 flex  items-center flex-col gap-8 "
+      className="z-50 h-auto relative mb-20  px-6 py-20 flex  items-center flex-col gap-8 "
       id="professional"
     >
       <h1 className="text-5xl font-semibold mb-5">
@@ -13,9 +13,8 @@ export default function Professional() {
       </h1>
       <div>
         {experiences.map((exp, index) => (
-          <a
+          <div
             key={index}
-            href="/"
             className="flex items-center gap-6 px-6 py-4 bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 font-mono max-w-4xl transition-transform duration-300 hover:scale-101 hover:border-[#2CB35A]  hover:text-[#2CB35A] "
           >
             <div className="flex z-50 gap-4">
@@ -51,7 +50,7 @@ export default function Professional() {
                 </div>
               </div>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </div>

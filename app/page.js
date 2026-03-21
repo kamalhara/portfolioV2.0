@@ -3,6 +3,7 @@ import Grid from "./components/GridBackground";
 
 import Hero from "./components/Hero";
 import Professional from "./components/Professional";
+import Project from "./components/Project";
 
 export default function Home() {
   return (
@@ -12,6 +13,8 @@ export default function Home() {
       <Hero />
 
       <Professional />
+
+      <Project />
     </div>
   );
 }
