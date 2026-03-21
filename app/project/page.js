@@ -1,15 +1,23 @@
 import React from "react";
-import { mainProjects } from "../data/project";
+import { mainProjects, projects } from "../data/project";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import Link from "next/link";
+import GridBackground from "@/app/components/GridBackground";
 
-export default function Project() {
+export default function project() {
   return (
     <div
       className="z-50 h-auto relative mb-20  px-6 py-20 flex  items-center flex-col gap-8 "
-      id="projects"
+      id="professional"
     >
-      <div className="flex flex-col items-center ">
+      <GridBackground />
+      <Link
+        href="/#projects"
+        className="self-start gap-2 px-3 py-2 md:px-4 md:py-2  bg-card/80 backdrop-blur-sm border border-gray-700 mb-6 md:mb-8 font-mono text-xs md:text-sm  ml-25  "
+      >
+        &larr; Back to Home
+      </Link>
+      <div className="flex flex-col items-center relative z-50">
         <h1 className="text-5xl font-semibold mb-5 ">
           Featured <span className="text-green-300 ">Project</span>
         </h1>
@@ -18,13 +26,8 @@ export default function Project() {
           // Projects in Fullstack Development and Mobile Development
         </p>
       </div>
-
-      <div className="inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2  bg-card/80 backdrop-blur-sm border border-gray-700 mb-6 md:mb-8 font-mono text-xs md:text-sm  self-end mr-25  ">
-        <Link href="/project">View All Projects &rarr;</Link>
-      </div>
-
       <div className="grid grid-cols-2 gap-6">
-        {mainProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <Link
             href={`/project/${project.slug}`}
             key={index}

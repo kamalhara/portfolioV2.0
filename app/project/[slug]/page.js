@@ -139,6 +139,16 @@ export default async function ProjectPage({ params: paramsPromise }) {
               />
             ))}
         </div>
+        {project.img && (
+          <div className="pt-6 border-t border-gray-700/50">
+            <p className="font-bold text-xl text-foreground">Screenshots</p>
+            <img
+              src={project.img}
+              alt={`${project.title} screenshot`}
+              className="w-full h-auto  object-contain rounded-md  mb-4"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
