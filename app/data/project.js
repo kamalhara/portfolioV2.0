@@ -2,20 +2,51 @@ export const projects = [
   {
     title: "Ryde",
     slug: "ryde",
+    frontEnd: "React Native , Expo , NativeWind",
+    backEnd: "Node.js, Express, PostgreSQL",
     description:
       "A full-stack ride-hailing mobile app with real-time location tracking, Apple Maps integration, Stripe payments, and seamless user authentication.",
     technologies: "React Native · Expo  · Apple Maps · PostgreSQL · CLerk ",
+    overview:
+      "Ryde is a full-stack ride-hailing mobile application, designed to provide a seamless transportation experience. The app includes real-time driver tracking, interactive maps, secure authentication, ride booking, and in-app payments. The system leverages robust data management and  secure user authentication.",
+    keyFeatures: [
+      "Real-time map with live driver locations and route directions",
+      "Secure sign-up and login with email and Google OAuth via Clerk",
+      "Ride search with autocomplete powered by OpenStreetMap",
+      "Browse drivers with ratings, pricing, and ETA",
+      "Ride history with detailed records of past trips",
+      "State management with Zustand and animations via React Native Reanimated",
+    ],
     img: "/ryde.png",
+    screenshot: [
+      "ryde/welcome.png",
+      "ryde/login.png",
+      "ryde/home.png",
+      "ryde/book.png",
+      "ryde/confirm.png",
+    ],
     type: "Mobile App",
     code: "https://github.com/kamalhara/ryde",
   },
   {
     title: "Productify",
     slug: "productify",
+    frontEnd: "React.js, Next.js 16, Tailwind CSS 4 ",
+    backEnd: "Express 5, Drizzle, PostgreSQL",
     description:
       "A modern full-stack application for showcasing, discovering, and managing products. Share your products, get feedback from the community, and discover what others are building.",
     technologies:
       "Next.js 16 · Tailwind CSS 4 · Clerk · Express 5 · Drizzle · PostgreSQL",
+    overview:
+      "Productify is a modern full-stack web application built with Next.js 16 and Tailwind CSS 4, designed for showcasing, discovering, and managing products. It features user authentication via Clerk and a backend powered by Express 5, Drizzle ORM, and PostgreSQL for efficient data handling.",
+    keyFeatures: [
+      "User registration and login with Clerk authentication",
+      "Create, edit, and manage product listings",
+      "Community feedback with comments and ratings",
+      "Discover and search products with filters and sorting",
+      "Server-side rendering for fast performance",
+      "Integration with Drizzle ORM for type-safe database queries",
+    ],
     img: "/productify.png",
     type: "Web App",
     code: "https://github.com/kamalhara/productify",
@@ -24,32 +55,67 @@ export const projects = [
   {
     title: "The Wild Oasis",
     slug: "the-wild-oasis",
+    frontEnd: "Next.js, Supabase, Tailwind CSS",
+    backEnd: "Supabase, PostgreSQL",
     description:
       "A modern hotel management web app designed to manage cabins, bookings, and guest data seamlessly with an elegant.",
     technologies: "Next.js · Supabase · Tailwind CSS",
+    overview:
+      "The Wild Oasis is a modern hotel management web application built with Next.js and Supabase, featuring Tailwind CSS for styling. It enables seamless management of cabins, bookings, and guest data through an elegant interface backed by Supabase's real-time database and authentication.",
+    keyFeatures: [
+      "Cabin management with availability and details",
+      "Booking system with calendar integration",
+      "Guest profile and booking history management",
+      "Secure authentication and role-based access control",
+      "Integration with Supabase for backend services",
+    ],
     img: "/wild-oasis.png",
     type: "Web App",
-
     code: "https://github.com/kamalhara/the-wild-oasis",
     live: "https://the-wild-oasis-virid-theta.vercel.app/",
   },
   {
     title: "Natours Backend API",
+    frontEnd: null,
+    backEnd: "Node.js, Express, MongoDB",
     description:
       "Production-ready REST API with authentication, authorization, advanced filtering, and secure user management.",
     technologies: "Node.js · Express · MongoDB · JWT",
+    overview:
+      "Natours Backend API is a production-ready RESTful API built with Node.js, Express, and MongoDB. It provides secure user authentication and authorization with JWT, advanced filtering, sorting, and pagination features for managing tour data efficiently.",
+    keyFeatures: [
+      "User authentication and authorization with JWT",
+      "CRUD operations for tours, users, and reviews",
+      "Advanced filtering, sorting, field limiting, and pagination",
+      "Data validation and sanitization",
+      "Error handling and logging middleware",
+      "Secure password hashing and reset functionality",
+      "Role-based access control for admin and users",
+    ],
     img: null,
     type: "Backend API",
     slug: "natours-backend-api",
-
-    code: "https://github.com/kamalhara/natours-backend",
+    code: "https://github.com/kamalhara/natours-api",
   },
   {
     title: "Dine time app",
     slug: "dine-time-app",
+    frontEnd: "React Native , Expo , NativeWind",
+    backEnd: null,
     description:
       "A cross-platform mobile app for tracking personal expenses. Features include category management, data visualization, cloud sync with Firebase, and real-time updates.",
     technologies: "React Native · Expo · Firebase · NativeWind",
+    overview:
+      "Dine time app is a cross-platform mobile application built with React Native and Expo, styled with NativeWind. It allows users to track personal expenses with category management, data visualization, and real-time cloud synchronization powered by Firebase.",
+    keyFeatures: [
+      "Add, edit, and delete expense entries with categories",
+      "Visualize expenses with charts and summaries",
+      "Real-time data sync across devices using Firebase",
+      "User authentication and secure data storage",
+      "Intuitive and responsive UI with NativeWind styling",
+      "Offline support with data caching",
+      "Push notifications for expense reminders",
+    ],
     img: "/dinetime.png",
     type: "Mobile App",
     code: "https://github.com/kamalhara/dine-time",
@@ -57,9 +123,21 @@ export const projects = [
   {
     title: "Nexcent",
     slug: "nexcent",
+    frontEnd: "Next.js, Tailwind CSS",
+    backEnd: null,
     description:
       "A modern, responsive Login Page built using Next.js and Tailwind CSS.This page is part of the Nexcent project, providing a clean and accessible authentication interface.",
     technologies: "Next.js · Tailwind CSS",
+    overview:
+      "Nexcent is a modern, responsive login page built with Next.js and styled with Tailwind CSS. It offers a clean and accessible authentication interface as part of the larger Nexcent project.",
+    keyFeatures: [
+      "Responsive design optimized for various screen sizes",
+      "Clean and minimalistic UI for login and signup",
+      "Form validation and error handling",
+      "Accessibility considerations for all users",
+      "Fast loading with Next.js optimizations",
+      "Easy integration with backend authentication services",
+    ],
     img: "/nexcent.png",
     type: "Web App",
     code: "https://github.com/kamalhara/nexcent",
@@ -68,61 +146,50 @@ export const projects = [
   {
     title: "World Wise",
     slug: "world-wise",
+    frontEnd: "Vite, React",
+    backEnd: null,
     description:
       "A modern, responsive web application built with Vite + React, designed to showcase global destinations, experiences, or creative work with style and performance in mind.",
     technologies: "Vite · React",
+    overview:
+      "World Wise is a modern and responsive web application built with Vite and React. It is designed to showcase global destinations, experiences, or creative portfolios with an emphasis on style, performance, and user engagement.",
+    keyFeatures: [
+      "Fast and optimized build using Vite",
+      "Interactive UI with React components",
+      "Responsive layout for all devices",
+      "Showcase of destinations and experiences with rich media",
+      "Smooth animations and transitions",
+      "SEO-friendly with React Helmet integration",
+      "Easy navigation with intuitive menus",
+    ],
     img: "/worldwise.png",
     type: "Web App",
     code: "https://github.com/kamalhara/wordwise",
     live: "https://wordwise-kappa.vercel.app/",
   },
-
   {
     title: "The Wild Oasis - Owner Dashboard",
     slug: "the-wild-oasis-staff",
+    frontEnd: "Next.js, Supabase, Tailwind CSS",
+    backEnd: "Supabase,",
     description:
       "The Wild Oasis Dashboard is the internal admin panel of The Wild Oasis ecosystem. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights",
     technologies: "Next.js · Supabase · Tailwind CSS",
+    overview:
+      "The Wild Oasis - Owner Dashboard is an internal admin panel built with Next.js and Supabase, styled with Tailwind CSS. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights in real-time.",
+    keyFeatures: [
+      "Dashboard for managing cabins, guests, and bookings",
+      "Sales performance monitoring with charts and reports",
+      "Occupancy visualization and analytics",
+      "Role-based access control for staff and owners",
+      "Real-time data updates with Supabase subscriptions",
+      "User-friendly interface with Tailwind CSS styling",
+      "Secure authentication and data management",
+    ],
     img: "/wild-oasis-staff.png",
     type: "Web App",
     code: "https://github.com/kamalhara/the-wild-oasis-staff",
     live: "https://the-wild-oasis-staff-mauve.vercel.app/",
-  },
-  {
-    title: "Bankist",
-    slug: "bankist",
-    description:
-      "A modern, minimalist banking website built with HTML, CSS, and JavaScript. This project showcases smooth scrolling, lazy-loaded images, tabbed components, a feedback slider, sticky navigation, and modal windows.",
-    technologies: "HTML · CSS · JavaScript",
-    img: "/bankist.png",
-    type: "Web App",
-    code: "https://github.com/kamalhara/Bankist-app",
-    live: "https://kamalhara.github.io/Bankist-app/",
-  },
-  {
-    title: "Use Popcorn",
-    slug: "use-popcorn",
-    description:
-      "A simple React app to search, view, and track movies using the OMDb API. Users can search for movies, see details, add them to a watched list, and rate them.",
-    technologies: "React · OMDb API",
-    img: "/usepopcorn.png",
-    type: "Web App",
-
-    code: "https://github.com/kamalhara/usePopcorn",
-    live: "https://kamalhara.github.io/usePopcorn",
-  },
-  {
-    title: "Pizza menu",
-    slug: "pizza-menu",
-
-    description:
-      "The Pizza Menu App is a simple ReactJS project that displays a list of pizzas with their details (name, description, and availability).It was built to practice React fundamentals like components, props, and conditional rendering.s",
-    technologies: "React",
-    img: "/pizza-menu.png",
-    type: "Web App",
-
-    code: "https://github.com/kamalhara/Pizza-menu",
-    live: "https://kamalhara.github.io/Pizza-menu/",
   },
 ];
 
