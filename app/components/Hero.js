@@ -151,7 +151,7 @@ function Hero() {
           }}
         >
           <Link
-            href="https://github.com/kamalveersingh"
+            href="https://github.com/kamalhara"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:shadow-[0_0_20px_rgba(44,179,90,0.3)] hover:scale-105"
