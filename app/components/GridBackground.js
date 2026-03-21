@@ -102,10 +102,14 @@ const Grid = () => {
             light = 48;
           }
 
-          ctx.beginPath();
-          ctx.roundRect(cx, cy, CELL_SIZE, CELL_SIZE, RADIUS);
           ctx.fillStyle = `hsl(${hue}, ${sat}%, ${light}%)`;
-          ctx.fill();
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(cx, cy, CELL_SIZE, CELL_SIZE, RADIUS);
+            ctx.fill();
+          } else {
+            ctx.fillRect(cx, cy, CELL_SIZE, CELL_SIZE);
+          }
         }
       }
 
@@ -124,7 +128,7 @@ const Grid = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0"
+      className="fixed inset-0 z-0 pointer-events-none"
       style={{ background: "#0C1117" }}
     />
   );

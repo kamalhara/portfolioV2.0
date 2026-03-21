@@ -11,12 +11,18 @@ export const skillCategories = [
   {
     title: "Languages",
     icon: FiCode,
-    skills: ["JavaScript", "HTML", "CSS", "Tailwind CSS"],
+    skills: ["JavaScript", "HTML", "CSS", "Tailwind CSS", "TypeScript"],
   },
   {
     title: "Frontend",
     icon: FiLayout,
-    skills: ["React.js", "Next.js", "Redux", "React-Hook-Form"],
+    skills: [
+      "React.js",
+      "Next.js",
+      "Redux",
+      "React-Hook-Form",
+      "Framer Motion",
+    ],
   },
   {
     title: "Mobile",
@@ -42,6 +48,7 @@ export const skillCategories = [
       "Authentication",
       "MySQL",
       "MongoDB",
+      "PostgreSQL",
     ],
   },
   {
@@ -52,6 +59,6 @@ export const skillCategories = [
   {
     title: "Others",
     icon: FiPackage,
-    skills: ["API Development"],
+    skills: ["API Development", "GraphQL", "REST APIs", "WebSockets", "JWT"],
   },
 ];

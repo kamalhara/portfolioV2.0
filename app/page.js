@@ -8,7 +8,7 @@ import Project from "./components/Project";
 
 export default function Home() {
   return (
-    <div>
+    <div className="relative z-10">
       <Grid />
       <Navbar />
       <Hero />
