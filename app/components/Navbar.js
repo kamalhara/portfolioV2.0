@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 const navLinks = [
@@ -13,17 +13,82 @@ const navLinks = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState("about");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Scroll progress
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      setScrollProgress(progress);
+
+      // Navbar shrink
+      setScrolled(window.scrollY > 50);
+
+      // Active section detection
+      const sections = ["about", "professional", "skills", "projects"];
+      let current = "about";
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150) {
+            current = id;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleSmoothScroll = (e, href) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const el = document.getElementById(href.slice(1));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      setOpen(false);
+    }
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-100 bg-[#0C1117]/80 backdrop-blur-md py-2">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between md:justify-center">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-100 backdrop-blur-md transition-all duration-300 ${
+        scrolled
+          ? "bg-[#0C1117]/90 py-0 shadow-lg shadow-black/20"
+          : "bg-[#0C1117]/80 py-2"
+      }`}
+    >
+      {/* Scroll Progress Bar */}
+      <div className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] transition-all duration-100"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
+      <div
+        className={`max-w-6xl mx-auto px-6 flex items-center justify-between md:justify-center transition-all duration-300 ${
+          scrolled ? "py-3" : "py-4"
+        }`}
+      >
         {/* Desktop links */}
         <ul className="hidden md:flex items-center justify-center gap-8 text-gray-500 font-semibold">
           {navLinks.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                className="relative text-muted-foreground hover:text-[#2CB35A] transition-colors font-mono text-md font-semibold after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-0 after:bg-[#2CB35A] after:transition-all after:duration-300 hover:after:w-full"
+                onClick={(e) => handleSmoothScroll(e, link.href)}
+                className={`relative font-mono text-md font-semibold transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-[#2CB35A] after:transition-all after:duration-300 ${
+                  activeSection === link.href.slice(1)
+                    ? "text-[#2CB35A] after:w-full"
+                    : "text-muted-foreground hover:text-[#2CB35A] after:w-0 hover:after:w-full"
+                }`}
                 {...(link.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
@@ -72,8 +137,15 @@ function Navbar() {
             <li key={link.label}>
               <a
                 href={link.href}
-                onClick={() => setOpen(false)}
-                className="block px-4 py-3 text-gray-400 hover:text-[#2CB35A] hover:bg-[#181E25]/60 transition-all font-mono text-lg font-semibold border-l-2 border-transparent hover:border-[#2CB35A]"
+                onClick={(e) => {
+                  handleSmoothScroll(e, link.href);
+                  setOpen(false);
+                }}
+                className={`block px-4 py-3 hover:bg-[#181E25]/60 transition-all font-mono text-lg font-semibold border-l-2 ${
+                  activeSection === link.href.slice(1)
+                    ? "text-[#2CB35A] border-[#2CB35A] bg-[#2CB35A]/5"
+                    : "text-gray-400 hover:text-[#2CB35A] border-transparent hover:border-[#2CB35A]"
+                }`}
                 style={{
                   animation: open
                     ? `fadeInRight 0.4s ease-out ${index * 0.08}s both`
