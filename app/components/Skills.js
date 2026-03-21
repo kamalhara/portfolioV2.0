@@ -42,8 +42,11 @@ export default function Skills() {
     >
       {/* Header */}
       <div className="flex flex-col items-center">
-        <h1 className="text-5xl font-semibold mb-5">
-          Technical <span className="text-green-300">Skills</span>
+        <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5">
+          Technical{" "}
+          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
+            Skills
+          </span>
         </h1>
         <p className="text-gray-500 text-lg font-mono">
           // {totalSkills}+ technologies across {skillCategories.length}{" "}

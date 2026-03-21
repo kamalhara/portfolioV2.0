@@ -66,6 +66,23 @@ function Hero() {
       </div>
 
       <div>
+        {/* Status Badge */}
+        <div
+          className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 border border-[#2CB35A]/30 bg-[#2CB35A]/5 rounded-full font-mono text-xs"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.5s ease 0.05s, transform 0.5s ease 0.05s",
+          }}
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2CB35A] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2CB35A]" />
+          </span>
+          <span className="text-[#2CB35A]">Available for work</span>
+        </div>
+
+        {/* Name with gradient */}
         <h1
           className="text-4xl md:text-7xl font-bold"
           style={{
@@ -74,9 +91,13 @@ function Hero() {
             transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
           }}
         >
-          Kamalveer <span className="text-green-300">Singh</span>
+          Kamalveer{" "}
+          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
+            Singh
+          </span>
         </h1>
 
+        {/* Subtitle */}
         <div
           className="flex flex-col md:flex-row gap-2 md:gap-4 text-gray-500 my-4 font-mono text-lg md:text-2xl"
           style={{
@@ -90,14 +111,23 @@ function Hero() {
           <p>MOBILE APP DEVELOPER</p>
         </div>
 
+        {/* Typing Bio */}
         <div
+          className="bg-[#181E25]/60 border border-gray-700/50 rounded-md px-4 py-3"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
           }}
         >
-          <p className="text-gray-300 text-base md:text-xl font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-gray-500 font-mono">
+            <span className="w-2 h-2 rounded-full bg-red-500/70" />
+            <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
+            <span className="w-2 h-2 rounded-full bg-green-500/70" />
+            <span className="ml-1">about.js</span>
+          </div>
+          <p className="text-gray-300 text-sm md:text-base font-mono leading-relaxed">
+            <span className="text-gray-500">{"// "}</span>
             {displayedText}
             {showCursor && (
               <span
@@ -111,8 +141,9 @@ function Hero() {
           </p>
         </div>
 
+        {/* CTA Buttons */}
         <div
-          className="flex flex-wrap mt-8 md:mt-12 gap-3 md:gap-4 transition-all duration-300"
+          className="flex flex-wrap mt-8 md:mt-10 gap-3 md:gap-4 transition-all duration-300"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(24px)",
@@ -123,11 +154,9 @@ function Hero() {
             href="https://github.com/kamalveersingh"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-colors duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold"
+            className="group flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:shadow-[0_0_20px_rgba(44,179,90,0.3)] hover:scale-105"
           >
-            <span>
-              <FiGithub />
-            </span>
+            <FiGithub className="transition-transform group-hover:rotate-12" />
             GitHub
           </Link>
 
@@ -135,22 +164,18 @@ function Hero() {
             href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-colors duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
           >
-            <span>
-              <FiLinkedin />
-            </span>
+            <FiLinkedin className="transition-transform group-hover:scale-110" />
             LinkedIn
           </Link>
 
           <Link
             href="mailto:kamalhara7@gmail.com"
-            className="flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-colors duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
           >
-            <span>
-              <FiMail />
-            </span>
-            <span className="hidden sm:inline">Copy Email</span>
+            <FiMail className="transition-transform group-hover:scale-110" />
+            <span className="hidden sm:inline">Email</span>
             <span className="sm:hidden">Email</span>
           </Link>
 
@@ -158,11 +183,9 @@ function Hero() {
             href="https://example.com/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-colors duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
           >
-            <span>
-              <FiFile />
-            </span>
+            <FiFile className="transition-transform group-hover:scale-110" />
             Resume
           </Link>
         </div>
