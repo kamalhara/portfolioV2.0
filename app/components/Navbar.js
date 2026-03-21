@@ -8,7 +8,7 @@ const navLinks = [
   { label: "Professional", href: "#professional" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
-  { label: "Resume", href: "/", external: true },
+  { label: "Resume", href: "/Kamalveer_Singh_Resume_.pdf", external: true },
 ];
 
 function Navbar() {

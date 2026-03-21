@@ -180,7 +180,7 @@ function Hero() {
           </Link>
 
           <Link
-            href="https://example.com/resume.pdf"
+            href="/Kamalveer_Singh_Resume_.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
