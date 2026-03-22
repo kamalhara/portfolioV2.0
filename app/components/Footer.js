@@ -40,7 +40,7 @@ export default function Footer() {
 
           <div className="flex items-center gap-4">
             <Link
-              href="https://github.com/kamalveersingh"
+              href="https://github.com/kamalhara"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-[#2CB35A] transition-colors"

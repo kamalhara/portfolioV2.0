@@ -117,7 +117,7 @@ function Navbar() {
       {/* Mobile drawer overlay — OUTSIDE nav to avoid backdrop-blur stacking */}
       {open && (
         <div
-          className="fixed inset-0 bg-black/70 z-[998] md:hidden"
+          className="fixed inset-0 bg-black/70 z-998 md:hidden"
           onClick={() => setOpen(false)}
         />
       )}
