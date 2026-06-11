@@ -50,7 +50,7 @@ export default function LoadingScreen() {
     >
       <div className="w-full max-w-lg px-6">
         {/* Terminal window */}
-        <div className="border border-gray-700 bg-[#0C1117] overflow-hidden">
+        <div className="border border-gray-700 bg-[#0C1117] overflow-hidden rounded-lg">
           {/* Title bar */}
           <div className="flex items-center gap-2 px-4 py-2.5 border-b border-gray-700 bg-[#181E25]/60">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -76,6 +76,17 @@ export default function LoadingScreen() {
                 )}
               </div>
             ))}
+          </div>
+
+          {/* Progress bar */}
+          <div className="h-[2px] bg-gray-800 mx-4 mb-4 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] rounded-full"
+              style={{
+                width: `${Math.min((visibleLines.length / lines.length) * 100, 100)}%`,
+                transition: "width 0.4s ease-out",
+              }}
+            />
           </div>
         </div>
       </div>

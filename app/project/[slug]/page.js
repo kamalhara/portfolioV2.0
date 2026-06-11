@@ -33,7 +33,9 @@ export default async function ProjectPage({ params: paramsPromise }) {
             </div>
 
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold">{project.title}</h2>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {project.title}
+              </h2>
               <p className="text-[#2cb35a] font-semibold">{project.type}</p>
             </div>
           </div>

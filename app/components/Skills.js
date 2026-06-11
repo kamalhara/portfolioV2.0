@@ -19,7 +19,7 @@ export default function Skills() {
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     if (sectionRef.current) {
@@ -31,7 +31,7 @@ export default function Skills() {
 
   const totalSkills = skillCategories.reduce(
     (acc, cat) => acc + cat.skills.length,
-    0
+    0,
   );
 
   return (
@@ -42,15 +42,14 @@ export default function Skills() {
     >
       {/* Header */}
       <div className="flex flex-col items-center">
-        <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5">
+        <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5 text-white">
           Technical{" "}
           <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
             Skills
           </span>
         </h1>
         <p className="text-gray-500 text-lg font-mono">
-          // {totalSkills}+ technologies across {skillCategories.length}{" "}
-          domains
+          // {totalSkills}+ technologies across {skillCategories.length} domains
         </p>
       </div>
 
@@ -66,9 +65,7 @@ export default function Skills() {
               className="group relative flex flex-col bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 font-mono transition-all duration-500 hover:border-[#2CB35A] overflow-hidden"
               style={{
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible
-                  ? "translateY(0)"
-                  : "translateY(24px)",
+                transform: isVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 0.5s ease, transform 0.5s ease",
               }}
             >
@@ -89,7 +86,7 @@ export default function Skills() {
               <div className="flex flex-col gap-4 px-5 py-4 relative z-10">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 flex items-center justify-center border border-gray-700 bg-[#0C1117]/60 group-hover:border-[#2CB35A] group-hover:text-[#2CB35A] transition-all duration-300">
+                    <div className="w-9 h-9 flex items-center justify-center border border-gray-700 rounded-md bg-[#0C1117]/60 text-gray-400 group-hover:border-[#2CB35A] group-hover:text-[#2CB35A] transition-all duration-300">
                       <Icon className="w-4 h-4" />
                     </div>
                     <h2 className="text-lg font-semibold text-[#2CB35A]">

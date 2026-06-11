@@ -64,10 +64,10 @@ function Navbar() {
     <>
       {/* Top navbar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-100 backdrop-blur-md transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-100 backdrop-blur-lg transition-all duration-300 ${
           scrolled
-            ? "bg-[#0C1117]/90 py-0 shadow-lg shadow-black/20"
-            : "bg-[#0C1117]/80 py-2"
+            ? "bg-[#0C1117]/85 py-0 shadow-lg shadow-black/30 border-b border-gray-800/50"
+            : "bg-[#0C1117]/60 py-2"
         }`}
       >
         {/* Scroll Progress Bar */}
@@ -124,7 +124,7 @@ function Navbar() {
 
       {/* Mobile drawer — OUTSIDE nav with inline bg to guarantee opacity */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 border-l border-gray-700/50 shadow-2xl shadow-black/50 z-[999] transform transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-72 border-l border-gray-700/50 rounded-l-2xl shadow-2xl shadow-black/50 z-[999] transform transition-transform duration-300 ease-out md:hidden ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ backgroundColor: "#0a0f14" }}
