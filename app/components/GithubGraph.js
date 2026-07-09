@@ -17,7 +17,7 @@ export default function GithubGraph() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -28,7 +28,7 @@ export default function GithubGraph() {
   }, []);
 
   const explicitTheme = {
-    dark: ["#0C1117", "#0e4429", "#006d32", "#2CB35A", "#5DEBB5"],
+    dark: ["#0C1117", "#0e4429", "#006d32", "#1f8742", "#2CB35A"],
   };
 
   return (
@@ -36,7 +36,7 @@ export default function GithubGraph() {
       ref={sectionRef}
       className="z-50 relative mb-20 px-6 flex flex-col items-center gap-8 max-w-5xl mx-auto w-full"
     >
-      <div 
+      <div
         className="flex flex-col items-center"
         style={{
           opacity: isVisible ? 1 : 0,
@@ -55,7 +55,7 @@ export default function GithubGraph() {
         </p>
       </div>
 
-      <div 
+      <div
         className="group relative flex flex-col items-center bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 font-mono transition-all duration-500 hover:border-[#2CB35A] overflow-hidden rounded-xl p-6 md:p-8 w-full"
         style={{
           opacity: isVisible ? 1 : 0,
@@ -64,7 +64,7 @@ export default function GithubGraph() {
         }}
       >
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(44,179,90,0.08),transparent_70%)]" />
-        
+
         {/* Terminal-style title bar */}
         <div className="absolute top-0 left-0 w-full flex items-center gap-2 px-4 py-2.5 border-b border-gray-700 bg-[#0C1117]/60">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -73,10 +73,10 @@ export default function GithubGraph() {
           <span className="text-xs text-gray-500 ml-2">github_activity.js</span>
         </div>
 
-        <div className="mt-8 w-full overflow-x-auto pb-4 pt-2 flex justify-center text-gray-300">
-          <GitHubCalendar 
-            username="kamalhara" 
-            year={2026}
+        <div suppressHydrationWarning className="mt-8 w-full overflow-x-auto pb-4 pt-2 flex justify-center text-gray-300">
+          <GitHubCalendar
+            username="kamalhara"
+            year={new Date().getFullYear()}
             colorScheme="dark"
             theme={explicitTheme}
             blockSize={14}
@@ -84,7 +84,7 @@ export default function GithubGraph() {
             fontSize={14}
           />
         </div>
-        
+
         <div className="mt-4 flex justify-center z-10">
           <Link
             href="https://github.com/kamalhara"
