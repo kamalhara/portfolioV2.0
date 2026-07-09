@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { GitHubCalendar } from "react-github-calendar";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FiGithub } from "react-icons/fi";
+
+const GitHubCalendar = dynamic(
+  () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
+  { ssr: false }
+);
 
 export default function GithubGraph() {
   const [isVisible, setIsVisible] = useState(false);
