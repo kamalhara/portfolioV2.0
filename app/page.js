@@ -6,6 +6,7 @@ import Professional from "./components/Professional";
 import Skills from "./components/Skills";
 
 import Project from "./components/Project";
+import GithubGraph from "./components/GithubGraph";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
 
@@ -20,6 +21,8 @@ export default function Home() {
       <Professional />
 
       <Skills />
+
+      <GithubGraph />
 
       <Project />
 
