@@ -81,7 +81,7 @@ export default function LoadingScreen() {
           {/* Progress bar */}
           <div className="h-[2px] bg-gray-800 mx-4 mb-4 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] rounded-full"
+              className="h-full bg-[#2CB35A] rounded-full"
               style={{
                 width: `${Math.min((visibleLines.length / lines.length) * 100, 100)}%`,
                 transition: "width 0.4s ease-out",

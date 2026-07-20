@@ -82,7 +82,7 @@ function Hero() {
           <span className="text-[#2CB35A]">Available for work</span>
         </div>
 
-        {/* Name with gradient */}
+        {/* Name */}
         <h1
           className="text-4xl md:text-7xl font-bold"
           style={{
@@ -91,10 +91,7 @@ function Hero() {
             transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
           }}
         >
-          Kamalveer{" "}
-          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-            Singh
-          </span>
+          Kamalveer <span className="text-[#2CB35A]">Singh</span>
         </h1>
 
         {/* Subtitle */}
@@ -154,7 +151,7 @@ function Hero() {
             href="https://github.com/kamalhara"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:shadow-[0_0_20px_rgba(44,179,90,0.3)] hover:scale-105"
+            className="group flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:bg-[#24994D]"
           >
             <FiGithub className="transition-transform group-hover:rotate-12" />
             GitHub
@@ -164,7 +161,7 @@ function Hero() {
             href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
           >
             <FiLinkedin className="transition-transform group-hover:scale-110" />
             LinkedIn
@@ -172,7 +169,7 @@ function Hero() {
 
           <Link
             href="mailto:kamalhara7@gmail.com"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
           >
             <FiMail className="transition-transform group-hover:scale-110" />
             <span className="hidden sm:inline">Email</span>
@@ -183,7 +180,7 @@ function Hero() {
             href="/Kamalveer_Singh_Resume_.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold hover:shadow-[0_0_15px_rgba(44,179,90,0.15)]"
+            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
           >
             <FiFile className="transition-transform group-hover:scale-110" />
             Resume

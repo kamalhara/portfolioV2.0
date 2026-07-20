@@ -19,10 +19,7 @@ export default function project() {
       </Link>
       <div className="flex flex-col items-center relative z-50">
         <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5 text-center text-white">
-          Featured{" "}
-          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-            Projects
-          </span>
+          Featured <span className="text-[#2CB35A]">Projects</span>
         </h1>
         <p className="text-gray-500 text-base md:text-lg text-center px-4 font-mono">
           // Projects in Fullstack Development and Mobile Development
@@ -35,9 +32,6 @@ export default function project() {
             key={index}
             className="group flex gap-4 md:gap-6 bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 rounded-lg font-mono transition-all duration-300 hover:border-[#2CB35A]/50 flex-col w-full px-5 md:px-6 py-4 overflow-hidden"
           >
-            {/* Hover gradient glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_100%_100%,rgba(44,179,90,0.08),transparent_60%)]" />
-
             <div className="flex flex-col gap-1.5 relative z-10">
               <div className="flex justify-between items-start">
                 <h2 className="text-lg md:text-xl font-semibold text-gray-100 group-hover:text-[#2CB35A] transition-colors">
@@ -70,4 +64,3 @@ export default function project() {
     </div>
   );
 }
-

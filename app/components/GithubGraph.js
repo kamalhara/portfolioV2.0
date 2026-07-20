@@ -7,7 +7,7 @@ import { FiGithub } from "react-icons/fi";
 
 const GitHubCalendar = dynamic(
   () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function GithubGraph() {
@@ -50,10 +50,7 @@ export default function GithubGraph() {
         }}
       >
         <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5 text-white">
-          GitHub{" "}
-          <span className="bg-linear-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-            Contributions
-          </span>
+          GitHub <span className="text-[#2CB35A]">Contributions</span>
         </h1>
         <p className="text-gray-500 text-lg font-mono">
           // Real-time code commits
@@ -68,8 +65,6 @@ export default function GithubGraph() {
           transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
         }}
       >
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(44,179,90,0.08),transparent_70%)]" />
-
         {/* Terminal-style title bar */}
         <div className="absolute top-0 left-0 w-full flex items-center gap-2 px-4 py-2.5 border-b border-gray-700 bg-[#0C1117]/60">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -78,7 +73,10 @@ export default function GithubGraph() {
           <span className="text-xs text-gray-500 ml-2">github_activity.js</span>
         </div>
 
-        <div suppressHydrationWarning className="mt-8 w-full overflow-x-auto pb-4 pt-2 flex justify-center text-gray-300">
+        <div
+          suppressHydrationWarning
+          className="mt-8 w-full overflow-x-auto pb-4 pt-2 flex justify-center text-gray-300"
+        >
           <GitHubCalendar
             username="kamalhara"
             year={new Date().getFullYear()}

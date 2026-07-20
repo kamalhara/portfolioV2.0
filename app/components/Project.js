@@ -35,10 +35,7 @@ export default function Project() {
     >
       <div className="flex flex-col items-center">
         <h1 className="text-3xl md:text-5xl font-semibold mb-2 md:mb-3 text-center">
-          Featured{" "}
-          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-            Projects
-          </span>
+          Featured <span className="text-[#2CB35A]">Projects</span>
         </h1>
         <p className="text-gray-500 text-sm md:text-lg text-center font-mono">
           // Projects in Fullstack Development and Mobile Development
@@ -48,7 +45,7 @@ export default function Project() {
       <div className="w-full max-w-5xl flex justify-end px-0 md:px-4">
         <Link
           href="/project"
-          className="inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-[#181E25]/80 border border-gray-700 mb-4 md:mb-6 font-mono text-xs md:text-sm hover:border-[#2CB35A] hover:text-[#2CB35A] transition-all duration-300 hover:shadow-[0_0_12px_rgba(44,179,90,0.15)]"
+          className="inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-[#181E25]/80 border border-gray-700 mb-4 md:mb-6 font-mono text-xs md:text-sm hover:border-[#2CB35A] hover:text-[#2CB35A] transition-all duration-300"
         >
           View All Projects &rarr;
         </Link>
@@ -68,9 +65,6 @@ export default function Project() {
               transition: "opacity 0.5s ease, transform 0.5s ease",
             }}
           >
-            {/* Hover gradient glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_100%_100%,rgba(44,179,90,0.08),transparent_60%)]" />
-
             {/* Project type badge */}
             <div className="flex items-center gap-2 relative z-10">
               <span className="text-[10px] px-2 py-0.5 bg-[#2CB35A]/10 text-[#2CB35A] border border-[#2CB35A]/20 font-mono uppercase tracking-wider">

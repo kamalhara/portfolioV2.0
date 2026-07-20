@@ -9,10 +9,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
           <div className="text-center md:text-left">
             <h3 className="text-2xl font-bold mb-2">
-              Let&apos;s work{" "}
-              <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-                together
-              </span>
+              Let&apos;s work <span className="text-[#2CB35A]">together</span>
             </h3>
             <p className="text-gray-500 font-mono text-sm">
               // Open for freelance and full-time opportunities
@@ -21,7 +18,7 @@ export default function Footer() {
 
           <Link
             href="mailto:kamalhara7@gmail.com"
-            className="group flex items-center gap-2 px-6 py-3 bg-[#2CB35A] text-[#0C1117] font-semibold transition-all duration-300 hover:shadow-[0_0_25px_rgba(44,179,90,0.35)] hover:scale-105"
+            className="group flex items-center gap-2 px-6 py-3 bg-[#2CB35A] text-[#0C1117] font-semibold transition-colors duration-300 hover:bg-[#24994D]"
           >
             <FiMail className="transition-transform group-hover:rotate-12" />
             Get In Touch
@@ -29,7 +26,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-8" />
+        <div className="h-px bg-gray-700 mb-8" />
 
         {/* Bottom section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">

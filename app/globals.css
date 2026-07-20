@@ -14,14 +14,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0C1117;
+    --background: #0c1117;
     --foreground: #e4e4e7;
   }
 }
 
 /* Force dark mode since the site is always dark-themed */
 :root {
-  --background: #0C1117;
+  --background: #0c1117;
   --foreground: #e4e4e7;
 }
 
@@ -42,22 +42,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0C1117;
+  background: #0c1117;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2CB35A30;
+  background: #2cb35a30;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2CB35A60;
+  background: #2cb35a60;
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2CB35A30 #0C1117;
+  scrollbar-color: #2cb35a30 #0c1117;
 }
 
 .space-grotesk {
@@ -128,18 +128,13 @@ body {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(44, 179, 90, 0.1); }
-  50% { box-shadow: 0 0 30px rgba(44, 179, 90, 0.25); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 .animate-fade-in-up {
@@ -162,19 +157,39 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
-.animate-glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
+.delay-100 {
+  animation-delay: 0.1s;
 }
-
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-.delay-600 { animation-delay: 0.6s; }
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+.delay-600 {
+  animation-delay: 0.6s;
+}
 
 /* ── Section divider utility ── */
 .section-divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(44, 179, 90, 0.2), transparent);
+  background: rgba(44, 179, 90, 0.2);
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

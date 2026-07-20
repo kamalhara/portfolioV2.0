@@ -43,10 +43,7 @@ export default function Skills() {
       {/* Header */}
       <div className="flex flex-col items-center">
         <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5 text-white">
-          Technical{" "}
-          <span className="bg-gradient-to-r from-[#2CB35A] to-[#5DEBB5] bg-clip-text text-transparent">
-            Skills
-          </span>
+          Technical <span className="text-[#2CB35A]">Skills</span>
         </h1>
         <p className="text-gray-500 text-lg font-mono">
           // {totalSkills}+ technologies across {skillCategories.length} domains
@@ -69,9 +66,6 @@ export default function Skills() {
                 transition: "opacity 0.5s ease, transform 0.5s ease",
               }}
             >
-              {/* Green glow on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(44,179,90,0.08),transparent_70%)]" />
-
               {/* Terminal-style title bar */}
               <div className="flex items-center gap-2 px-4 py-2.5 border-b border-gray-700 bg-[#0C1117]/60">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -102,7 +96,7 @@ export default function Skills() {
                   {category.skills.map((skill, idx) => (
                     <span
                       key={idx}
-                      className="text-xs bg-[#0C1117]/80 text-gray-400 px-3 py-1.5 border border-gray-700/60 font-mono transition-all duration-300 hover:border-[#2CB35A] hover:text-[#2CB35A] hover:shadow-[0_0_8px_rgba(44,179,90,0.15)] cursor-default"
+                      className="text-xs bg-[#0C1117]/80 text-gray-400 px-3 py-1.5 border border-gray-700/60 font-mono transition-all duration-300 hover:border-[#2CB35A] hover:text-[#2CB35A] cursor-default"
                     >
                       {skill}
                     </span>
