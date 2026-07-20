@@ -2,6 +2,117 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { skillCategories } from "../data/skills";
+import {
+  SiAndroidstudio,
+  SiClerk,
+  SiCss,
+  SiEslint,
+  SiExpo,
+  SiExpress,
+  SiFirebase,
+  SiFramer,
+  SiGit,
+  SiGraphql,
+  SiGithub,
+  SiHtml5,
+  SiJavascript,
+  SiJest,
+  SiJson,
+  SiJsonwebtokens,
+  SiMongodb,
+  SiMysql,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiNpm,
+  SiPostman,
+  SiPostgresql,
+  SiReact,
+  SiReacthookform,
+  SiRedux,
+  SiSocketdotio,
+  SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVercel,
+  SiVite,
+  SiXcode,
+} from "react-icons/si";
+import { FaAws, FaUniversalAccess } from "react-icons/fa6";
+import {
+  FiAlertCircle,
+  FiBell,
+  FiCheckCircle,
+  FiCode,
+  FiGitBranch,
+  FiMonitor,
+  FiRepeat,
+  FiShield,
+} from "react-icons/fi";
+import {
+  TbApi,
+  TbBrandOauth,
+  TbDatabaseEdit,
+  TbPlugConnected,
+  TbShieldCheck,
+  TbWebhook,
+} from "react-icons/tb";
+import { VscVscode } from "react-icons/vsc";
+
+const skillIcons = {
+  JavaScript: SiJavascript,
+  HTML: SiHtml5,
+  CSS: SiCss,
+  "Tailwind CSS": SiTailwindcss,
+  TypeScript: SiTypescript,
+  JSON: SiJson,
+  "React.js": SiReact,
+  "Next.js": SiNextdotjs,
+  Redux: SiRedux,
+  "React-Hook-Form": SiReacthookform,
+  "Framer Motion": SiFramer,
+  Vite: SiVite,
+  "Responsive Design": FiMonitor,
+  Accessibility: FaUniversalAccess,
+  "React Native": SiReact,
+  Expo: SiExpo,
+  "Android Studio": SiAndroidstudio,
+  XCode: SiXcode,
+  Firebase: SiFirebase,
+  Supabase: SiSupabase,
+  FCM: FiBell,
+  NativeWind: SiTailwindcss,
+  Zustand: FiRepeat,
+  "React Native Reanimated": SiReact,
+  "Node.js": SiNodedotjs,
+  "Express.js": SiExpress,
+  "REST APIs": TbApi,
+  "Socket.io": SiSocketdotio,
+  Authentication: FiShield,
+  MySQL: SiMysql,
+  MongoDB: SiMongodb,
+  PostgreSQL: SiPostgresql,
+  Clerk: SiClerk,
+  CRUD: TbDatabaseEdit,
+  "Role-Based Access": TbShieldCheck,
+  "Data Validation": FiCheckCircle,
+  AWS: FaAws,
+  ESLint: SiEslint,
+  Husky: FiGitBranch,
+  Jest: SiJest,
+  Git: SiGit,
+  GitHub: SiGithub,
+  npm: SiNpm,
+  VSCode: VscVscode,
+  Postman: SiPostman,
+  Vercel: SiVercel,
+  "API Development": FiCode,
+  GraphQL: SiGraphql,
+  WebSockets: TbPlugConnected,
+  JWT: SiJsonwebtokens,
+  "OAuth 2.0": TbBrandOauth,
+  Webhooks: TbWebhook,
+  "Error Handling": FiAlertCircle,
+};
 
 export default function Skills() {
   const [visibleCards, setVisibleCards] = useState([]);
@@ -93,14 +204,22 @@ export default function Skills() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs bg-[#0C1117]/80 text-gray-400 px-3 py-1.5 border border-gray-700/60 font-mono transition-all duration-300 hover:border-[#2CB35A] hover:text-[#2CB35A] cursor-default"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+                  {category.skills.map((skill, idx) => {
+                    const SkillIcon = skillIcons[skill] ?? FiCode;
+
+                    return (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center gap-1.5 text-xs bg-[#0C1117]/80 text-gray-400 px-3 py-1.5 border border-gray-700/60 font-mono transition-all duration-300 hover:border-[#2CB35A] hover:text-[#2CB35A] cursor-default"
+                      >
+                        <SkillIcon
+                          className="h-3.5 w-3.5 shrink-0 text-current"
+                          aria-hidden="true"
+                        />
+                        {skill}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </div>

@@ -3,15 +3,17 @@ import {
   FiLayout,
   FiSmartphone,
   FiServer,
+  FiDatabase,
+  FiShield,
   FiCloud,
-  FiPackage,
+  FiTool,
 } from "react-icons/fi";
 
 export const skillCategories = [
   {
     title: "Languages",
     icon: FiCode,
-    skills: ["JavaScript", "HTML", "CSS", "Tailwind CSS", "TypeScript"],
+    skills: ["JavaScript", "TypeScript"],
   },
   {
     title: "Frontend",
@@ -19,7 +21,9 @@ export const skillCategories = [
     skills: [
       "React.js",
       "Next.js",
+      "Tailwind CSS",
       "Redux",
+      "Zustand",
       "React-Hook-Form",
       "Framer Motion",
     ],
@@ -27,38 +31,37 @@ export const skillCategories = [
   {
     title: "Mobile",
     icon: FiSmartphone,
-    skills: [
-      "React Native",
-      "Expo",
-      "Android Studio",
-      "XCode",
-      "Firebase",
-      "Supabase",
-      "FCM",
-    ],
+    skills: ["React Native", "Expo", "Android Studio", "XCode", "FCM"],
   },
   {
     title: "Backend",
     icon: FiServer,
+    skills: ["Node.js", "Express.js", "Prisma", "Socket.io", "GraphQL"],
+  },
+  {
+    title: "Databases & BaaS",
+    icon: FiDatabase,
     skills: [
-      "Node.js",
-      "Express.js",
-      "REST APIs",
-      "Socket.io",
-      "Authentication",
-      "MySQL",
       "MongoDB",
       "PostgreSQL",
+      "MySQL",
+      "Firebase",
+      "Supabase",
     ],
   },
   {
-    title: "Cloud & Tools",
-    icon: FiCloud,
-    skills: ["AWS", "ESLint", "Husky", "Jest", "Git", "VSCode"],
+    title: "APIs & Auth",
+    icon: FiShield,
+    skills: ["REST APIs", "WebSockets", "JWT", "OAuth 2.0", "NextAuth.js", "Clerk"],
   },
   {
-    title: "Others",
-    icon: FiPackage,
-    skills: ["API Development", "GraphQL", "REST APIs", "WebSockets", "JWT"],
+    title: "DevOps & Cloud",
+    icon: FiCloud,
+    skills: ["AWS", "Vercel", "Git", "GitHub", "CI/CD"],
+  },
+  {
+    title: "Developer Tools",
+    icon: FiTool,
+    skills: ["Figma", "Postman", "ESLint", "Husky", "Jest"],
   },
 ];

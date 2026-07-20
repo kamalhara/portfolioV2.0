@@ -182,12 +182,6 @@ body {
   background: rgba(44, 179, 90, 0.2);
 }
 
-@media (max-width: 767px) {
-  body {
-    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
