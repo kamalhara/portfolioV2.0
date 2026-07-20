@@ -44,7 +44,7 @@ export default function LoadingScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0C1117] flex items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-9999 bg-[#0C1117] flex items-center justify-center transition-opacity duration-500 ${
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
     >
@@ -62,7 +62,7 @@ export default function LoadingScreen() {
           </div>
 
           {/* Terminal content */}
-          <div className="p-4 md:p-6 font-mono text-sm space-y-2 min-h-[180px]">
+          <div className="p-4 md:p-6 font-mono text-sm space-y-2 min-h-45">
             {lines.map((line, index) => (
               <div
                 key={index}
@@ -79,7 +79,7 @@ export default function LoadingScreen() {
           </div>
 
           {/* Progress bar */}
-          <div className="h-[2px] bg-gray-800 mx-4 mb-4 rounded-full overflow-hidden">
+          <div className="h-0.5 bg-gray-800 mx-4 mb-4 rounded-full overflow-hidden">
             <div
               className="h-full bg-[#2CB35A] rounded-full"
               style={{

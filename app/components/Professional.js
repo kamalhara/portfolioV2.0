@@ -60,7 +60,7 @@ export default function Professional() {
               }}
             >
               {/* Timeline dot */}
-              <div className="absolute left-[18px] md:left-[26px] top-5 w-4 h-4 rounded-full border-2 border-[#2CB35A] bg-[#0C1117] z-10">
+              <div className="absolute left-4.5 md:left-6.5 top-5 w-4 h-4 rounded-full border-2 border-[#2CB35A] bg-[#0C1117] z-10">
                 <div className="w-2 h-2 rounded-full bg-[#2CB35A] absolute top-0.5 left-0.5" />
               </div>
 

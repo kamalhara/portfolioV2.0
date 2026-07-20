@@ -78,7 +78,7 @@ function Navbar() {
       <a
         href={link.href}
         onClick={(event) => handleSmoothScroll(event, link.href)}
-        className={`relative whitespace-nowrap font-mono text-[10px] font-semibold transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:bg-[#2CB35A] after:transition-all after:duration-300 sm:text-sm md:text-base ${
+        className={`relative whitespace-nowrap font-mono text-[10px] font-semibold transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:bg-[#2CB35A] after:transition-all after:duration-300 sm:text-sm md:text-base ${
           isActive
             ? "text-[#2CB35A] after:w-full"
             : "text-gray-500 hover:text-[#2CB35A] after:w-0 hover:after:w-full"
@@ -96,7 +96,7 @@ function Navbar() {
   return (
     <nav
       aria-label="Primary navigation"
-      className={`fixed top-0 left-0 right-0 z-[999] border-b backdrop-blur-lg transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-999 border-b backdrop-blur-lg transition-all duration-300 ${
         scrolled
           ? "border-gray-800/70 bg-[#0C1117]/95"
           : "border-transparent bg-[#0C1117]/80"
@@ -104,7 +104,7 @@ function Navbar() {
     >
       <div
         ref={progressRef}
-        className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-[#2CB35A] will-change-transform"
+        className="absolute bottom-0 left-0 h-0.5 w-full origin-left bg-[#2CB35A] will-change-transform"
         style={{ transform: "scaleX(0)" }}
       />
 
