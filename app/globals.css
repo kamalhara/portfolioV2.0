@@ -1,189 +1,163 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ──────────────────────────────────────────────────────────────
+   Palette
+
+   One green, one black. Previously this was 4 near-identical
+   greens (#2CB35A, #2EA353, #2bc35a, #24994D) and 3 blacks
+   (#0C1117, #0c1117, #0a1117) spread across 71 hardcoded
+   literals. Everything routes through these tokens now.
+
+   --muted is #8A939F rather than gray-500/600: the old
+   gray-600 sat at ~2.9:1 on the page background and failed
+   WCAG AA for the footer, the social icons and the skill counts.
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  --color-ink: #0b0e13;
+  --color-surface: #12171f;
+  --color-surface-2: #1a212b;
+  --color-line: #232c38;
+  --color-line-hi: #33404f;
+
+  --color-fg: #e6e8ec;
+  --color-muted: #8a939f;
+  --color-faint: #5c6675;
+
+  --color-accent: #2cb35a;
+  --color-accent-hi: #4fd97d;
+  --color-accent-dim: #1a6e39;
+
+  /* Fluid display scale. The hero name is a morph target — it
+     needs a continuous size to land on, not a two-step
+     text-4xl/md:text-7xl jump. */
+  --text-display: clamp(2.75rem, 11vw, 7.5rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.035em;
+
+  --text-title: clamp(2rem, 5vw, 3.5rem);
+  --text-title--line-height: 1;
+  --text-title--letter-spacing: -0.025em;
+
+  --text-section: clamp(1.75rem, 3.5vw, 2.5rem);
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.02em;
 }
 
+/* Fonts come from next/font, so the values must be inlined
+   rather than wrapped in an extra var() indirection. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0c1117;
-    --foreground: #e4e4e7;
-  }
-}
-
-/* Force dark mode since the site is always dark-themed */
-:root {
-  --background: #0c1117;
-  --foreground: #e4e4e7;
-}
-
-html {
-  scroll-behavior: smooth;
+/* Kept as aliases: app/project/[slug]/page.js reaches for
+   text-foreground, and it is the one place that used a real
+   token instead of a literal. */
+@theme inline {
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-fg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Space Grotesk", sans-serif;
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Custom Scrollbar ── */
+/* Anchor targets clear the fixed navbar. Previously
+   scrollIntoView({block:"start"}) put every heading underneath it. */
+:target,
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
+/* ── Focus ──
+   There were zero focus styles in the entire codebase, and the
+   project cards are whole-card links. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Scrollbar ── */
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0c1117;
+  background: var(--color-ink);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2cb35a30;
-  border-radius: 3px;
+  background: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2cb35a60;
+  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2cb35a30 #0c1117;
+  scrollbar-color: color-mix(in srgb, var(--color-accent) 28%, transparent)
+    var(--color-ink);
 }
 
-.space-grotesk {
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
+/* ── Utilities ── */
+
+/* Mono meta layer: section numbers, years, labels, tech lists.
+   Replaces the "// comment subtitle" that appeared under all
+   five section headers. */
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-.space-grotesk-bold {
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: bold;
-  font-style: normal;
-}
-
-.space-grotesk-semi-bold {
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-}
-
-/* ── Scroll-triggered animations ── */
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(32px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-32px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(32px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out both;
-}
-
-.animate-fade-in-left {
-  animation: fadeInLeft 0.6s ease-out both;
-}
-
-.animate-fade-in-right {
-  animation: fadeInRight 0.6s ease-out both;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.5s ease-out both;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.delay-100 {
-  animation-delay: 0.1s;
-}
-.delay-200 {
-  animation-delay: 0.2s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
-}
-.delay-400 {
-  animation-delay: 0.4s;
-}
-.delay-500 {
-  animation-delay: 0.5s;
-}
-.delay-600 {
-  animation-delay: 0.6s;
-}
-
-/* ── Section divider utility ── */
-.section-divider {
+@utility hairline {
   height: 1px;
-  background: rgba(44, 179, 90, 0.2);
+  background: linear-gradient(
+    to right,
+    var(--color-line-hi),
+    color-mix(in srgb, var(--color-line) 40%, transparent)
+  );
 }
 
+/* Prevents the sub-pixel shimmer that transform-based scaling
+   causes on large text mid-morph. */
+@utility text-crisp {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+}
+
+/* ── Reduced motion ──
+   This block previously only reset scroll-behavior, while the
+   typewriter, five staggered reveal sequences and a perpetual
+   canvas rAF loop all ran regardless. */
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
