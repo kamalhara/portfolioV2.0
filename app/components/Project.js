@@ -42,7 +42,7 @@ export default function Project() {
             {project.cover ? (
               <div
                 className={`relative overflow-hidden border-b border-line ${
-                  index === 0 ? "aspect-[16/7]" : "aspect-[16/10]"
+                  index === 0 ? "aspect-16/7" : "aspect-16/10"
                 }`}
               >
                 <Image
@@ -59,7 +59,7 @@ export default function Project() {
                 />
               </div>
             ) : (
-              <div className="flex aspect-[16/10] items-center justify-center border-b border-line bg-ink p-8 text-white">
+              <div className="flex aspect-16/10 items-center justify-center border-b border-line bg-ink p-8 text-white">
                 <div className="w-full max-w-sm font-mono text-sm leading-8 text-white/70">
                   <p>
                     <span className="text-orange">GET</span> /api/v1/tours

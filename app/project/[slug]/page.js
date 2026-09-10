@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }) {
           </header>
 
           {project.cover && (
-            <div className="relative aspect-[16/8] w-full overflow-hidden border-y border-ink bg-sheet">
+            <div className="relative aspect-16/8 w-full overflow-hidden border-y border-ink bg-sheet">
               <Image
                 src={project.cover}
                 alt={`${project.title} interface preview`}
@@ -194,7 +194,7 @@ export default async function ProjectDetailPage({ params }) {
                   {project.screenshot.map((src, index) => (
                     <div
                       key={src}
-                      className="relative aspect-[9/17] overflow-hidden border border-white/25 bg-white/5"
+                      className="relative aspect-9/17 overflow-hidden border border-white/25 bg-white/5"
                     >
                       <Image
                         src={`/${src}`}
