@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { mainProjects } from "../data/project";
 import Heading from "../ui/Heading";
+import IPhoneFrame from "../ui/IPhoneFrame";
 
 export default function Project() {
   const [activeProject, setActiveProject] = useState(null);
@@ -21,16 +22,26 @@ export default function Project() {
   const x = useSpring(pointerX, { stiffness: 420, damping: 34, mass: 0.45 });
   const y = useSpring(pointerY, { stiffness: 420, damping: 34, mass: 0.45 });
 
-  const getPreview = (project) =>
-    project.cover ??
-    (project.screenshot?.[0] ? `/${project.screenshot[0]}` : null);
+  const getPreview = (project) => {
+    if (project.cover) {
+      return { src: project.cover, isScreenshot: false };
+    }
 
-  const movePreview = (event) => {
+    if (project.screenshot?.[0]) {
+      return { src: `/${project.screenshot[0]}`, isScreenshot: true };
+    }
+
+    return null;
+  };
+
+  const movePreview = (event, isScreenshot = activeProject?.isScreenshot) => {
     if (event.pointerType !== "mouse") return;
 
-    const previewWidth = 340;
-    const previewHeight = 220;
-    const gap = 28;
+    const previewWidth = isScreenshot ? 220 : 340;
+    const previewHeight = isScreenshot
+      ? Math.min(474, window.innerHeight - 86)
+      : 220;
+    const gap = 52;
     const nextX =
       event.clientX + gap + previewWidth > window.innerWidth
         ? event.clientX - previewWidth - gap
@@ -51,7 +62,10 @@ export default function Project() {
         label2={`0${mainProjects.length} featured`}
         border_y={false}
       />
-      <ul className="mt-8 sm:mt-12" onPointerMove={movePreview}>
+      <ul
+        className="mt-8 sm:mt-12"
+        onPointerMove={(event) => movePreview(event)}
+      >
         {mainProjects.map((project, index) => {
           const preview = getPreview(project);
 
@@ -74,8 +88,12 @@ export default function Project() {
                 href={`/project/${project.slug}`}
                 onPointerEnter={(event) => {
                   if (event.pointerType === "mouse" && preview) {
-                    movePreview(event);
-                    setActiveProject({ ...project, preview });
+                    movePreview(event, preview.isScreenshot);
+                    setActiveProject({
+                      ...project,
+                      preview: preview.src,
+                      isScreenshot: preview.isScreenshot,
+                    });
                   }
                 }}
                 onPointerLeave={() => setActiveProject(null)}
@@ -105,9 +123,9 @@ export default function Project() {
                 </span>
 
                 {preview && (
-                  <span className="relative col-span-2 mt-5 block aspect-[16/9] overflow-hidden border border-paper-border bg-bg-cream-light md:hidden">
+                  <span className="relative col-span-2 mt-5 block aspect-video overflow-hidden border border-paper-border bg-bg-cream-light md:hidden">
                     <Image
-                      src={preview}
+                      src={preview.src}
                       alt=""
                       fill
                       sizes="(max-width: 767px) 92vw"
@@ -127,7 +145,6 @@ export default function Project() {
                 </span>
 
                 <span className="col-start-2 hidden text-right font-mono text-[11px] text-ink-muted md:col-start-4 md:justify-self-end md:pt-2.5 md:group-hover:text-ink-text">
-                  2024
                   {index === 0 && (
                     <span
                       aria-hidden="true"
@@ -153,20 +170,41 @@ export default function Project() {
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
             style={{ x, y }}
-            className="pointer-events-none fixed top-0 left-0 z-[70] hidden w-[340px] overflow-hidden border border-ink-text/20 bg-bg-cream-light shadow-[0_22px_60px_rgba(17,17,17,0.22)] md:block"
+            className={`pointer-events-none fixed top-0 left-0 z-70 hidden overflow-hidden border border-ink-text/20 bg-bg-cream-light shadow-[0_22px_60px_rgba(17,17,17,0.22)] md:block ${activeProject.isScreenshot ? "w-55" : "w-85"}`}
           >
-            <div className="relative aspect-[17/10] overflow-hidden">
-              <Image
-                src={activeProject.preview}
-                alt=""
-                fill
-                sizes="340px"
-                className="object-cover object-top"
-              />
+            <div
+              className={`relative flex items-center justify-center overflow-hidden ${activeProject.isScreenshot ? "h-[min(440px,calc(100vh-120px))]" : "aspect-17/10"}`}
+            >
+              {activeProject.title === "Spotus" ? (
+                <div className="w-44">
+                  <IPhoneFrame>
+                    <div className="relative aspect-9/19.5 w-full">
+                      <Image
+                        src={activeProject.preview}
+                        alt=""
+                        fill
+                        sizes="220px"
+                        className="object-cover object-center"
+                      />
+                    </div>
+                  </IPhoneFrame>
+                </div>
+              ) : (
+                <Image
+                  src={activeProject.preview}
+                  alt=""
+                  fill
+                  sizes={activeProject.isScreenshot ? "220px" : "340px"}
+                  className={
+                    activeProject.isScreenshot
+                      ? "object-contain object-center"
+                      : "object-cover object-top"
+                  }
+                />
+              )}
             </div>
             <figcaption className="flex items-center justify-between border-t border-paper-border px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-ink-muted">
               <span>{activeProject.title}</span>
-              <span className="text-accent-orange">View project ↗</span>
             </figcaption>
           </motion.figure>
         )}
