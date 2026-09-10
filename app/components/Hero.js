@@ -52,7 +52,7 @@ function Hero() {
   return (
     <main
       ref={ref}
-      className="z-50 relative max-w-3xl w-full mx-auto md:ml-40 mt-24 md:mt-48 px-6 py-12 md:py-20 mb-16 md:mb-30"
+      className="z-50 relative max-w-3xl w-full mx-auto md:ml-40 mt-16 md:mt-48 px-6 py-12 md:py-20 mb-16 md:mb-30"
       id="about"
     >
       <div
