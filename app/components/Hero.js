@@ -18,7 +18,9 @@ export default function Hero() {
         label2={`Portfolio — ${new Date().getFullYear()}`}
       />
 
-      <h1 className="sr-only">Kamalveer — full-stack and mobile engineer.</h1>
+      <h1 className="sr-only">
+        Kamalveer Singh — full-stack and mobile engineer.
+      </h1>
 
       <div className="">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-y-[1.5px] border-paper-border py-4 sm:gap-x-8">
@@ -27,7 +29,7 @@ export default function Hero() {
               KS
             </span>
             <div className="font-mono text-[11px] uppercase tracking-widest">
-              <div className="text-ink-text font-medium">Kamalveer</div>
+              <div className="text-ink-text font-medium">Kamalveer Singh</div>
               <div className="text-ink-muted">India</div>
             </div>
           </div>
@@ -55,8 +57,7 @@ export default function Hero() {
         <div className="sm:col-span-4">
           <Link
             href="#work"
-            className="group inline-flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-widest"
-            style={{ color: "#8a8a8a" }}
+            className="group inline-flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-widest text-ink-muted"
           >
             <span
               aria-hidden="true"

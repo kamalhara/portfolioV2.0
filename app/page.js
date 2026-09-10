@@ -27,10 +27,10 @@ export default function Home() {
           <Professional />
         </ScrollReveal>
         <ScrollReveal>
-          <About />
+          <Activities />
         </ScrollReveal>
         <ScrollReveal>
-          <Activities />
+          <About />
         </ScrollReveal>
       </main>
       <Footer />

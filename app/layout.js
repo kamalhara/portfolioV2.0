@@ -1,4 +1,5 @@
 import "./globals.css";
+import WelcomeLoader from "./components/WelcomeLoader";
 import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -67,9 +68,16 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
-      <body>
+      <body suppressHydrationWarning>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{const r=document.documentElement;const t=localStorage.getItem("kamalveer-portfolio-theme-v2")||"light";r.dataset.theme=t;r.classList.toggle("dark",t==="dark");if(sessionStorage.getItem("kamalveer-portfolio-welcome-session-v1")==="seen")r.dataset.welcomeSeen="true"}catch(e){}',
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -80,6 +88,7 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
+        <WelcomeLoader />
         {children}
       </body>
     </html>

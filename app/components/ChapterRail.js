@@ -7,8 +7,8 @@ const chapters = [
   ["00", "Intro", "start"],
   ["01", "Work", "work"],
   ["02", "Experience", "experience"],
-  ["03", "About", "about"],
-  ["04", "Activity", "activity"],
+  ["03", "Activity", "activity"],
+  ["04", "About", "about"],
 ];
 
 export default function ChapterRail() {

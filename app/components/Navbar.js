@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { motion, useScroll, useSpring } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { FiMoon, FiSun } from "react-icons/fi";
 
 const links = [
   ["Work", "/#work"],
@@ -10,8 +11,28 @@ const links = [
   ["About", "/#about"],
 ];
 
+const themeEvent = "portfolio-theme-change";
+
+function subscribeToTheme(callback) {
+  window.addEventListener(themeEvent, callback);
+  return () => window.removeEventListener(themeEvent, callback);
+}
+
+function getThemeSnapshot() {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function getServerThemeSnapshot() {
+  return "light";
+}
+
 export default function Navbar() {
   const [time, setTime] = useState("");
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot,
+  );
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
     stiffness: 180,
@@ -33,6 +54,19 @@ export default function Navbar() {
     const timer = window.setInterval(update, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.classList.toggle("dark", nextTheme === "dark");
+    try {
+      window.localStorage.setItem("kamalveer-portfolio-theme-v2", nextTheme);
+    } catch {
+      // The theme still changes when storage is unavailable.
+    }
+    window.dispatchEvent(new Event(themeEvent));
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b-[1.5px] border-paper-border bg-bg-cream/90 py-1 backdrop-blur-xl">
@@ -85,6 +119,21 @@ export default function Navbar() {
               </span>
               <div className="absolute inset-x-0 -bottom-1 h-[1.2px] w-0 bg-accent-orange transition-all duration-300 ease-out group-hover:w-full"></div>
             </a>
+          </li>
+          <li className="flex items-center">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              className="grid h-8 w-8 place-items-center border border-paper-border text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-orange hover:text-ink-text"
+            >
+              {theme === "dark" ? (
+                <FiSun aria-hidden="true" className="text-sm" />
+              ) : (
+                <FiMoon aria-hidden="true" className="text-sm" />
+              )}
+            </button>
           </li>
         </ul>
       </nav>

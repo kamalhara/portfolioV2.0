@@ -76,7 +76,7 @@ export default function ProjectArchive({ projects }) {
             >
               <Link
                 href={`/project/${project.slug}`}
-                className="group grid min-h-28 grid-cols-[2rem_minmax(0,1fr)_1.5rem] items-center gap-3 px-1 py-5 transition-colors duration-300 hover:bg-[#f0eee8] sm:grid-cols-[2.5rem_minmax(0,1fr)_1.5rem] sm:px-2 md:grid-cols-[3rem_minmax(0,1fr)_8rem_2rem]"
+                className="group grid min-h-28 grid-cols-[2rem_minmax(0,1fr)_1.5rem] items-center gap-3 px-1 py-5 transition-colors duration-300 hover:bg-bg-cream-light sm:grid-cols-[2.5rem_minmax(0,1fr)_1.5rem] sm:px-2 md:grid-cols-[3rem_minmax(0,1fr)_8rem_2rem]"
               >
                 <span className="font-mono text-[11px] text-ink-faint transition-colors group-hover:text-accent-orange">
                   {String(index + 1).padStart(2, "0")}

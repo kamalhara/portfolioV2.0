@@ -23,7 +23,7 @@ export default function Professional() {
                 alt={experience.company}
                 width={48}
                 height={48}
-                className="border border-paper-border bg-white object-cover transition-transform duration-300 ease-out group-hover/experience:-rotate-2 group-hover/experience:scale-105"
+                className="border border-paper-border bg-bg-cream-light object-cover transition-transform duration-300 ease-out group-hover/experience:-rotate-2 group-hover/experience:scale-105"
               />
               <div>
                 <Link
