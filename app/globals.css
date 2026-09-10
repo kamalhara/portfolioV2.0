@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-cream: #f5f4f0;
+  --color-bg-cream: #f4f4f0;
   --color-bg-cream-light: #fbfaf8;
   --color-paper-border: #e2dfd7;
+  --color-border: #e5e5e0;
   --color-paper-border-dark: #c7c4ba;
-  --color-ink-text: #181716;
-  --color-ink-muted: #686661;
+  --color-ink-text: #111111;
+  --color-ink-muted: #8a8a8a;
   --color-ink-faint: #9b988f;
   --color-accent-orange: #df5a2c;
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
@@ -14,8 +15,12 @@
   --font-mono: var(--font-jetbrains), monospace;
 }
 
-:root { color-scheme: light; }
-html { scroll-behavior: smooth; }
+:root {
+  color-scheme: light;
+}
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
   background: var(--color-bg-cream);
@@ -24,19 +29,48 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
 }
-* { box-sizing: border-box; }
-a { color: inherit; }
-img { color: transparent; }
-[id] { scroll-margin-top: 5rem; }
-::selection { background: var(--color-ink-text); color: var(--color-bg-cream); }
-:focus-visible { outline: 2px solid var(--color-accent-orange); outline-offset: 4px; }
+* {
+  box-sizing: border-box;
+}
+a {
+  color: inherit;
+}
+img {
+  color: transparent;
+}
+[id] {
+  scroll-margin-top: 5rem;
+}
+::selection {
+  background: var(--color-ink-text);
+  color: var(--color-bg-cream);
+}
+:focus-visible {
+  outline: 2px solid var(--color-accent-orange);
+  outline-offset: 4px;
+}
 
 @keyframes quiet-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(223,90,44,.22); }
-  50% { opacity: .65; box-shadow: 0 0 0 5px rgba(223,90,44,0); }
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(223, 90, 44, 0.22);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 5px rgba(223, 90, 44, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
