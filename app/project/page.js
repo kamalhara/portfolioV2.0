@@ -5,30 +5,19 @@ import { projects } from "@/app/data/project";
 
 export const metadata = {
   title: "Project archive",
-  description:
-    "Web, mobile, and backend projects built by software engineer Kamalveer Singh.",
+  description: "Web, mobile, and backend projects built by software engineer Kamalveer Singh.",
   alternates: { canonical: "/project" },
-  openGraph: {
-    title: "Project archive — Kamalveer Singh",
-    description:
-      "A collection of web, mobile, and backend projects by Kamalveer Singh.",
-    url: "/project",
-  },
 };
 
 export default function ProjectPage() {
   return (
     <>
       <Navbar />
-      <main id="main" className="site-shell py-14 md:py-24">
-        <p className="section-label">Project archive</p>
-        <h1 className="section-title mt-5">
-          Eight builds. Different problems.
-        </h1>
-        <p className="body-copy mt-6 max-w-2xl">
-          Browse the full collection by format or search for a technology. Each
-          project page covers the stack, decisions, and core features.
-        </p>
+      <main id="main" className="standalone-main">
+        <header className="archive-hero">
+          <div className="chapter-heading"><h2>Project index</h2><p>2019 — 2026</p></div>
+          <div><h1>Everything I&apos;ve shipped.</h1><p>Mobile products, web platforms, and backend systems—indexed by the problem each one was built to solve.</p></div>
+        </header>
         <ProjectArchive projects={projects} />
       </main>
       <Footer />

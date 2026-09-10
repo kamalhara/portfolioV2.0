@@ -1,5 +1,30 @@
 export const projects = [
   {
+    title: "Spotus",
+    slug: "spotus",
+    frontEnd: "React Native, Expo Router, NativeWind",
+    backEnd: "Express, Firebase Firestore, Trigger.dev",
+    description:
+      "A location-based social app where nearby communities form around live rooms, then move into safer request-based conversations.",
+    technologies:
+      "React Native · Expo · Firebase · Clerk · Express · Cloudinary · Trigger.dev",
+    overview:
+      "Spotus is a mobile social-discovery product built around place and proximity. People can discover global or nearby rooms, join real-time conversations, share media, and move into private chats through an explicit request flow. The product spans a native client, authenticated API, geohash queries, background cleanup, push notifications, moderation, and production observability.",
+    keyFeatures: [
+      "Nearby-room discovery using geohash queries and a configurable search radius",
+      "Real-time room chat with typing indicators, reactions, read receipts, and pinned messages",
+      "Request-based direct messages designed to give recipients control",
+      "Passwordless OTP, Google OAuth, and Apple Sign-In through Clerk",
+      "Camera and gallery media sharing through a signed Cloudinary upload pipeline",
+      "Push notifications, analytics, crash reporting, moderation, and automated expired-room cleanup",
+    ],
+    cover: null,
+    tone: "orange",
+    type: "Mobile Product",
+    code: "https://github.com/kamalhara/spotus",
+    featured: true,
+  },
+  {
     title: "Ryde",
     slug: "ryde",
     frontEnd: "React Native , Expo , NativeWind",

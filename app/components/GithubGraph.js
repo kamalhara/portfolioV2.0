@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { FiArrowUpRight, FiGithub } from "react-icons/fi";
+import { FiArrowUpRight } from "react-icons/fi";
+import { skillCategories } from "../data/skills";
 
 const GitHubCalendar = dynamic(
   () => import("react-github-calendar").then((module) => module.GitHubCalendar),
@@ -10,53 +11,41 @@ const GitHubCalendar = dynamic(
 
 export default function GithubGraph() {
   return (
-    <section
-      aria-labelledby="github-title"
-      className="site-shell pb-20 md:pb-28"
-    >
-      <div className="grid gap-8 border-t border-ink pt-8 md:grid-cols-12">
-        <div className="md:col-span-4">
-          <p className="section-label">04 / In public</p>
-          <h2
-            id="github-title"
-            className="mt-5 text-3xl font-semibold tracking-[-0.045em]"
-          >
-            The work between the launches.
-          </h2>
-        </div>
+    <section id="activity" aria-labelledby="activity-title" className="chapter-section activity-chapter">
+      <div className="chapter-heading">
+        <h2 id="activity-title">Activity</h2>
+        <p>evidence, not claims</p>
+      </div>
 
-        <figure className="min-w-0 border border-line bg-sheet p-5 md:col-span-8 md:p-7">
-          <figcaption className="mb-6 flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 font-semibold">
-              <FiGithub aria-hidden="true" /> GitHub activity
-            </span>
-            <a
-              href="https://github.com/kamalhara"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-link text-sm"
-              aria-label="View Kamalveer Singh on GitHub"
-            >
-              @kamalhara <FiArrowUpRight aria-hidden="true" />
-            </a>
-          </figcaption>
-          <div
-            className="overflow-x-auto pb-2 text-sm text-muted"
-            aria-label="Kamalveer Singh's GitHub contribution calendar"
-          >
-            <GitHubCalendar
-              username="kamalhara"
-              colorScheme="light"
-              theme={{
-                light: ["#ebe7de", "#b7c3f3", "#748be5", "#415fda", "#2447d7"],
-              }}
-              blockSize={12}
-              blockMargin={4}
-              blockRadius={0}
-              fontSize={13}
-            />
-          </div>
-        </figure>
+      <div className="activity-heading">
+        <div><p className="micro-label">GitHub activity</p><h3>A record of showing up.</h3></div>
+        <a href="https://github.com/kamalhara" target="_blank" rel="noopener noreferrer">
+          @kamalhara <FiArrowUpRight aria-hidden="true" />
+        </a>
+      </div>
+      <div className="calendar-wrap" aria-label="Kamalveer Singh's GitHub contribution calendar">
+        <GitHubCalendar
+          username="kamalhara"
+          colorScheme="light"
+          theme={{ light: ["#e8e8e1", "#d9b3a7", "#c98370", "#b75c42", "#843923"] }}
+          blockSize={11}
+          blockMargin={4}
+          blockRadius={0}
+          fontSize={12}
+        />
+      </div>
+
+      <div id="skills" className="toolbox-heading">
+        <div><p className="micro-label">Toolbox</p><h3>What I reach for.</h3></div>
+        <p>Grouped by use, not proficiency bars.</p>
+      </div>
+      <div className="toolbox-grid">
+        {skillCategories.map((category, index) => (
+          <article key={category.title}>
+            <header><h4>{category.title}</h4><span>{String(index + 1).padStart(2, "0")}</span></header>
+            <ul>{category.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul>
+          </article>
+        ))}
       </div>
     </section>
   );

@@ -1,20 +1,22 @@
+import About from "./components/About";
+import ChapterRail from "./components/ChapterRail";
 import Footer from "./components/Footer";
 import GithubGraph from "./components/GithubGraph";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Professional from "./components/Professional";
 import Project from "./components/Project";
-import Skills from "./components/Skills";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <main id="main">
+      <ChapterRail />
+      <main id="main" className="indexed-main">
         <Hero />
         <Project />
         <Professional />
-        <Skills />
+        <About />
         <GithubGraph />
       </main>
       <Footer />
