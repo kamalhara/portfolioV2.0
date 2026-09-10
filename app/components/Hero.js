@@ -1,83 +1,117 @@
 import Link from "next/link";
+import Heading from "../ui/Heading";
 
 export default function Hero() {
   return (
-    <section id="start" aria-labelledby="hero-title" className="mb-28 pt-4">
-      <div className="mb-6 flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-        <span>00 Intro</span>
-        <span>Portfolio — {new Date().getFullYear()}</span>
-      </div>
-      <div className="mb-12 grid grid-cols-1 border border-paper-border bg-bg-cream-light/70 md:grid-cols-12">
-        <div className="flex items-center gap-3 border-b border-paper-border p-3.5 md:col-span-5 md:border-r md:border-b-0">
-          <span className="grid h-7 w-7 place-items-center rounded-sm bg-ink-text font-mono text-[10px] font-bold text-bg-cream">
-            KS
-          </span>
-          <span>
-            <strong className="block font-mono text-xs uppercase tracking-wide">
-              Kamalveer
-            </strong>
-            <small className="font-mono text-[10px] text-ink-muted">
-              INDIA
-            </small>
-          </span>
+    <section
+      id="start"
+      aria-label="Introduction"
+      className="relative pb-8 pt-4 md:pb-10 md:pt-10 mt-6 mb-25"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-paper-border lg:block"
+      ></div>
+
+      <Heading
+        label1="00Intro"
+        label2={`Portfolio — ${new Date().getFullYear()}`}
+      />
+
+      <h1 className="sr-only">Kamalveer — full-stack and mobile engineer.</h1>
+
+      <div className="">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-y-[1.5px] border-paper-border py-4">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-sm bg-ink-text font-mono text-[12px] font-bold text-bg-cream">
+              KS
+            </span>
+            <div className="font-mono text-[11px] uppercase tracking-widest">
+              <div className="text-ink-text font-medium">Kamalveer</div>
+              <div className="text-ink-muted">India</div>
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            className="hidden h-8 w-px bg-paper-border sm:block"
+          ></div>
+          <div className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+            Web / Mobile / Backend
+          </div>
+          <div className="ml-auto flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+            <span className="relative flex h-1.5 w-1.5">
+              <span
+                aria-hidden="true"
+                className="absolute inline-flex h-full w-full rounded-full bg-accent-orange opacity-60"
+              ></span>
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-orange"></span>
+            </span>
+            Available for work
+          </div>
         </div>
-        <p className="flex items-center border-b border-paper-border p-3.5 font-mono text-xs uppercase tracking-wider text-ink-muted md:col-span-4 md:border-r md:border-b-0">
-          Web / Mobile / Backend
-        </p>
-        <p className="flex items-center gap-2 p-3.5 font-mono text-[11px] uppercase tracking-wide md:col-span-3 md:justify-end">
-          <span className="h-2 w-2 animate-[quiet-pulse_2.2s_ease-in-out_infinite] rounded-full bg-accent-orange" />
-          Building Spotus
-        </p>
       </div>
-      <div className="mb-14 grid grid-cols-1 gap-8 md:grid-cols-12">
-        <div className="pt-2 md:col-span-3">
+
+      <div className="grid grid-cols-1 gap-6 py-8 sm:grid-cols-12 sm:gap-6 md:py-10">
+        <div className="sm:col-span-4">
           <Link
             href="#work"
-            className="font-mono text-[11px] uppercase tracking-widest text-ink-faint"
+            className="group inline-flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-widest"
+            style={{ color: "#8a8a8a" }}
           >
-            ↓ Scroll to explore
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-300 ease-out group-hover:translate-y-0.5 motion-reduce:animate-none"
+            >
+              ↓
+            </span>
+            Scroll to explore
           </Link>
         </div>
-        <h1
-          id="hero-title"
-          className="text-2xl leading-snug font-normal tracking-tight sm:text-3xl md:col-span-9 md:text-[34px]"
-        >
-          Full-stack and mobile engineer building dependable products across
-          interfaces, APIs, and real-time systems—
-          <strong className="font-semibold">
-            especially where those layers meet.
-          </strong>
-        </h1>
+        <div className="sm:col-span-8 lg:col-span-7">
+          <p className="text-[clamp(1.1rem,1.5vw,1.3rem)] leading-[1.6] text-ink-text/70">
+            Full-stack and mobile engineer building dependable products across
+            interfaces, APIs, and real-time systems—{" "}
+            <span className="text-ink-text">
+              especially where those layers meet.
+            </span>
+          </p>
+        </div>
       </div>
-      <dl className="grid grid-cols-1 divide-y divide-paper-border border border-paper-border text-xs sm:grid-cols-2 sm:divide-x sm:divide-y-0 md:grid-cols-4">
-        {[
-          ["Focus", "Product systems · Mobile · APIs"],
-          ["Currently shipping", "Spotus · location-based social"],
-          ["In production", "React Native · Expo · Node.js"],
-          ["Next", "01 — Work →"],
-        ].map(([term, detail], index) => (
-          <div
-            key={term}
-            className={`flex min-h-28 flex-col justify-between space-y-3 p-4 ${index > 1 ? "sm:border-t sm:border-paper-border md:border-t-0" : ""}`}
-          >
-            <dt className="font-mono text-[10px] uppercase tracking-wider text-ink-faint">
-              {term}
-            </dt>
-            <dd className="m-0 font-medium">
-              {index === 3 ? (
-                <Link
-                  className="font-mono transition-transform hover:translate-x-0.5"
-                  href="#work"
-                >
-                  {detail}
-                </Link>
-              ) : (
-                detail
-              )}
-            </dd>
-          </div>
-        ))}
-      </dl>
+
+      <div className="">
+        <dl className="grid grid-cols-1 gap-x-10 gap-y-5 border-t-[1.5px] border-paper-border pt-6 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Focus", "Systems architecture · Mobile · APIs"],
+            ["Exploring", "Agentic AI"],
+            ["Core Stack", "React Native · Next.js · Node.js"],
+            ["Next", "01 — Work"],
+          ].map(([term, detail], index) => (
+            <div key={term}>
+              <dt className="font-mono text-sm uppercase tracking-widest text-ink-muted">
+                {term}
+              </dt>
+              <dd className="mt-2 text-sm text-ink-text">
+                {index === 3 ? (
+                  <Link
+                    href="#work"
+                    className="group inline-flex items-center gap-2 text-ink-text transition-colors"
+                  >
+                    {detail}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-300 ease-out group-hover:translate-x-1 text-accent-orange"
+                    >
+                      →
+                    </span>
+                  </Link>
+                ) : (
+                  detail
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }

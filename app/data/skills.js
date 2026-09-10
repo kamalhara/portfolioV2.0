@@ -1,68 +1,49 @@
-import {
-  FiCode,
-  FiLayout,
-  FiSmartphone,
-  FiServer,
-  FiDatabase,
-  FiShield,
-  FiCloud,
-  FiTool,
-} from "react-icons/fi";
-
 export const skillCategories = [
   {
-    title: "Languages",
-    icon: FiCode,
-    skills: ["JavaScript", "TypeScript"],
-  },
-  {
-    title: "Frontend",
-    icon: FiLayout,
+    title: "Web",
     skills: [
-      "React.js",
-      "Next.js",
-      "Tailwind CSS",
-      "Redux",
-      "Zustand",
-      "React-Hook-Form",
-      "Framer Motion",
+      ["React", "interfaces"],
+      ["Next.js", "full-stack"],
+      ["Tailwind ", "CSS"],
+      ["TypeScript", "typed "],
     ],
   },
   {
     title: "Mobile",
-    icon: FiSmartphone,
-    skills: ["React Native", "Expo", "Android Studio", "XCode", "FCM"],
-  },
-  {
-    title: "Backend",
-    icon: FiServer,
-    skills: ["Node.js", "Express.js", "Prisma", "Socket.io", "GraphQL"],
-  },
-  {
-    title: "Databases & BaaS",
-    icon: FiDatabase,
-    skills: ["MongoDB", "PostgreSQL", "MySQL", "Firebase", "Supabase"],
-  },
-  {
-    title: "APIs & Auth",
-    icon: FiShield,
     skills: [
-      "REST APIs",
-      "WebSockets",
-      "JWT",
-      "OAuth 2.0",
-      "NextAuth.js",
-      "Clerk",
+      ["React Native", "cross-platform"],
+      ["Expo", "delivery"],
+      ["NativeWind", "styling"],
+      ["Firebase", "realtime + push"],
     ],
   },
   {
-    title: "DevOps & Cloud",
-    icon: FiCloud,
-    skills: ["AWS", "Vercel", "Git", "GitHub", "CI/CD"],
+    title: "Backend",
+    skills: [
+      ["Node.js", "services"],
+      ["Express", "APIs"],
+      ["PostgreSQL", "SQL"],
+      ["MongoDB", "NoSQL"],
+      ["WebSockets", "realtime"],
+    ],
   },
   {
-    title: "Developer Tools",
-    icon: FiTool,
-    skills: ["Figma", "Postman", "ESLint", "Husky", "Jest"],
+    title: "Platform",
+    skills: [
+      ["Supabase", "backend platform"],
+      ["Clerk", "identity"],
+      ["AWS", "cloud"],
+      ["Vercel", "deployment"],
+    ],
+  },
+  {
+    title: "Agentic AI",
+    skills: [
+      ["Generative AI", "applications"],
+      ["LLMs", "reasoning"],
+      ["LangChain", "orchestration"],
+      ["AI agents", "workflows"],
+      ["RAG", "grounded context"],
+    ],
   },
 ];

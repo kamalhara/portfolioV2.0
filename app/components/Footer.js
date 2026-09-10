@@ -1,13 +1,135 @@
+"use client";
+
 import Link from "next/link";
-import { FiArrowUpRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
+
+const farewells = [
+  { text: "see you", lang: "en" },
+  { text: "nos vemos", lang: "es" },
+  { text: "until next time", lang: "en" },
+  { text: "hasta pronto", lang: "es" },
+];
 
 export default function Footer() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % farewells.length);
+        setVisible(true);
+      }, 400);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const current = farewells[index];
+
   return (
-    <footer className="mx-auto max-w-[1040px] border-t border-paper-border px-6 pt-16 text-center sm:px-10 lg:px-12">
-      <div className="mb-8"><h2 className="select-none font-serif text-6xl font-normal italic tracking-tight sm:text-7xl md:text-8xl">see you</h2><p className="mt-2 font-mono text-[11px] tracking-wider text-ink-muted">またね &nbsp; Goodbye—see you soon.</p></div>
-      <p className="mb-6 font-mono text-[11px] uppercase tracking-wide text-ink-muted">Kamalveer · © {new Date().getFullYear()} · Available for building things</p>
-      <nav className="mb-10 flex items-center justify-center gap-6 font-mono text-xs uppercase"><Link className="text-ink-muted hover:text-ink-text" href="/#work">Work</Link><Link className="text-ink-muted hover:text-ink-text" href="/#experience">Experience</Link><Link className="text-ink-muted hover:text-ink-text" href="/#about">About</Link><a className="text-ink-muted hover:text-ink-text" href="https://github.com/kamalhara" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
-      <div className="flex flex-col justify-between gap-4 border-t border-paper-border py-6 font-mono text-[11px] text-ink-muted sm:flex-row sm:items-center"><div className="flex flex-wrap gap-6"><a className="hover:text-ink-text" href="mailto:kamalhara7@gmail.com">hello@kamalveer</a><a className="inline-flex items-center gap-1 hover:text-ink-text" href="https://github.com/kamalhara" target="_blank" rel="noopener noreferrer">GitHub <FiArrowUpRight /></a><a className="inline-flex items-center gap-1 hover:text-ink-text" href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/" target="_blank" rel="noopener noreferrer">LinkedIn <FiArrowUpRight /></a></div><a className="hover:text-ink-text" href="#main">Back to top ↑</a></div>
+    <footer className="border-t border-paper-border bg-bg-cream px-6 pb-10 pt-20 md:px-10 md:pt-28">
+      <div className="mx-auto max-w-350 text-center">
+        {/* Rotating farewell */}
+        <div className="flex h-[1.25em] items-center justify-center text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-tight">
+          <span
+            lang={current.lang}
+            className="font-serif italic transition-all duration-400 ease-out"
+            style={{
+              opacity: visible ? 1 : 0,
+              filter: visible ? "blur(0px)" : "blur(6px)",
+              transform: visible ? "translateY(0)" : "translateY(6px)",
+            }}
+          >
+            {current.text}
+          </span>
+        </div>
+
+        {/* Copyright */}
+        <p className="mt-8 font-mono text-[10.5px] uppercase tracking-widest text-ink-faint">
+          Kamalveer · © {new Date().getFullYear()} · Available for building
+          things
+        </p>
+
+        {/* Navigation */}
+        <nav aria-label="Footer" className="mt-6">
+          <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
+            {[
+              ["Work", "/#work"],
+              ["Experience", "/#experience"],
+              ["About", "/#about"],
+            ].map(([label, href]) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="group relative py-1 font-mono text-[11px] uppercase tracking-widest text-ink-muted no-underline transition-colors duration-200 hover:text-ink-text"
+                >
+                  {label}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-accent-orange transition-transform duration-200 ease-out group-hover:scale-x-100"
+                  />
+                </Link>
+              </li>
+            ))}
+            <li>
+              <a
+                href="https://github.com/kamalhara"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative py-1 font-mono text-[11px] uppercase tracking-widest text-ink-muted no-underline transition-colors duration-200 hover:text-ink-text"
+              >
+                GitHub
+                <span aria-hidden="true" className="ml-1">
+                  ↗
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-accent-orange transition-transform duration-200 ease-out group-hover:scale-x-100"
+                />
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Bottom links */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-paper-border pt-6">
+          <a
+            href="mailto:kamalhara7@gmail.com"
+            className="font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
+          >
+            hello@kamalveer
+          </a>
+          <a
+            href="https://github.com/kamalhara"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
+          >
+            GitHub
+            <span aria-hidden="true" className="ml-1">
+              ↗
+            </span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
+          >
+            LinkedIn
+            <span aria-hidden="true" className="ml-1">
+              ↗
+            </span>
+          </a>
+          <a
+            href="#main"
+            className="font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
+          >
+            Back to top ↑
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }

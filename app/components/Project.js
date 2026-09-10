@@ -1,24 +1,92 @@
 import Link from "next/link";
 import { mainProjects } from "../data/project";
+import Heading from "../ui/Heading";
 
 export default function Project() {
   return (
     <section id="work" aria-labelledby="work-title" className="mb-28 pt-8">
-      <div className="mb-4 flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted"><h2 id="work-title" className="font-normal">01 Selected work</h2><span>{String(mainProjects.length).padStart(2, "0")} featured</span></div>
-      <ol className="divide-y divide-paper-border border-b border-paper-border">
+      <Heading
+        label1="01 Selected work"
+        label2={`0${mainProjects.length} featured`}
+        border_y={false}
+      />
+      <ul className="mt-12">
         {mainProjects.map((project, index) => (
-          <li key={project.slug}>
-            <Link href={`/project/${project.slug}`} className="group block px-2 py-7 transition-colors duration-150 hover:bg-[#f0eee8]">
-              <div className="flex flex-col justify-between gap-2 md:flex-row md:items-baseline">
-                <div className="flex items-baseline gap-4"><span className="font-mono text-xs text-ink-faint">{String(index + 1).padStart(2, "0")}</span><div><span className="text-2xl font-semibold tracking-tight underline-offset-8 group-hover:underline sm:text-3xl">{project.title}</span><span className="ml-1 inline-block font-mono text-xl text-ink-muted transition-transform group-hover:translate-x-1">→</span><p className="mt-1 max-w-xl font-serif text-base leading-snug italic text-ink-muted sm:text-lg">{project.description}</p></div></div>
-                <div className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[11px] text-ink-muted md:mt-0 md:max-w-[42%] md:text-right"><span className="inline-flex items-start gap-1.5"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-orange" />{project.technologies}</span></div>
-              </div>
+          <li
+            key={project.slug}
+            className="border-t-[1.5px] border-paper-border last:border-b-[1.5px]"
+          >
+            <Link
+              href={`/project/${project.slug}`}
+              className="group grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-1 py-9 no-underline outline-offset-8 transition-colors md:grid-cols-[3.5rem_1fr_1fr_6rem] md:gap-x-8 md:py-11"
+            >
+              <span
+                aria-hidden="true"
+                className="font-mono text-[12px] text-ink-muted transition-transform duration-300 ease-out group-hover:-translate-x-1.5 group-hover:text-accent-orange"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <span className="col-start-2">
+                <span className="block text-[clamp(1.9rem,4.6vw,2.5rem)] font-medium leading-[1.05] tracking-tight text-ink-text transition-transform duration-300 ease-out group-hover:translate-x-2">
+                  {project.title}
+                  <span
+                    aria-hidden="true"
+                    className="ml-3 inline-block font-serif text-[0.7em] italic text-ink-muted opacity-60 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-accent-orange group-hover:opacity-100"
+                  >
+                    →
+                  </span>
+                </span>
+                <span className="mt-2 block max-w-[52ch] font-serif text-[15px] italic leading-relaxed text-ink-muted transition-colors duration-300 group-hover:text-ink-text md:text-[17px]">
+                  {project.description}
+                </span>
+              </span>
+
+              <span className="col-start-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-ink-muted opacity-70 transition-all duration-300 group-hover:text-ink-text group-hover:opacity-100 md:col-start-3 md:justify-self-start md:pt-2.5">
+                <span
+                  aria-hidden="true"
+                  className={index === 0 ? "text-accent-orange" : ""}
+                >
+                  {index === 0 ? "●" : "○"}
+                </span>
+                {project.technologies}
+              </span>
+
+              <span className="col-start-2 hidden text-right font-mono text-[11px] text-ink-muted md:col-start-4 md:justify-self-end md:pt-2.5 group-hover:text-ink-text">
+                2024
+                {index === 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="mt-1 block text-[9px] uppercase tracking-widest text-ink-muted opacity-60 transition-colors duration-300 group-hover:text-accent-orange group-hover:opacity-100"
+                  >
+                    Featured
+                  </span>
+                )}
+              </span>
             </Link>
           </li>
         ))}
-      </ol>
-      <p className="mt-5 mb-8 font-serif text-sm italic text-ink-muted">Each project opens as an engineering dossier—the problem, the decisions, the architecture, and what held up in practice.</p>
-      <Link href="/project" className="group block border border-paper-border p-6 transition-colors hover:bg-[#efece5] sm:p-7"><span className="flex items-center justify-between"><strong className="text-xl tracking-tight sm:text-2xl">Explore all projects</strong><span className="font-mono text-xl text-ink-muted transition-all group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent-orange">↗</span></span></Link>
+      </ul>
+      <p className="mt-8 max-w-[52ch] font-serif text-[15px] italic leading-relaxed text-ink-muted">
+        Each project opens as an engineering dossier — the problem, the
+        decisions, the architecture, and what broke along the way.
+      </p>
+      <div>
+        <Link
+          href="/project"
+          className="group mt-12 flex items-center justify-between gap-6 border-[1.5px] border-paper-border px-6 py-6 no-underline transition-all duration-300 ease-out hover:border-ink-text hover:bg-ink-text md:px-10 md:py-8"
+        >
+          <span className="text-[clamp(1.25rem,2.8vw,2.1rem)] font-medium leading-none tracking-tight text-ink-text transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:text-bg-cream">
+            Explore all projects
+          </span>
+          <span
+            aria-hidden="true"
+            className="shrink-0 font-serif text-[clamp(1.5rem,3vw,2.4rem)] italic leading-none text-accent-orange transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-1"
+          >
+            ↗
+          </span>
+        </Link>
+      </div>
     </section>
   );
 }

@@ -18,6 +18,13 @@ export const projects = [
       "Camera and gallery media sharing through a signed Cloudinary upload pipeline",
       "Push notifications, analytics, crash reporting, moderation, and automated expired-room cleanup",
     ],
+    screenshot: [
+      "spotus/welcome.png",
+      "spotus/map.png",
+      "spotus/discovery.png",
+      "spotus/room-chat.png",
+      "spotus/profile.png",
+    ],
     cover: null,
     tone: "orange",
     type: "Mobile Product",
@@ -49,7 +56,7 @@ export const projects = [
       "ryde/book.webp",
       "ryde/confirm.webp",
     ],
-    cover: "/ryde/home.webp",
+
     tone: "blue",
     type: "Mobile App",
     code: "https://github.com/kamalhara/ryde",
@@ -80,32 +87,6 @@ export const projects = [
     code: "https://github.com/kamalhara/productify",
     live: "https://productify-pied.vercel.app/",
   },
-  {
-    title: "The Wild Oasis - Owner Dashboard",
-    slug: "the-wild-oasis-staff",
-    frontEnd: "Next.js, Supabase, Tailwind CSS",
-    backEnd: "Supabase,",
-    description:
-      "An operations dashboard for hotel staff to manage cabins and bookings while keeping occupancy and sales in view.",
-    technologies: "Next.js · Supabase · Tailwind CSS",
-    overview:
-      "This staff-facing dashboard turns day-to-day hotel operations into a clear set of workflows. The team can update cabins and bookings, check occupancy, and review sales without jumping between separate tools.",
-    keyFeatures: [
-      "Dashboard for managing cabins, guests, and bookings",
-      "Sales performance monitoring with charts and reports",
-      "Occupancy visualization and analytics",
-      "Role-based access control for staff and owners",
-      "Real-time data updates with Supabase subscriptions",
-      "User-friendly interface with Tailwind CSS styling",
-      "Secure authentication and data management",
-    ],
-    img: "/wild-oasis-staff.webp",
-    cover: "/wild-oasis-staff.webp",
-    tone: "green",
-    type: "Web App",
-    code: "https://github.com/kamalhara/the-wild-oasis-staff",
-    live: "https://the-wild-oasis-staff-mauve.vercel.app/",
-  },
 
   {
     title: "Natours Backend API",
@@ -131,6 +112,32 @@ export const projects = [
     type: "Backend API",
     slug: "natours-backend-api",
     code: "https://github.com/kamalhara/natours-api",
+  },
+  {
+    title: "The Wild Oasis - Owner Dashboard",
+    slug: "the-wild-oasis-staff",
+    frontEnd: "Next.js, Supabase, Tailwind CSS",
+    backEnd: "Supabase,",
+    description:
+      "An operations dashboard for hotel staff to manage cabins and bookings while keeping occupancy and sales in view.",
+    technologies: "Next.js · Supabase · Tailwind CSS",
+    overview:
+      "This staff-facing dashboard turns day-to-day hotel operations into a clear set of workflows. The team can update cabins and bookings, check occupancy, and review sales without jumping between separate tools.",
+    keyFeatures: [
+      "Dashboard for managing cabins, guests, and bookings",
+      "Sales performance monitoring with charts and reports",
+      "Occupancy visualization and analytics",
+      "Role-based access control for staff and owners",
+      "Real-time data updates with Supabase subscriptions",
+      "User-friendly interface with Tailwind CSS styling",
+      "Secure authentication and data management",
+    ],
+    img: "/wild-oasis-staff.webp",
+    cover: "/wild-oasis-staff.webp",
+    tone: "green",
+    type: "Web App",
+    code: "https://github.com/kamalhara/the-wild-oasis-staff",
+    live: "https://the-wild-oasis-staff-mauve.vercel.app/",
   },
   {
     title: "Dine time app",
