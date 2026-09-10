@@ -13,6 +13,7 @@ import { useState } from "react";
 import { mainProjects } from "../data/project";
 import Heading from "../ui/Heading";
 import IPhoneFrame from "../ui/IPhoneFrame";
+import { FiArrowUpRight } from "react-icons/fi";
 
 export default function Project() {
   const [activeProject, setActiveProject] = useState(null);
@@ -225,7 +226,7 @@ export default function Project() {
             aria-hidden="true"
             className="shrink-0 font-serif text-[clamp(1.5rem,3vw,2.4rem)] italic leading-none text-accent-orange transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-1"
           >
-            ↗
+            <FiArrowUpRight />
           </span>
         </Link>
       </div>

@@ -1,13 +1,21 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const storageKey = "kamalveer-portfolio-welcome-session-v1";
 
 export default function WelcomeLoader() {
   const [isVisible, setIsVisible] = useState(true);
   const shouldReduceMotion = useReducedMotion();
+  const previousOverflowRef = useRef(null);
+
+  const restoreBodyScroll = () => {
+    if (previousOverflowRef.current === null) return;
+
+    document.body.style.overflow = previousOverflowRef.current;
+    previousOverflowRef.current = null;
+  };
 
   useEffect(() => {
     let hasVisited = false;
@@ -23,7 +31,7 @@ export default function WelcomeLoader() {
       return () => window.clearTimeout(hideTimer);
     }
 
-    const previousOverflow = document.body.style.overflow;
+    previousOverflowRef.current = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const seenTimer = window.setTimeout(() => {
       try {
@@ -43,11 +51,13 @@ export default function WelcomeLoader() {
     return () => {
       window.clearTimeout(seenTimer);
       window.clearTimeout(timer);
-      document.body.style.overflow = previousOverflow;
+      restoreBodyScroll();
     };
   }, []);
 
   const finishWelcome = () => {
+    restoreBodyScroll();
+
     try {
       window.sessionStorage.setItem(storageKey, "seen");
     } catch {
