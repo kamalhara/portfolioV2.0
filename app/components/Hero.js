@@ -6,7 +6,7 @@ export default function Hero() {
     <section
       id="start"
       aria-label="Introduction"
-      className="relative pb-8 pt-4 md:pb-10 md:pt-10 mt-6 mb-25"
+      className="relative mt-3 mb-16 pt-4 pb-8 sm:mt-6 sm:mb-20 md:pt-10 md:pb-10 lg:mb-25"
     >
       <div
         aria-hidden="true"
@@ -21,7 +21,7 @@ export default function Hero() {
       <h1 className="sr-only">Kamalveer — full-stack and mobile engineer.</h1>
 
       <div className="">
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-y-[1.5px] border-paper-border py-4">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-y-[1.5px] border-paper-border py-4 sm:gap-x-8">
           <div className="flex items-center gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-sm bg-ink-text font-mono text-[12px] font-bold text-bg-cream">
               KS
@@ -38,7 +38,7 @@ export default function Hero() {
           <div className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">
             Web / Mobile / Backend
           </div>
-          <div className="ml-auto flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+          <div className="flex w-full items-center gap-2.5 border-t border-paper-border/70 pt-3 font-mono text-[11px] uppercase tracking-widest text-ink-muted sm:ml-auto sm:w-auto sm:border-0 sm:pt-0">
             <span className="relative flex h-1.5 w-1.5">
               <span
                 aria-hidden="true"
@@ -79,7 +79,7 @@ export default function Hero() {
       </div>
 
       <div className="">
-        <dl className="grid grid-cols-1 gap-x-10 gap-y-5 border-t-[1.5px] border-paper-border pt-6 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="grid grid-cols-1 gap-x-10 gap-y-5 border-t-[1.5px] border-paper-border pt-6 min-[480px]:grid-cols-2 lg:grid-cols-4">
           {[
             ["Focus", "Systems architecture · Mobile · APIs"],
             ["Exploring", "Agentic AI"],

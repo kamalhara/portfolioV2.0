@@ -23,6 +23,7 @@ html {
 }
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--color-bg-cream);
   color: var(--color-ink-text);
   font-family: var(--font-sans);
@@ -36,6 +37,8 @@ a {
   color: inherit;
 }
 img {
+  display: block;
+  max-width: 100%;
   color: transparent;
 }
 [id] {

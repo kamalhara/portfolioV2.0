@@ -2,7 +2,11 @@ import Heading from "../ui/Heading";
 
 export default function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="mb-28 pt-8">
+    <section
+      id="about"
+      aria-labelledby="about-title"
+      className="mb-20 pt-8 sm:mb-28"
+    >
       <Heading label1={"03 About"} label2={"the person behind the index"} />
 
       <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-10">
@@ -11,7 +15,7 @@ export default function About() {
             <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
               About
             </p>
-            <p className="mt-4 max-w-[24ch] text-4xl font-medium leading-snug tracking-tight text-ink-text">
+            <p className="mt-4 max-w-[24ch] text-[clamp(2rem,8vw,2.5rem)] font-medium leading-snug tracking-tight text-ink-text">
               I care about the point where software meets real life.
             </p>
           </div>
@@ -37,7 +41,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="mt-14 grid gap-10 sm:grid-cols-2 md:grid-cols-12 md:gap-10">
+      <div className="mt-12 grid gap-10 min-[520px]:grid-cols-2 md:mt-14 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-2 md:col-start-7">
           <h3 className="font-mono text-[11px] uppercase tracking-widest text-ink-muted">
             Working deeply in

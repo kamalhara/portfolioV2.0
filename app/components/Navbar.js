@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion, useScroll, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
 
 const links = [
@@ -11,6 +12,12 @@ const links = [
 
 export default function Navbar() {
   const [time, setTime] = useState("");
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.35,
+  });
 
   useEffect(() => {
     const update = () =>
@@ -28,10 +35,10 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b-[1.5px] border-paper-border bg-bg-cream/90 backdrop-blur-xl py-1">
+    <header className="sticky top-0 z-50 border-b-[1.5px] border-paper-border bg-bg-cream/90 py-1 backdrop-blur-xl">
       <nav
         aria-label="Primary navigation"
-        className="mx-16 grid h-14  grid-cols-[1fr_auto] items-center px-4  sm:grid-cols-[1fr_auto_1fr] sm:px-6"
+        className="mx-auto grid h-14 max-w-400 grid-cols-[auto_1fr] items-center gap-3 px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-8 lg:px-12"
       >
         <Link
           href="/"
@@ -40,7 +47,7 @@ export default function Navbar() {
           <span className="grid h-8 w-8 place-items-center rounded-sm bg-ink-text text-[10px] font-bold text-bg-cream">
             KS
           </span>
-          <span>
+          <span className="max-[360px]:hidden">
             <strong className="block text-[14px] font-semibold">
               Kamalveer
             </strong>
@@ -53,7 +60,7 @@ export default function Navbar() {
           <span className="mr-2 h-1.5 w-1.5  rounded-full bg-accent-orange" />
           GMT+5:30&nbsp; {time || "--:--:--"}
         </p>
-        <ul className="flex justify-self-end gap-4 font-mono text-[12px] text-ink-muted sm:gap-6 uppercase tracking-widest ">
+        <ul className="flex justify-self-end gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-muted sm:gap-6 sm:text-[12px]">
           {links.map(([label, href], index) => (
             <li key={href} className={index === 1 ? "hidden md:block" : ""}>
               <Link
@@ -81,6 +88,11 @@ export default function Navbar() {
           </li>
         </ul>
       </nav>
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 -bottom-[1.5px] h-[1.5px] origin-left bg-accent-orange"
+        style={{ scaleX: progress }}
+      />
     </header>
   );
 }

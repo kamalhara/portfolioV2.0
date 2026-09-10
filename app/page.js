@@ -6,6 +6,7 @@ import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Professional from "./components/Professional";
 import Project from "./components/Project";
+import ScrollReveal from "./components/ScrollReveal";
 
 export default function Home() {
   return (
@@ -14,13 +15,23 @@ export default function Home() {
       <ChapterRail />
       <main
         id="main"
-        className="mx-auto  px-6 pt-8 pb-24 sm:px-10 lg:px-12 xl:mx-0 xl:ml-56"
+        className="mx-auto max-w-360 px-4 pt-6 pb-20 sm:px-8 sm:pt-8 sm:pb-24 lg:px-12 xl:mr-auto xl:ml-56"
       >
-        <Hero />
-        <Project />
-        <Professional />
-        <About />
-        <Activities />
+        <ScrollReveal>
+          <Hero />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Project />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Professional />
+        </ScrollReveal>
+        <ScrollReveal>
+          <About />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Activities />
+        </ScrollReveal>
       </main>
       <Footer />
     </>

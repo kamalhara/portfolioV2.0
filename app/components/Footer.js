@@ -28,10 +28,10 @@ export default function Footer() {
   const current = farewells[index];
 
   return (
-    <footer className="border-t border-paper-border bg-bg-cream px-6 pb-10 pt-20 md:px-10 md:pt-28">
+    <footer className="border-t border-paper-border bg-bg-cream px-4 pt-16 pb-10 sm:px-8 md:px-10 md:pt-28">
       <div className="mx-auto max-w-350 text-center">
         {/* Rotating farewell */}
-        <div className="flex h-[1.25em] items-center justify-center text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-tight">
+        <div className="flex h-[1.25em] items-center justify-center text-[clamp(2.25rem,11vw,4.5rem)] leading-none tracking-tight">
           <span
             lang={current.lang}
             className="font-serif italic transition-all duration-400 ease-out"

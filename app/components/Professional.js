@@ -8,13 +8,13 @@ export default function Professional() {
     <section
       id="experience"
       aria-labelledby="experience-title"
-      className="mb-28 pt-8"
+      className="mb-20 pt-8 sm:mb-28"
     >
       <Heading label1={"02 Experience"} label2={"work in production"} />
       {experiences.map((experience) => (
         <article
           key={`${experience.company}-${experience.role}`}
-          className="grid gap-8 md:grid-cols-12 mb-16 mt-10"
+          className="group/experience mb-12 mt-8 grid gap-8 border-b border-paper-border pb-12 transition-colors duration-300 sm:mb-16 sm:mt-10 md:grid-cols-12 md:border-b-0 md:pb-0"
         >
           <div className="space-y-4 md:col-span-5">
             <div className="flex items-center gap-4">
@@ -23,7 +23,7 @@ export default function Professional() {
                 alt={experience.company}
                 width={48}
                 height={48}
-                className=" border border-paper-border object-cover bg-white"
+                className="border border-paper-border bg-white object-cover transition-transform duration-300 ease-out group-hover/experience:-rotate-2 group-hover/experience:scale-105"
               />
               <div>
                 <Link
@@ -50,7 +50,10 @@ export default function Professional() {
               className="flex flex-wrap gap-x-3 gap-y-2 border-t border-paper-border pt-4 font-mono text-[11px]"
             >
               {experience.skills.map((skill, index) => (
-                <li key={skill} className=" px-3 py-1 ">
+                <li
+                  key={skill}
+                  className="border border-transparent px-3 py-1 transition-colors duration-200 hover:border-paper-border-dark hover:bg-bg-cream-light hover:text-ink-text"
+                >
                   {skill}
                 </li>
               ))}
