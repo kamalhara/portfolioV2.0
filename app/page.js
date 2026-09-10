@@ -12,7 +12,10 @@ export default function Home() {
     <>
       <Navbar />
       <ChapterRail />
-      <main id="main" className="indexed-main">
+      <main
+        id="main"
+        className="mx-auto max-w-[1040px] px-6 pt-8 pb-24 sm:px-10 lg:px-12"
+      >
         <Hero />
         <Project />
         <Professional />

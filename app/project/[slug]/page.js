@@ -6,80 +6,26 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowLeft, FiArrowUpRight, FiGithub } from "react-icons/fi";
 
-export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
-}
-
+export function generateStaticParams() { return projects.map((project) => ({ slug: project.slug })); }
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) return { title: "Project not found" };
   const images = project.cover ? [{ url: project.cover, alt: `${project.title} interface preview` }] : [];
-  return {
-    title: project.title,
-    description: project.description,
-    alternates: { canonical: `/project/${project.slug}` },
-    openGraph: { title: `${project.title} — Kamalveer Singh`, description: project.description, url: `/project/${project.slug}`, images },
-    twitter: { card: images.length ? "summary_large_image" : "summary", title: `${project.title} — Kamalveer Singh`, description: project.description, images },
-  };
+  return { title: project.title, description: project.description, alternates: { canonical: `/project/${project.slug}` }, openGraph: { title: `${project.title} — Kamalveer Singh`, description: project.description, url: `/project/${project.slug}`, images }, twitter: { card: images.length ? "summary_large_image" : "summary", title: `${project.title} — Kamalveer Singh`, description: project.description, images } };
 }
 
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) notFound();
-
   return (
-    <>
-      <Navbar />
-      <main id="main" className="standalone-main case-page">
-        <article>
-          <header className="case-hero">
-            <div className="chapter-heading"><h2>Engineering dossier</h2><p>{project.type}</p></div>
-            <nav aria-label="Breadcrumb" className="case-breadcrumb"><Link href="/">Index</Link><span>/</span><Link href="/project">Work</Link><span>/</span><span>{project.title}</span></nav>
-            <div className="case-title-row">
-              <div><p className="micro-label">Selected project</p><h1>{project.title}</h1><em>{project.description}</em></div>
-              <div className="case-actions">
-                <a href={project.code} target="_blank" rel="noopener noreferrer"><FiGithub aria-hidden="true" /> Source</a>
-                {project.live && <a href={project.live} target="_blank" rel="noopener noreferrer">Live site <FiArrowUpRight aria-hidden="true" /></a>}
-              </div>
-            </div>
-          </header>
-
-          {project.cover ? (
-            <div className="case-cover"><Image src={project.cover} alt={`${project.title} interface preview`} fill priority sizes="(max-width: 1050px) 100vw, 960px" className="object-cover object-top" /></div>
-          ) : project.slug === "spotus" ? (
-            <div className="spotus-case-visual">
-              <Image src="/spotus-mark.svg" alt="Spotus mark" width={150} height={138} />
-              <div><span>Nearby discovery</span><i>→</i><span>Live rooms</span><i>→</i><span>Request-based DMs</span></div>
-              <p>Location becomes context—not identity.</p>
-            </div>
-          ) : null}
-
-          <div className="case-body">
-            <aside>
-              <dl>
-                {project.frontEnd && <div><dt>Interface</dt><dd>{project.frontEnd}</dd></div>}
-                {project.backEnd && <div><dt>System</dt><dd>{project.backEnd}</dd></div>}
-                <div><dt>Stack</dt><dd>{project.technologies}</dd></div>
-              </dl>
-            </aside>
-            <div className="case-story">
-              <section><p className="micro-label">01 / Context</p><h2>What it does</h2><p>{project.overview}</p></section>
-              <section><p className="micro-label">02 / Product surface</p><h2>Core features</h2><ol>{project.keyFeatures.map((feature, index) => <li key={feature}><span>{String(index + 1).padStart(2, "0")}</span>{feature}</li>)}</ol></section>
-            </div>
-          </div>
-
-          {project.screenshot && (
-            <section className="case-screens" aria-labelledby="screens-title">
-              <div className="chapter-heading"><h2 id="screens-title">Interface</h2><p>{String(project.screenshot.length).padStart(2, "0")} screens</p></div>
-              <div>{project.screenshot.map((src, index) => <figure key={src}><Image src={`/${src}`} alt={`${project.title} screen ${index + 1}`} fill sizes="(max-width: 700px) 50vw, 220px" className="object-cover object-top" /></figure>)}</div>
-            </section>
-          )}
-          <Link href="/project" className="case-back"><FiArrowLeft aria-hidden="true" /> Back to project index</Link>
-        </article>
-      </main>
-      <Footer />
-    </>
+    <><Navbar /><main id="main" className="mx-auto max-w-[1040px] px-6 pt-12 pb-24 sm:px-10 lg:px-12"><article>
+      <header><div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted"><h2 className="font-normal">Engineering dossier</h2><p>{project.type}</p></div><nav aria-label="Breadcrumb" className="mt-4 flex gap-2 font-mono text-[10px] uppercase text-ink-faint"><Link href="/">Index</Link><span>/</span><Link href="/project">Work</Link><span>/</span><span>{project.title}</span></nav><div className="grid grid-cols-1 gap-8 py-16 md:grid-cols-[1fr_auto] md:items-end"><div><p className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-faint">Selected project</p><h1 className="mb-5 text-6xl leading-[.82] font-medium tracking-[-.075em] sm:text-7xl md:text-9xl">{project.title}</h1><em className="block max-w-2xl font-serif text-lg leading-relaxed italic text-ink-muted">{project.description}</em></div><div className="flex gap-2"><a href={project.code} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 border border-ink-text bg-ink-text px-4 text-xs font-semibold text-bg-cream"><FiGithub /> Source</a>{project.live && <a href={project.live} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 border border-paper-border-dark px-4 text-xs font-semibold">Live site <FiArrowUpRight /></a>}</div></div></header>
+      {project.cover ? <div className="relative aspect-16/8 overflow-hidden border border-paper-border bg-bg-cream-light"><Image src={project.cover} alt={`${project.title} interface preview`} fill priority sizes="(max-width: 1050px) 100vw, 960px" className="object-cover object-top" /></div> : project.slug === "spotus" ? <div className="grid min-h-80 grid-cols-1 items-center gap-8 border border-[#302e2a] bg-ink-text p-10 text-bg-cream md:grid-cols-[auto_1fr] md:p-16"><Image src="/spotus-mark.svg" alt="Spotus mark" width={130} height={120} /><div className="flex flex-col items-start justify-between gap-4 font-mono text-[11px] uppercase md:flex-row md:items-center"><span>Nearby discovery</span><i className="text-xl not-italic text-accent-orange">→</i><span>Live rooms</span><i className="text-xl not-italic text-accent-orange">→</i><span>Request-based DMs</span></div><p className="font-serif italic text-ink-faint md:col-start-2">Location becomes context—not identity.</p></div> : null}
+      <div className="grid grid-cols-1 gap-12 py-20 md:grid-cols-[.72fr_1.3fr] md:gap-20"><aside><dl className="border-t border-paper-border">{project.frontEnd && <div className="border-b border-paper-border py-4"><dt className="font-mono text-[10px] uppercase text-ink-faint">Interface</dt><dd className="mt-2 text-xs leading-relaxed">{project.frontEnd}</dd></div>}{project.backEnd && <div className="border-b border-paper-border py-4"><dt className="font-mono text-[10px] uppercase text-ink-faint">System</dt><dd className="mt-2 text-xs leading-relaxed">{project.backEnd}</dd></div>}<div className="border-b border-paper-border py-4"><dt className="font-mono text-[10px] uppercase text-ink-faint">Stack</dt><dd className="mt-2 text-xs leading-relaxed">{project.technologies}</dd></div></dl></aside><div><section><p className="mb-4 font-mono text-[11px] uppercase text-ink-faint">01 / Context</p><h2 className="mb-5 text-3xl font-medium tracking-tight">What it does</h2><p className="text-sm leading-7 text-ink-muted">{project.overview}</p></section><section className="mt-16"><p className="mb-4 font-mono text-[11px] uppercase text-ink-faint">02 / Product surface</p><h2 className="mb-5 text-3xl font-medium tracking-tight">Core features</h2><ol className="border-t border-paper-border">{project.keyFeatures.map((feature, index) => <li key={feature} className="grid grid-cols-[2.75rem_1fr] border-b border-paper-border py-4 text-sm leading-relaxed"><span className="font-mono text-[10px] text-accent-orange">{String(index + 1).padStart(2, "0")}</span>{feature}</li>)}</ol></section></div></div>
+      {project.screenshot && <section aria-labelledby="screens-title" className="border-t border-paper-border py-16"><div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted"><h2 id="screens-title" className="font-normal">Interface</h2><p>{String(project.screenshot.length).padStart(2, "0")} screens</p></div><div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">{project.screenshot.map((src, index) => <figure key={src} className="relative aspect-9/17 overflow-hidden border border-paper-border bg-bg-cream-light"><Image src={`/${src}`} alt={`${project.title} screen ${index + 1}`} fill sizes="(max-width: 700px) 50vw, 220px" className="object-cover object-top" /></figure>)}</div></section>}
+      <Link href="/project" className="inline-flex items-center gap-2 border-b border-ink-text pb-1 text-xs font-semibold"><FiArrowLeft /> Back to project index</Link>
+    </article></main><Footer /></>
   );
 }

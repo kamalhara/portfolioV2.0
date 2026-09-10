@@ -1,4 +1,16 @@
 import "./globals.css";
+import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+  weight: "400",
+});
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -53,7 +65,10 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${inter.variable} ${instrument.variable} ${jetbrains.variable}`}
+    >
       <body>
         <script
           type="application/ld+json"
@@ -61,7 +76,7 @@ export default function RootLayout({ children }) {
         />
         <a
           href="#main"
-          className="fixed top-3 left-3 z-100 -translate-y-24 bg-ink px-4 py-3 text-sm font-semibold text-white focus:translate-y-0"
+          className="fixed top-3 left-3 z-100 -translate-y-24 bg-ink-text px-4 py-3 text-sm font-semibold text-white focus:translate-y-0"
         >
           Skip to content
         </a>
