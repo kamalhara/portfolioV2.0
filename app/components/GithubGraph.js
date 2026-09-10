@@ -1,104 +1,63 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { FiGithub } from "react-icons/fi";
+import { FiArrowUpRight, FiGithub } from "react-icons/fi";
 
 const GitHubCalendar = dynamic(
-  () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
+  () => import("react-github-calendar").then((module) => module.GitHubCalendar),
   { ssr: false },
 );
 
 export default function GithubGraph() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const explicitTheme = {
-    dark: ["#0C1117", "#0e4429", "#006d32", "#1f8742", "#2CB35A"],
-  };
-
   return (
-    <div
-      ref={sectionRef}
-      className="z-50 relative mb-20 px-6 flex flex-col items-center gap-8 max-w-5xl mx-auto w-full"
+    <section
+      aria-labelledby="github-title"
+      className="site-shell pb-20 md:pb-28"
     >
-      <div
-        className="flex flex-col items-center"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? "translateY(0)" : "translateY(24px)",
-          transition: "opacity 0.6s ease, transform 0.6s ease",
-        }}
-      >
-        <h1 className="text-3xl md:text-5xl font-semibold mb-3 md:mb-5 text-white">
-          GitHub <span className="text-[#2CB35A]">Contributions</span>
-        </h1>
-        <p className="text-gray-500 text-lg font-mono">
-          // Real-time code commits
-        </p>
-      </div>
-
-      <div
-        className="group relative flex flex-col items-center bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 font-mono transition-all duration-500 hover:border-[#2CB35A] overflow-hidden rounded-xl p-6 md:p-8 w-full"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? "translateY(0)" : "translateY(24px)",
-          transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
-        }}
-      >
-        {/* Terminal-style title bar */}
-        <div className="absolute top-0 left-0 w-full flex items-center gap-2 px-4 py-2.5 border-b border-gray-700 bg-[#0C1117]/60">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-          <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-          <span className="text-xs text-gray-500 ml-2">github_activity.js</span>
-        </div>
-
-        <div
-          suppressHydrationWarning
-          className="mt-8 w-full overflow-x-auto pb-4 pt-2 flex justify-center text-gray-300"
-        >
-          <GitHubCalendar
-            username="kamalhara"
-            year={new Date().getFullYear()}
-            colorScheme="dark"
-            theme={explicitTheme}
-            blockSize={14}
-            blockMargin={5}
-            fontSize={14}
-          />
-        </div>
-
-        <div className="mt-4 flex justify-center z-10">
-          <Link
-            href="https://github.com/kamalhara"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#2CB35A] transition-colors"
+      <div className="grid gap-8 border-t border-ink pt-8 md:grid-cols-12">
+        <div className="md:col-span-4">
+          <p className="section-label">04 / In public</p>
+          <h2
+            id="github-title"
+            className="mt-5 text-3xl font-semibold tracking-[-0.045em]"
           >
-            <FiGithub /> Follow me on GitHub
-          </Link>
+            The work between the launches.
+          </h2>
         </div>
+
+        <figure className="min-w-0 border border-line bg-sheet p-5 md:col-span-8 md:p-7">
+          <figcaption className="mb-6 flex items-center justify-between gap-4">
+            <span className="flex items-center gap-2 font-semibold">
+              <FiGithub aria-hidden="true" /> GitHub activity
+            </span>
+            <a
+              href="https://github.com/kamalhara"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link text-sm"
+              aria-label="View Kamalveer Singh on GitHub"
+            >
+              @kamalhara <FiArrowUpRight aria-hidden="true" />
+            </a>
+          </figcaption>
+          <div
+            className="overflow-x-auto pb-2 text-sm text-muted"
+            aria-label="Kamalveer Singh's GitHub contribution calendar"
+          >
+            <GitHubCalendar
+              username="kamalhara"
+              colorScheme="light"
+              theme={{
+                light: ["#ebe7de", "#b7c3f3", "#748be5", "#415fda", "#2447d7"],
+              }}
+              blockSize={12}
+              blockMargin={4}
+              blockRadius={0}
+              fontSize={13}
+            />
+          </div>
+        </figure>
       </div>
-    </div>
+    </section>
   );
 }

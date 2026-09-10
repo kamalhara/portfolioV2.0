@@ -41,18 +41,19 @@ export const skillCategories = [
   {
     title: "Databases & BaaS",
     icon: FiDatabase,
-    skills: [
-      "MongoDB",
-      "PostgreSQL",
-      "MySQL",
-      "Firebase",
-      "Supabase",
-    ],
+    skills: ["MongoDB", "PostgreSQL", "MySQL", "Firebase", "Supabase"],
   },
   {
     title: "APIs & Auth",
     icon: FiShield,
-    skills: ["REST APIs", "WebSockets", "JWT", "OAuth 2.0", "NextAuth.js", "Clerk"],
+    skills: [
+      "REST APIs",
+      "WebSockets",
+      "JWT",
+      "OAuth 2.0",
+      "NextAuth.js",
+      "Clerk",
+    ],
   },
   {
     title: "DevOps & Cloud",

@@ -2,136 +2,80 @@
 
 import { useEffect, useRef } from "react";
 
-const CELL_SIZE = 14;
-const GAP = 3;
-const STEP = CELL_SIZE + GAP;
-const RADIUS = 2;
+const STEP = 28;
 
-const Grid = () => {
+export default function GridBackground() {
   const canvasRef = useRef(null);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
-  const animFrameRef = useRef(0);
-  const heightsRef = useRef(new Float32Array(0));
-  const colsRef = useRef(0);
-  const rowsRef = useRef(0);
-  const timeRef = useRef(0);
+  const frameRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    let pointer = { x: -1000, y: -1000 };
+
+    const draw = () => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      context.clearRect(0, 0, width, height);
+
+      for (let x = 0; x <= width; x += STEP) {
+        for (let y = 0; y <= height; y += STEP) {
+          const distance = Math.hypot(x - pointer.x, y - pointer.y);
+          const active = distance < 110;
+          context.fillStyle = active ? "#2447d7" : "#c8c5bc";
+          context.globalAlpha = active ? 0.65 : 0.42;
+          context.fillRect(x, y, active ? 4 : 2, active ? 4 : 2);
+        }
+      }
+
+      context.globalAlpha = 1;
+      frameRef.current = 0;
+    };
+
+    const scheduleDraw = () => {
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(draw);
+    };
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = canvas.getBoundingClientRect();
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      scheduleDraw();
+    };
 
-      colsRef.current = Math.ceil(w / STEP) + 2;
-      rowsRef.current = Math.ceil(h / STEP) + 2;
-      heightsRef.current = new Float32Array(colsRef.current * rowsRef.current);
+    const move = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      scheduleDraw();
+    };
+
+    const leave = () => {
+      pointer = { x: -1000, y: -1000 };
+      scheduleDraw();
     };
 
     resize();
     window.addEventListener("resize", resize);
-
-    const handleMouse = (e) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
-    window.addEventListener("mousemove", handleMouse);
-
-    const animate = () => {
-      timeRef.current += 0.012;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const cols = colsRef.current;
-      const rows = rowsRef.current;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-      const heights = heightsRef.current;
-
-      ctx.clearRect(0, 0, w, h);
-
-      const gridW = cols * STEP;
-      const gridH = rows * STEP;
-      const ox = (w - gridW) / 2 + GAP;
-      const oy = (h - gridH) / 2 + GAP;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const idx = r * cols + c;
-          const cx = ox + c * STEP;
-          const cy = oy + r * STEP;
-
-          const dx = cx + CELL_SIZE / 2 - mx;
-          const dy = cy + CELL_SIZE / 2 - my;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          const mouseRadius = 120;
-          const mouseInfluence = Math.max(0, 1 - dist / mouseRadius);
-
-          const target = mouseInfluence * mouseInfluence;
-          heights[idx] += (target - heights[idx]) * 0.15;
-
-          const level = heights[idx];
-
-          let hue, sat, light;
-          if (level < 0.05) {
-            hue = 213;
-            sat = 22;
-            light = 10;
-          } else if (level < 0.2) {
-            hue = 140;
-            sat = 45;
-            light = 18;
-          } else if (level < 0.45) {
-            hue = 140;
-            sat = 50;
-            light = 28;
-          } else if (level < 0.7) {
-            hue = 138;
-            sat = 55;
-            light = 38;
-          } else {
-            hue = 135;
-            sat = 60;
-            light = 48;
-          }
-
-          ctx.fillStyle = `hsl(${hue}, ${sat}%, ${light}%)`;
-          if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(cx, cy, CELL_SIZE, CELL_SIZE, RADIUS);
-            ctx.fill();
-          } else {
-            ctx.fillRect(cx, cy, CELL_SIZE, CELL_SIZE);
-          }
-        }
-      }
-
-      animFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerleave", leave);
 
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouse);
-      cancelAnimationFrame(animFrameRef.current);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("pointerleave", leave);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
-      style={{ background: "#0C1117" }}
+      aria-hidden="true"
+      className="absolute inset-0 h-full w-full"
     />
   );
-};
-
-export default Grid;
+}

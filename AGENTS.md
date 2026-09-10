@@ -9,6 +9,7 @@ This repository is a Next.js 16 portfolio using the App Router. Routes live in `
 - `npm install` installs the locked dependencies from `package-lock.json`.
 - `npm run dev` starts the local development server at `http://localhost:3000`.
 - `npm run lint` runs ESLint with the Next.js Core Web Vitals rules.
+- `npm test` runs the data-integrity checks with Node's built-in test runner.
 - `npm run build` creates a production build and catches route or rendering failures.
 - `npm start` serves the completed production build.
 
@@ -20,7 +21,7 @@ Use JavaScript and JSX with two-space indentation, double quotes, semicolons, an
 
 ## Testing Guidelines
 
-No automated test framework or coverage threshold is currently configured. For every change, run `npm run lint` and `npm run build`, then manually check affected routes at mobile and desktop widths. Verify navigation, animations, external links, project slugs, and image loading. If tests are introduced, colocate them as `*.test.js` or place them in a clearly named `tests/` directory, and add the corresponding npm script.
+Tests use Node's built-in test runner and live in `tests/` as `*.test.mjs`. Current checks protect project slug uniqueness, required route data, and optimized image references. Run `npm test` for every data or routing change. Also run `npm run lint` and `npm run build`, then manually check affected routes at mobile and desktop widths.
 
 ## Commit & Pull Request Guidelines
 

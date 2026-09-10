@@ -1,193 +1,57 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import TerminalDec from "./TerminalDec";
 import Link from "next/link";
-import { FiFile, FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { FiArrowDownRight, FiArrowUpRight, FiDownload } from "react-icons/fi";
+import GridBackground from "./GridBackground";
 
-function Hero() {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const bioText =
-    "Hello! My name is Kamalveer Singh. I develop web and mobile applications using JavaScript, React, Next.js, React Native, Expo, Node.js, Express, and cloud services like Firebase and AWS.";
-  const [displayedText, setDisplayedText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  const [typingDone, setTypingDone] = useState(false);
-
-  useEffect(() => {
-    if (!visible) return;
-
-    const delay = setTimeout(() => {
-      let i = 0;
-      const interval = setInterval(() => {
-        setDisplayedText(bioText.slice(0, i + 1));
-        i++;
-        if (i >= bioText.length) {
-          clearInterval(interval);
-          setTypingDone(true);
-          setTimeout(() => setShowCursor(false), 2000);
-        }
-      }, 25);
-      return () => clearInterval(interval);
-    }, 600);
-
-    return () => clearTimeout(delay);
-  }, [visible]);
-
+export default function Hero() {
   return (
-    <main
-      ref={ref}
-      className="z-50 relative max-w-3xl w-full mx-auto md:ml-40 mt-16 md:mt-48 px-6 py-12 md:py-20 mb-16 md:mb-30"
+    <section
       id="about"
+      aria-labelledby="hero-title"
+      className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden border-b border-ink"
     >
-      <div
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateX(0)" : "translateX(-24px)",
-          transition: "opacity 0.5s ease, transform 0.5s ease",
-        }}
-      >
-        <TerminalDec />
-      </div>
-
-      <div>
-        {/* Status Badge */}
-        <div
-          className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 border border-[#2CB35A]/30 bg-[#2CB35A]/5 rounded-full font-mono text-xs"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.5s ease 0.05s, transform 0.5s ease 0.05s",
-          }}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2CB35A] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2CB35A]" />
-          </span>
-          <span className="text-[#2CB35A]">Available for work</span>
-        </div>
-
-        {/* Name */}
-        <h1
-          className="text-4xl md:text-7xl font-bold"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
-          }}
-        >
-          Kamalveer <span className="text-[#2CB35A]">Singh</span>
-        </h1>
-
-        {/* Subtitle */}
-        <div
-          className="flex flex-col md:flex-row gap-2 md:gap-4 text-gray-500 my-4 font-mono text-lg md:text-2xl"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
-          }}
-        >
-          <p>FULL-STACK DEVELOPER</p>
-          <span className="hidden md:inline">•</span>
-          <p>MOBILE APP DEVELOPER</p>
-        </div>
-
-        {/* Typing Bio */}
-        <div
-          className="bg-[#181E25]/60 border border-gray-700/50 rounded-md px-4 py-3"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-2 text-xs text-gray-500 font-mono">
-            <span className="w-2 h-2 rounded-full bg-red-500/70" />
-            <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-            <span className="w-2 h-2 rounded-full bg-green-500/70" />
-            <span className="ml-1">about.js</span>
-          </div>
-          <p className="text-gray-300 text-sm md:text-base font-mono leading-relaxed">
-            <span className="text-gray-500">{"// "}</span>
-            {displayedText}
-            {showCursor && (
-              <span
-                className={`inline-block ml-0.5 text-[#2CB35A] ${
-                  typingDone ? "animate-pulse" : ""
-                }`}
-              >
-                █
-              </span>
-            )}
+      <GridBackground />
+      <div className="site-shell relative grid min-h-[calc(100svh-4.5rem)] grid-cols-1 content-between py-8 md:grid-cols-12 md:py-12">
+        <div className="flex items-start justify-between md:col-span-12">
+          <p className="section-label">Kamalveer Singh</p>
+          <p className="hidden max-w-48 text-right font-mono text-xs leading-5 text-muted sm:block">
+            Web systems
+            <br />
+            Mobile products
           </p>
         </div>
 
-        {/* CTA Buttons */}
-        <div
-          className="flex flex-wrap mt-8 md:mt-10 gap-3 md:gap-4 transition-all duration-300"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s",
-          }}
-        >
-          <Link
-            href="https://github.com/kamalhara"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex border border-[#2CB35A] bg-[#2CB35A] text-gray-900 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:bg-[#24994D]"
-          >
-            <FiGithub className="transition-transform group-hover:rotate-12" />
-            GitHub
-          </Link>
+        <div className="relative z-10 py-12 md:col-span-10 md:py-16">
+          <h1 id="hero-title" className="display-title">
+            I build software people can rely on.
+          </h1>
+          <div className="mt-8 h-2 w-28 bg-orange" aria-hidden="true" />
+        </div>
 
-          <Link
-            href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
-          >
-            <FiLinkedin className="transition-transform group-hover:scale-110" />
-            LinkedIn
-          </Link>
+        <div className="relative z-10 grid gap-8 border-t border-ink pt-6 md:col-span-12 md:grid-cols-12">
+          <p className="body-copy max-w-2xl md:col-span-7">
+            I&apos;m a full-stack and mobile engineer working across React,
+            Next.js, React Native, and Node.js. I care about clear interfaces,
+            sound systems, and the details that make software feel finished.
+          </p>
 
-          <Link
-            href="mailto:kamalhara7@gmail.com"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
-          >
-            <FiMail className="transition-transform group-hover:scale-110" />
-            <span className="hidden sm:inline">Email</span>
-            <span className="sm:hidden">Email</span>
-          </Link>
-
-          <Link
-            href="/Kamalveer_Singh_Resume_.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex border border-gray-700 bg-[#181E25] text-gray-200 px-4 md:px-5 py-2.5 md:py-3 transition-all duration-300 justify-center items-center gap-2 text-base md:text-lg space-grostesk-semi-bold hover:border-[#2CB35A] hover:text-[#2CB35A] font-semibold"
-          >
-            <FiFile className="transition-transform group-hover:scale-110" />
-            Resume
-          </Link>
+          <div className="flex flex-wrap items-start gap-3 md:col-span-5 md:justify-end">
+            <Link href="#projects" className="button-primary">
+              See selected work <FiArrowDownRight aria-hidden="true" />
+            </Link>
+            <a
+              href="/kamalveer-singh-resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button-secondary"
+            >
+              Résumé <FiDownload aria-hidden="true" />
+            </a>
+            <a href="mailto:kamalhara7@gmail.com" className="button-secondary">
+              Email <FiArrowUpRight aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
-export default Hero;

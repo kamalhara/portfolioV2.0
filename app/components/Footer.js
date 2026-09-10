@@ -1,71 +1,55 @@
-import { FiGithub, FiLinkedin, FiMail, FiArrowUp } from "react-icons/fi";
-import Link from "next/link";
+import { FiArrowUp, FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 
 export default function Footer() {
   return (
-    <footer className="relative z-50 border-t border-gray-700/50 mt-10">
-      <div className="max-w-5xl mx-auto px-6 py-12 md:py-16">
-        {/* Top section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
-          <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-2">
-              Let&apos;s work <span className="text-[#2CB35A]">together</span>
-            </h3>
-            <p className="text-gray-500 font-mono text-sm">
-              // Open for freelance and full-time opportunities
+    <footer className="border-t border-ink bg-orange text-ink">
+      <div className="site-shell py-10 md:py-14">
+        <div className="grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em]">
+              Have a useful problem?
             </p>
+            <a
+              href="mailto:kamalhara7@gmail.com"
+              className="mt-4 inline-block max-w-4xl text-4xl font-semibold tracking-[-0.06em] underline decoration-2 underline-offset-8 sm:text-6xl md:text-7xl"
+            >
+              Tell me what you&apos;re building.
+            </a>
           </div>
-
-          <Link
-            href="mailto:kamalhara7@gmail.com"
-            className="group flex items-center gap-2 px-6 py-3 bg-[#2CB35A] text-[#0C1117] font-semibold transition-colors duration-300 hover:bg-[#24994D]"
-          >
-            <FiMail className="transition-transform group-hover:rotate-12" />
-            Get In Touch
-          </Link>
-        </div>
-
-        {/* Divider */}
-        <div className="h-px bg-gray-700 mb-8" />
-
-        {/* Bottom section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600 text-sm font-mono">
-            &copy; {new Date().getFullYear()} Kamalveer Singh. Built with
-            Next.js
-          </p>
-
-          <div className="flex items-center gap-4">
-            <Link
+          <div className="flex gap-5 md:col-span-4 md:justify-end">
+            <a
               href="https://github.com/kamalhara"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-[#2CB35A] transition-colors"
+              aria-label="GitHub profile"
+              className="flex h-11 w-11 items-center justify-center border border-ink hover:bg-ink hover:text-white"
             >
-              <FiGithub size={18} />
-            </Link>
-            <Link
+              <FiGithub aria-hidden="true" />
+            </a>
+            <a
               href="https://www.linkedin.com/in/kamalveer-singh-bb7250335/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-[#2CB35A] transition-colors"
+              aria-label="LinkedIn profile"
+              className="flex h-11 w-11 items-center justify-center border border-ink hover:bg-ink hover:text-white"
             >
-              <FiLinkedin size={18} />
-            </Link>
-            <Link
+              <FiLinkedin aria-hidden="true" />
+            </a>
+            <a
               href="mailto:kamalhara7@gmail.com"
-              className="text-gray-600 hover:text-[#2CB35A] transition-colors"
+              aria-label="Email Kamalveer Singh"
+              className="flex h-11 w-11 items-center justify-center border border-ink hover:bg-ink hover:text-white"
             >
-              <FiMail size={18} />
-            </Link>
+              <FiMail aria-hidden="true" />
+            </a>
           </div>
+        </div>
 
-          <a
-            href="#about"
-            className="text-gray-600 hover:text-[#2CB35A] transition-colors flex items-center gap-1 text-sm font-mono"
-          >
-            <FiArrowUp size={14} />
-            Back to top
+        <div className="mt-16 flex flex-col gap-4 border-t border-ink pt-5 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Kamalveer Singh</p>
+          <p className="font-mono text-xs">Designed and built with care.</p>
+          <a href="#main" className="flex items-center gap-2 font-semibold">
+            Back to top <FiArrowUp aria-hidden="true" />
           </a>
         </div>
       </div>

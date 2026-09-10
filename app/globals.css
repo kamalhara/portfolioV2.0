@@ -1,155 +1,212 @@
 @import "tailwindcss";
 
-/* ──────────────────────────────────────────────────────────────
-   Palette
-
-   One green, one black. Previously this was 4 near-identical
-   greens (#2CB35A, #2EA353, #2bc35a, #24994D) and 3 blacks
-   (#0C1117, #0c1117, #0a1117) spread across 71 hardcoded
-   literals. Everything routes through these tokens now.
-
-   --muted is #8A939F rather than gray-500/600: the old
-   gray-600 sat at ~2.9:1 on the page background and failed
-   WCAG AA for the footer, the social icons and the skill counts.
-   ────────────────────────────────────────────────────────────── */
 @theme {
-  --color-ink: #0b0e13;
-  --color-surface: #12171f;
-  --color-surface-2: #1a212b;
-  --color-line: #232c38;
-  --color-line-hi: #33404f;
-
-  --color-fg: #e6e8ec;
-  --color-muted: #8a939f;
-  --color-faint: #5c6675;
-
-  --color-accent: #2cb35a;
-  --color-accent-hi: #4fd97d;
-  --color-accent-dim: #1a6e39;
-
-  /* Fluid display scale. The hero name is a morph target — it
-     needs a continuous size to land on, not a two-step
-     text-4xl/md:text-7xl jump. */
-  --text-display: clamp(2.75rem, 11vw, 7.5rem);
-  --text-display--line-height: 0.92;
-  --text-display--letter-spacing: -0.035em;
-
-  --text-title: clamp(2rem, 5vw, 3.5rem);
-  --text-title--line-height: 1;
-  --text-title--letter-spacing: -0.025em;
-
-  --text-section: clamp(1.75rem, 3.5vw, 2.5rem);
-  --text-section--line-height: 1.05;
-  --text-section--letter-spacing: -0.02em;
+  --color-paper: #f3f0e8;
+  --color-sheet: #fffdf7;
+  --color-ink: #14171d;
+  --color-muted: #5e6470;
+  --color-line: #c8c5bc;
+  --color-blue: #2447d7;
+  --color-blue-dark: #17329f;
+  --color-orange: #d85832;
+  --color-green: #187552;
 }
 
-/* Fonts come from next/font, so the values must be inlined
-   rather than wrapped in an extra var() indirection. */
 @theme inline {
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui,
-    sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
-/* Kept as aliases: app/project/[slug]/page.js reaches for
-   text-foreground, and it is the one place that used a real
-   token instead of a literal. */
-@theme inline {
-  --color-background: var(--color-ink);
-  --color-foreground: var(--color-fg);
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-fg);
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Anchor targets clear the fixed navbar. Previously
-   scrollIntoView({block:"start"}) put every heading underneath it. */
-:target,
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background: var(--color-paper);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  color: transparent;
+}
+
 [id] {
   scroll-margin-top: 6rem;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-ink);
+  background: var(--color-blue);
+  color: white;
 }
 
-/* ── Focus ──
-   There were zero focus styles in the entire codebase, and the
-   project cards are whole-card links. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 3px solid var(--color-blue);
+  outline-offset: 4px;
 }
 
-/* ── Scrollbar ── */
-
-::-webkit-scrollbar {
-  width: 8px;
+.site-shell {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-ink);
+.section-rule {
+  border-top: 1px solid var(--color-ink);
+  padding-block: clamp(4rem, 9vw, 8rem);
 }
 
-::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-accent) 28%, transparent);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-accent) 28%, transparent)
-    var(--color-ink);
-}
-
-/* ── Utilities ── */
-
-/* Mono meta layer: section numbers, years, labels, tech lists.
-   Replaces the "// comment subtitle" that appeared under all
-   five section headers. */
-@utility meta {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-@utility hairline {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    var(--color-line-hi),
-    color-mix(in srgb, var(--color-line) 40%, transparent)
-  );
+.section-label::before {
+  width: 1.75rem;
+  height: 3px;
+  background: var(--color-orange);
+  content: "";
 }
 
-/* Prevents the sub-pixel shimmer that transform-based scaling
-   causes on large text mid-morph. */
-@utility text-crisp {
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
-  backface-visibility: hidden;
+.display-title {
+  max-width: 11ch;
+  font-size: clamp(3.4rem, 9.5vw, 8.8rem);
+  font-weight: 650;
+  letter-spacing: -0.075em;
+  line-height: 0.86;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-/* ── Reduced motion ──
-   This block previously only reset scroll-behavior, while the
-   typewriter, five staggered reveal sequences and a perpetual
-   canvas rAF loop all ran regardless. */
+.section-title {
+  max-width: 15ch;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  font-weight: 620;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.body-copy {
+  color: var(--color-muted);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.button-primary,
+.button-secondary {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid var(--color-ink);
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.button-primary {
+  background: var(--color-ink);
+  color: white;
+}
+
+.button-secondary {
+  background: transparent;
+}
+
+.button-primary:hover,
+.button-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary:hover {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+}
+
+.button-secondary:hover {
+  background: var(--color-sheet);
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid currentColor;
+  color: var(--color-blue-dark);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  color: var(--color-orange);
+}
+
+.card-lift {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-ink);
+}
+
+.project-image {
+  transition: transform 350ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.group:hover .project-image {
+  transform: scale(1.025);
+}
+
+@media (max-width: 767px) {
+  .site-shell {
+    width: min(100% - 1.25rem, 1180px);
+  }
+
+  .display-title {
+    font-size: clamp(3.2rem, 17vw, 5.5rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto !important;
+    scroll-behavior: auto;
   }
 
   *,
@@ -157,7 +214,7 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

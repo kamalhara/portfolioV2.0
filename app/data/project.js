@@ -5,10 +5,10 @@ export const projects = [
     frontEnd: "React Native , Expo , NativeWind",
     backEnd: "Node.js, Express, PostgreSQL",
     description:
-      "A full-stack ride-hailing mobile app with real-time location tracking, Apple Maps integration, Stripe payments, and seamless user authentication.",
+      "A ride-booking app that brings maps, driver discovery, payments, and trip history into one focused mobile flow.",
     technologies: "React Native · Expo  · Apple Maps · PostgreSQL · CLerk ",
     overview:
-      "Ryde is a full-stack ride-hailing mobile application, designed to provide a seamless transportation experience. The app includes real-time driver tracking, interactive maps, secure authentication, ride booking, and in-app payments. The system leverages robust data management and  secure user authentication.",
+      "Ryde follows a trip from pickup search to payment. Riders can find a destination, compare nearby drivers, book a car, follow the route, and review past trips without leaving the app.",
     keyFeatures: [
       "Real-time map with live driver locations and route directions",
       "Secure sign-up and login with email and Google OAuth via Clerk",
@@ -18,12 +18,14 @@ export const projects = [
       "State management with Zustand and animations via React Native Reanimated",
     ],
     screenshot: [
-      "ryde/welcome.png",
-      "ryde/login.png",
-      "ryde/home.png",
-      "ryde/book.png",
-      "ryde/confirm.png",
+      "ryde/welcome.webp",
+      "ryde/login.webp",
+      "ryde/home.webp",
+      "ryde/book.webp",
+      "ryde/confirm.webp",
     ],
+    cover: "/ryde/home.webp",
+    tone: "blue",
     type: "Mobile App",
     code: "https://github.com/kamalhara/ryde",
   },
@@ -33,11 +35,11 @@ export const projects = [
     frontEnd: "React.js, Next.js 16, Tailwind CSS 4 ",
     backEnd: "Express 5, Drizzle, PostgreSQL",
     description:
-      "A modern full-stack application for showcasing, discovering, and managing products. Share your products, get feedback from the community, and discover what others are building.",
+      "A community product directory where makers can publish work, gather feedback, and discover what others are shipping.",
     technologies:
       "Next.js 16 · Tailwind CSS 4 · Clerk · Express 5 · Drizzle · PostgreSQL",
     overview:
-      "Productify is a modern full-stack web application built with Next.js 16 and Tailwind CSS 4, designed for showcasing, discovering, and managing products. It features user authentication via Clerk and a backend powered by Express 5, Drizzle ORM, and PostgreSQL for efficient data handling.",
+      "Productify gives makers one place to publish and manage their products while the community can browse, search, comment, and rate what has been shared. Clerk handles identity; Express, Drizzle, and PostgreSQL support the product data.",
     keyFeatures: [
       "User registration and login with Clerk authentication",
       "Create, edit, and manage product listings",
@@ -46,7 +48,9 @@ export const projects = [
       "Server-side rendering for fast performance",
       "Integration with Drizzle ORM for type-safe database queries",
     ],
-    img: "/productify.png",
+    img: "/productify.webp",
+    cover: "/productify.webp",
+    tone: "orange",
     type: "Web App",
     code: "https://github.com/kamalhara/productify",
     live: "https://productify-pied.vercel.app/",
@@ -57,10 +61,10 @@ export const projects = [
     frontEnd: "Next.js, Supabase, Tailwind CSS",
     backEnd: "Supabase,",
     description:
-      "The Wild Oasis Dashboard is the internal admin panel of The Wild Oasis ecosystem. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights",
+      "An operations dashboard for hotel staff to manage cabins and bookings while keeping occupancy and sales in view.",
     technologies: "Next.js · Supabase · Tailwind CSS",
     overview:
-      "The Wild Oasis - Owner Dashboard is an internal admin panel built with Next.js and Supabase, styled with Tailwind CSS. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights in real-time.",
+      "This staff-facing dashboard turns day-to-day hotel operations into a clear set of workflows. The team can update cabins and bookings, check occupancy, and review sales without jumping between separate tools.",
     keyFeatures: [
       "Dashboard for managing cabins, guests, and bookings",
       "Sales performance monitoring with charts and reports",
@@ -70,7 +74,9 @@ export const projects = [
       "User-friendly interface with Tailwind CSS styling",
       "Secure authentication and data management",
     ],
-    img: "/wild-oasis-staff.png",
+    img: "/wild-oasis-staff.webp",
+    cover: "/wild-oasis-staff.webp",
+    tone: "green",
     type: "Web App",
     code: "https://github.com/kamalhara/the-wild-oasis-staff",
     live: "https://the-wild-oasis-staff-mauve.vercel.app/",
@@ -81,10 +87,10 @@ export const projects = [
     frontEnd: null,
     backEnd: "Node.js, Express, MongoDB",
     description:
-      "Production-ready REST API with authentication, authorization, advanced filtering, and secure user management.",
+      "A tour-booking REST API with role-based access, secure authentication, reviews, and flexible query controls.",
     technologies: "Node.js · Express · MongoDB · JWT",
     overview:
-      "Natours Backend API is a production-ready RESTful API built with Node.js, Express, and MongoDB. It provides secure user authentication and authorization with JWT, advanced filtering, sorting, and pagination features for managing tour data efficiently.",
+      "Natours is the API layer for a tour marketplace. It covers accounts, permissions, tours, reviews, and the query features a catalogue needs, including filtering, sorting, field selection, and pagination.",
     keyFeatures: [
       "User authentication and authorization with JWT",
       "CRUD operations for tours, users, and reviews",
@@ -95,6 +101,8 @@ export const projects = [
       "Role-based access control for admin and users",
     ],
     img: null,
+    cover: null,
+    tone: "ink",
     type: "Backend API",
     slug: "natours-backend-api",
     code: "https://github.com/kamalhara/natours-api",
@@ -105,10 +113,10 @@ export const projects = [
     frontEnd: "React Native , Expo , NativeWind",
     backEnd: null,
     description:
-      "A cross-platform mobile app for tracking personal expenses. Features include category management, data visualization, cloud sync with Firebase, and real-time updates.",
+      "A cross-platform expense tracker for logging everyday spending, reviewing categories, and keeping data in sync.",
     technologies: "React Native · Expo · Firebase · NativeWind",
     overview:
-      "Dine time app is a cross-platform mobile application built with React Native and Expo, styled with NativeWind. It allows users to track personal expenses with category management, data visualization, and real-time cloud synchronization powered by Firebase.",
+      "Dine Time keeps routine expense tracking quick on a phone. Entries are organized by category, summaries make spending patterns visible, and Firebase keeps the same data available across sessions.",
     keyFeatures: [
       "Add, edit, and delete expense entries with categories",
       "Visualize expenses with charts and summaries",
@@ -119,24 +127,26 @@ export const projects = [
       "Push notifications for expense reminders",
     ],
     screenshot: [
-      "dine-time/welcome.png",
-      "dine-time/login.png",
-      "dine-time/home.png",
-      "dine-time/book.png",
+      "dine-time/welcome.webp",
+      "dine-time/login.webp",
+      "dine-time/home.webp",
+      "dine-time/book.webp",
     ],
+    cover: "/dine-time/home.webp",
+    tone: "orange",
     type: "Mobile App",
     code: "https://github.com/kamalhara/dine-time",
   },
   {
-    title: "The Wild Oasis ",
+    title: "The Wild Oasis",
     slug: "the-wild-oasis",
     frontEnd: "Next.js, Supabase, Tailwind CSS",
     backEnd: "Supabase, PostgreSQL",
     description:
-      "A modern hotel management web app designed to manage cabins, bookings, and guest data seamlessly with an elegant.",
+      "A guest-facing hotel app for exploring cabins, managing reservations, and keeping booking details close at hand.",
     technologies: "Next.js · Supabase · Tailwind CSS",
     overview:
-      "The Wild Oasis is a modern hotel management web application built with Next.js and Supabase, featuring Tailwind CSS for styling. It enables seamless management of cabins, bookings, and guest data through an elegant interface backed by Supabase's real-time database and authentication.",
+      "The Wild Oasis is the guest side of the hotel experience. Visitors can compare cabins, choose dates, manage a reservation, and keep their profile details current through a straightforward booking flow.",
     keyFeatures: [
       "Cabin management with availability and details",
       "Booking system with calendar integration",
@@ -144,7 +154,9 @@ export const projects = [
       "Secure authentication and role-based access control",
       "Integration with Supabase for backend services",
     ],
-    img: "/wild-oasis.png",
+    img: "/wild-oasis.webp",
+    cover: "/wild-oasis.webp",
+    tone: "green",
     type: "Web App",
     code: "https://github.com/kamalhara/the-wild-oasis",
     live: "https://the-wild-oasis-virid-theta.vercel.app/",
@@ -155,10 +167,10 @@ export const projects = [
     frontEnd: "Next.js, Tailwind CSS",
     backEnd: null,
     description:
-      "A modern, responsive Login Page built using Next.js and Tailwind CSS.This page is part of the Nexcent project, providing a clean and accessible authentication interface.",
+      "A compact authentication interface exploring responsive layout, validation states, and accessible form patterns.",
     technologies: "Next.js · Tailwind CSS",
     overview:
-      "Nexcent is a modern, responsive login page built with Next.js and styled with Tailwind CSS. It offers a clean and accessible authentication interface as part of the larger Nexcent project.",
+      "Nexcent is a focused study in authentication UI. It handles the small but important details around layout, validation, error feedback, and keyboard-friendly form controls across screen sizes.",
     keyFeatures: [
       "Responsive design optimized for various screen sizes",
       "Clean and minimalistic UI for login and signup",
@@ -167,7 +179,9 @@ export const projects = [
       "Fast loading with Next.js optimizations",
       "Easy integration with backend authentication services",
     ],
-    img: "/nexcent.png",
+    img: "/nexcent.webp",
+    cover: "/nexcent.webp",
+    tone: "blue",
     type: "Web App",
     code: "https://github.com/kamalhara/nexcent",
     live: "https://nexcent-six-chi.vercel.app/",
@@ -178,10 +192,10 @@ export const projects = [
     frontEnd: "Vite, React",
     backEnd: null,
     description:
-      "A modern, responsive web application built with Vite + React, designed to showcase global destinations, experiences, or creative work with style and performance in mind.",
+      "A travel log that pairs an interactive map with a personal record of cities, dates, and notes from the road.",
     technologies: "Vite · React",
     overview:
-      "World Wise is a modern and responsive web application built with Vite and React. It is designed to showcase global destinations, experiences, or creative portfolios with an emphasis on style, performance, and user engagement.",
+      "World Wise turns visited cities into a personal map. Selecting a place reveals its date and notes, while the city list makes it easy to move through an expanding travel history.",
     keyFeatures: [
       "Fast and optimized build using Vite",
       "Interactive UI with React components",
@@ -191,34 +205,12 @@ export const projects = [
       "SEO-friendly with React Helmet integration",
       "Easy navigation with intuitive menus",
     ],
-    img: "/worldwise.png",
+    img: "/worldwise.webp",
+    cover: "/worldwise.webp",
+    tone: "orange",
     type: "Web App",
     code: "https://github.com/kamalhara/wordwise",
     live: "https://wordwise-kappa.vercel.app/",
-  },
-  {
-    title: "The Wild Oasis - Owner Dashboard",
-    slug: "the-wild-oasis-staff",
-    frontEnd: "Next.js, Supabase, Tailwind CSS",
-    backEnd: "Supabase,",
-    description:
-      "The Wild Oasis Dashboard is the internal admin panel of The Wild Oasis ecosystem. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights",
-    technologies: "Next.js · Supabase · Tailwind CSS",
-    overview:
-      "The Wild Oasis - Owner Dashboard is an internal admin panel built with Next.js and Supabase, styled with Tailwind CSS. It empowers hotel owners and staff to efficiently manage cabins, guests, and bookings, monitor sales performance, and visualize occupancy insights in real-time.",
-    keyFeatures: [
-      "Dashboard for managing cabins, guests, and bookings",
-      "Sales performance monitoring with charts and reports",
-      "Occupancy visualization and analytics",
-      "Role-based access control for staff and owners",
-      "Real-time data updates with Supabase subscriptions",
-      "User-friendly interface with Tailwind CSS styling",
-      "Secure authentication and data management",
-    ],
-    img: "/wild-oasis-staff.png",
-    type: "Web App",
-    code: "https://github.com/kamalhara/the-wild-oasis-staff",
-    live: "https://the-wild-oasis-staff-mauve.vercel.app/",
   },
 ];
 

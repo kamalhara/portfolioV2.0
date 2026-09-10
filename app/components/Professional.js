@@ -1,112 +1,70 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import { FiCalendar, FiBriefcase } from "react-icons/fi";
+import Image from "next/image";
 import { experiences } from "../data/experience";
 
 export default function Professional() {
-  const [visibleCards, setVisibleCards] = useState([]);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          experiences.forEach((_, index) => {
-            setTimeout(() => {
-              setVisibleCards((prev) => [...prev, index]);
-            }, index * 150);
-          });
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={sectionRef}
-      className="z-50 h-auto relative mb-12 md:mb-20 px-4 md:px-6 py-12 md:py-20 flex items-center flex-col gap-6 md:gap-8"
-      id="professional"
+    <section
+      id="experience"
+      aria-labelledby="experience-title"
+      className="border-y border-ink bg-ink text-white"
     >
-      <div className="flex flex-col items-center">
-        <h1 className="text-3xl md:text-5xl font-semibold mb-2 md:mb-3 text-center">
-          Professional <span className="text-[#2CB35A]">Experience</span>
-        </h1>
-        <p className="text-gray-500 text-sm md:text-lg font-mono">
-          // Where I&apos;ve worked
-        </p>
-      </div>
+      <div className="site-shell py-16 md:py-24">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-white/60">
+              02 / Experience
+            </p>
+            <h2 id="experience-title" className="section-title mt-5">
+              Building in the real world.
+            </h2>
+          </div>
 
-      {/* Timeline */}
-      <div className="w-full max-w-4xl relative">
-        {/* Vertical line */}
-        <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gray-700" />
-
-        <div className="flex flex-col gap-8">
-          {experiences.map((exp, index) => (
-            <div
-              key={index}
-              className="relative pl-14 md:pl-20"
-              style={{
-                opacity: visibleCards.includes(index) ? 1 : 0,
-                transform: visibleCards.includes(index)
-                  ? "translateX(0)"
-                  : "translateX(-24px)",
-                transition: "opacity 0.5s ease, transform 0.5s ease",
-              }}
-            >
-              {/* Timeline dot */}
-              <div className="absolute left-4.5 md:left-6.5 top-5 w-4 h-4 rounded-full border-2 border-[#2CB35A] bg-[#0C1117] z-10">
-                <div className="w-2 h-2 rounded-full bg-[#2CB35A] absolute top-0.5 left-0.5" />
-              </div>
-
-              {/* Card */}
-              <div className="group flex flex-col gap-3 px-5 md:px-6 py-5 bg-[#181E25]/80 backdrop-blur-xs border border-gray-700 font-mono w-full transition-all duration-300 hover:border-[#2CB35A]/50 relative overflow-hidden">
-                <div className="flex flex-col sm:flex-row items-start gap-4 relative z-10">
-                  <img
-                    src={exp.logo}
-                    alt={`${exp.company} logo`}
-                    className="w-12 h-12 shrink-0 border border-gray-700 group-hover:border-[#2CB35A]/40 transition-colors"
+          <div className="md:col-span-7">
+            {experiences.map((experience) => (
+              <article
+                key={`${experience.company}-${experience.role}`}
+                className="border-t border-white/40 py-6 first:border-t-0 first:pt-0"
+              >
+                <div className="grid gap-6 sm:grid-cols-[auto_1fr]">
+                  <Image
+                    src={experience.logo}
+                    alt=""
+                    width={72}
+                    height={72}
+                    className="h-18 w-18 border border-white/30 object-cover"
                   />
-
-                  <div className="flex flex-col gap-1.5 flex-1">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                      <h2 className="text-lg font-semibold">{exp.role}</h2>
-                      <p className="text-gray-500 text-xs flex items-center gap-1">
-                        <FiCalendar className="w-3 h-3" />
-                        {exp.duration}
+                  <div>
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h3 className="text-2xl font-semibold tracking-[-0.03em]">
+                          {experience.role}
+                        </h3>
+                        <p className="mt-1 text-orange">
+                          {experience.company.trim()}
+                        </p>
+                      </div>
+                      <p className="font-mono text-xs text-white/60">
+                        {experience.duration}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <FiBriefcase className="w-3.5 h-3.5 text-[#2CB35A]" />
-                      <h3 className="text-sm font-semibold text-[#2CB35A]">
-                        {exp.company}
-                      </h3>
-                    </div>
-                    <p className="text-gray-400 text-sm sm:text-base mt-1 leading-relaxed">
-                      {exp.description}
+                    <p className="mt-5 max-w-2xl text-base leading-7 text-white/70">
+                      {experience.description}
                     </p>
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {exp.skills.map((skill, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs bg-[#0C1117]/80 text-gray-400 px-2.5 py-1 font-mono border border-gray-700/60 transition-all duration-300 hover:border-[#2CB35A] hover:text-[#2CB35A]"
-                        >
-                          {skill}
-                        </span>
+                    <ul
+                      className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-white/60"
+                      aria-label="Technologies used"
+                    >
+                      {experience.skills.map((skill) => (
+                        <li key={skill}>{skill}</li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
