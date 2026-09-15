@@ -17,19 +17,7 @@ export default function RectangularTextReveal({
           aria-hidden="true"
           className="relative block w-fit overflow-hidden"
         >
-          <motion.span
-            className="block"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: "35%" }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.32,
-              delay: shouldReduceMotion ? 0 : 0.28 + index * 0.12,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            {line}
-          </motion.span>
+          <span className="block">{line}</span>
           {!shouldReduceMotion && (
             <motion.span
               aria-hidden="true"
