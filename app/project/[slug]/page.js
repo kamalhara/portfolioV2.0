@@ -1,8 +1,8 @@
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
+import ProjectScreenshotGallery from "@/app/components/ProjectScreenshotGallery";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import { projects } from "@/app/data/project";
-import IPhoneFrame from "@/app/ui/IPhoneFrame";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -208,32 +208,12 @@ export default async function ProjectDetailPage({ params }) {
                     {String(project.screenshot.length).padStart(2, "0")} screens
                   </p>
                 </div>
-                <div className="mt-8 grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 md:grid-cols-4 md:gap-8">
-                  {project.screenshot.map((src, index) => {
-                    const img = (
-                      <Image
-                        src={`/${src}`}
-                        alt={`${project.title} screen ${index + 1}`}
-                        width={400}
-                        height={800}
-                        className="h-auto w-full"
-                      />
-                    );
-                    return (
-                      <div
-                        key={src}
-                        className="transition-transform duration-300 ease-out hover:-translate-y-2"
-                      >
-                        {project.slug === "spotus" ? (
-                          <IPhoneFrame>{img}</IPhoneFrame>
-                        ) : (
-                          <figure className="overflow-hidden border border-paper-border bg-bg-cream-light">
-                            {img}
-                          </figure>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div className="mt-8">
+                  <ProjectScreenshotGallery
+                    projectSlug={project.slug}
+                    projectTitle={project.title}
+                    screenshots={project.screenshot}
+                  />
                 </div>
               </section>
             </ScrollReveal>

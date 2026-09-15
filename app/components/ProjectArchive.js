@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import MagnetTabs from "../ui/MagnetTabs";
 
 const filters = [
   "All",
@@ -41,22 +42,12 @@ export default function ProjectArchive({ projects }) {
             placeholder="Search project or technology"
           />
         </label>
-        <div
-          className="flex snap-x gap-2 overflow-x-auto pb-1 md:flex-wrap md:justify-end md:overflow-visible md:pb-0"
-          aria-label="Filter projects"
-        >
-          {filters.map((item) => (
-            <button
-              className={`min-h-10 shrink-0 snap-start border px-3 font-mono text-[10px] uppercase transition-all duration-200 hover:-translate-y-0.5 ${filter === item ? "border-ink-text bg-ink-text text-bg-cream" : "border-paper-border text-ink-muted hover:border-paper-border-dark hover:text-ink-text"}`}
-              key={item}
-              type="button"
-              aria-pressed={filter === item}
-              onClick={() => setFilter(item)}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
+        <MagnetTabs
+          activeTab={filter}
+          onSelect={setFilter}
+          options={filters}
+          slug="project-filters"
+        />
       </div>
       <p
         className="mt-5 mb-3 font-mono text-[11px] uppercase tracking-wider text-ink-faint"

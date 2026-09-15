@@ -1,4 +1,5 @@
 import Heading from "../ui/Heading";
+import RectangularTextReveal from "../ui/RectangularTextReveal";
 
 export default function About() {
   return (
@@ -15,9 +16,13 @@ export default function About() {
             <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
               About
             </p>
-            <p className="mt-4 max-w-[24ch] text-[clamp(2rem,8vw,2.5rem)] font-medium leading-snug tracking-tight text-ink-text">
-              I care about the point where software meets real life.
-            </p>
+            <RectangularTextReveal
+              className="mt-4 max-w-[24ch] text-[clamp(2rem,8vw,2.5rem)] font-medium leading-snug tracking-tight text-ink-text"
+              lines={[
+                "I care about the point",
+                "where software meets real life.",
+              ]}
+            />
           </div>
         </div>
         <div className="space-y-5 text-md leading-relaxed text-ink-text/80 md:col-span-6 md:col-start-7">
