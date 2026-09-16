@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Heading from "../ui/Heading";
+import LogoLoop from "./LogoLoop";
 
 export default function Hero() {
   return (
@@ -113,6 +114,7 @@ export default function Hero() {
           ))}
         </dl>
       </div>
+      <LogoLoop />
     </section>
   );
 }

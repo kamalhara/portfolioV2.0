@@ -1,3 +1,5 @@
+"use client";
+
 import About from "./components/About";
 import ChapterRail from "./components/ChapterRail";
 import Footer from "./components/Footer";
