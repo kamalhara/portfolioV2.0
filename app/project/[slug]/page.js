@@ -251,10 +251,10 @@ export default async function ProjectDetailPage({ params }) {
                       key={src}
                       itemClassName="min-h-[72svh] overflow-hidden px-5 py-5 sm:px-8 sm:py-6"
                     >
-                      <div className="flex items-center justify-between pb-3 font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+                      <div className="flex items-center justify-between  font-mono text-[10px] uppercase tracking-wider text-ink-muted">
                         <span>Screen {String(index + 1).padStart(2, "0")}</span>
                       </div>
-                      <div className="flex min-h-[calc(72svh-5rem)] items-center justify-center py-7">
+                      <div className="flex min-h-[calc(72svh-5rem)] items-center justify-center py-1">
                         {project.slug === "spotus" ? (
                           <div className="w-full max-w-64">
                             <IPhoneFrame>{img}</IPhoneFrame>

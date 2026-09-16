@@ -6,7 +6,7 @@ import { useCallback, useLayoutEffect, useRef } from "react";
 
 export const ScrollStackItem = ({ children, itemClassName = "" }) => (
   <div
-    className={`scroll-stack-card relative my-8 box-border w-full origin-top will-change-transform ${itemClassName}`.trim()}
+    className={`scroll-stack-card sticky my-8 box-border w-full origin-top will-change-transform ${itemClassName}`.trim()}
     style={{
       backfaceVisibility: "hidden",
       transformStyle: "preserve-3d",
@@ -144,18 +144,7 @@ const ScrollStack = ({
         }
       }
 
-      let translateY = 0;
-      const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-
-      if (isPinned) {
-        translateY =
-          scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
-      } else if (scrollTop > pinEnd) {
-        translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
-      }
-
       const newTransform = {
-        translateY: Math.round(translateY * 100) / 100,
         scale: Math.round(scale * 1000) / 1000,
         rotation: Math.round(rotation * 100) / 100,
         blur: Math.round(blur * 100) / 100,
@@ -164,13 +153,12 @@ const ScrollStack = ({
       const lastTransform = lastTransformsRef.current.get(i);
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
         Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
         Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
         Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
 
       if (hasChanged) {
-        const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+        const transform = `scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         const filter =
           newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : "";
 
@@ -260,14 +248,19 @@ const ScrollStack = ({
     }
 
     cards.forEach((card, i) => {
+      // Calculate CSS sticky top
+      const topOffset = `calc(${stackPosition} + ${itemStackDistance * i}px)`;
+      card.style.top = topOffset;
+      card.style.zIndex = i + 1; // Ensure lower cards stack above higher ones
+
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`;
       }
       card.style.willChange = "transform, filter";
       card.style.transformOrigin = "top center";
       card.style.backfaceVisibility = "hidden";
-      card.style.transform = "translateZ(0)";
-      card.style.webkitTransform = "translateZ(0)";
+      card.style.transform = "scale(1) rotate(0deg)";
+      card.style.webkitTransform = "scale(1) rotate(0deg)";
       card.style.perspective = "1000px";
       card.style.webkitPerspective = "1000px";
     });
