@@ -1,6 +1,8 @@
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
+import ScrollExpand from "@/app/components/ScrollExpand";
 import ScrollReveal from "@/app/components/ScrollReveal";
+import ScrollStack, { ScrollStackItem } from "@/app/components/ScrollStack";
 import { projects } from "@/app/data/project";
 import IPhoneFrame from "@/app/ui/IPhoneFrame";
 import Image from "next/image";
@@ -111,18 +113,31 @@ export default async function ProjectDetailPage({ params }) {
             </header>
           </ScrollReveal>
           {project.cover && (
-            <ScrollReveal delay={0.06}>
-              <div className="group relative aspect-16/10 overflow-hidden border border-paper-border bg-bg-cream-light sm:aspect-16/8">
-                <Image
-                  src={project.cover}
-                  alt={`${project.title} interface preview`}
-                  fill
-                  priority
-                  sizes="(max-width: 1050px) 100vw, 960px"
-                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.015]"
-                />
-              </div>
-            </ScrollReveal>
+            <ScrollExpand
+              src={project.cover}
+              alt={`${project.title} interface preview`}
+              startWidth={60}
+              startHeight={60}
+              startRadius={0}
+              endRadius={0}
+              mediaZoom={1}
+              scrollDistance={0.72}
+              holdDistance={0.08}
+              smoothing={0.12}
+              overlayScrim={0}
+              useWindowScroll
+              preload
+              className="hidden md:block border-y border-paper-border bg-bg-cream-light"
+              mediaClassName={
+                project.screenshot
+                  ? "object-contain p-[6vh]"
+                  : "object-cover object-top"
+              }
+              style={{
+                width: "100vw",
+                marginLeft: "calc(50% - 50vw)",
+              }}
+            />
           )}
           <ScrollReveal>
             <div className="grid grid-cols-1 gap-12 py-14 sm:py-20 md:grid-cols-[.72fr_1.3fr] md:gap-20">
@@ -195,48 +210,66 @@ export default async function ProjectDetailPage({ params }) {
             </div>
           </ScrollReveal>
           {project.screenshot && (
-            <ScrollReveal>
-              <section
-                aria-labelledby="screens-title"
-                className="border-t border-paper-border py-12 sm:py-16"
+            <section
+              aria-labelledby="screens-title"
+              className="border-t border-paper-border py-12 sm:py-16"
+            >
+              <div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+                <h2 id="screens-title" className="font-normal">
+                  Interface
+                </h2>
+                <p>
+                  {String(project.screenshot.length).padStart(2, "0")} screens
+                </p>
+              </div>
+              <ScrollStack
+                useWindowScroll
+                itemDistance={72}
+                itemScale={0.018}
+                itemStackDistance={18}
+                stackPosition="14%"
+                scaleEndPosition="5%"
+                baseScale={0.92}
+                blurAmount={0.35}
+                className="mx-auto max-w-3xl"
               >
-                <div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-                  <h2 id="screens-title" className="font-normal">
-                    Interface
-                  </h2>
-                  <p>
-                    {String(project.screenshot.length).padStart(2, "0")} screens
-                  </p>
-                </div>
-                <div className="mt-8 grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 md:grid-cols-4 md:gap-8">
-                  {project.screenshot.map((src, index) => {
-                    const img = (
-                      <Image
-                        src={`/${src}`}
-                        alt={`${project.title} screen ${index + 1}`}
-                        width={400}
-                        height={800}
-                        className="h-auto w-full"
-                      />
-                    );
-                    return (
-                      <div
-                        key={src}
-                        className="transition-transform duration-300 ease-out hover:-translate-y-2"
-                      >
+                {project.screenshot.map((src, index) => {
+                  const img = (
+                    <Image
+                      src={`/${src}`}
+                      alt={`${project.title} screen ${index + 1}`}
+                      width={400}
+                      height={800}
+                      sizes="(max-width: 640px) 72vw, 280px"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      className="h-auto w-full"
+                    />
+                  );
+
+                  return (
+                    <ScrollStackItem
+                      key={src}
+                      itemClassName="min-h-[72svh] overflow-hidden px-5 py-5 sm:px-8 sm:py-6"
+                    >
+                      <div className="flex items-center justify-between pb-3 font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+                        <span>Screen {String(index + 1).padStart(2, "0")}</span>
+                      </div>
+                      <div className="flex min-h-[calc(72svh-5rem)] items-center justify-center py-7">
                         {project.slug === "spotus" ? (
-                          <IPhoneFrame>{img}</IPhoneFrame>
+                          <div className="w-full max-w-64">
+                            <IPhoneFrame>{img}</IPhoneFrame>
+                          </div>
                         ) : (
-                          <figure className="overflow-hidden border border-paper-border bg-bg-cream-light">
+                          <figure className="w-full max-w-64 overflow-hidden border border-paper-border bg-bg-cream">
                             {img}
                           </figure>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-              </section>
-            </ScrollReveal>
+                    </ScrollStackItem>
+                  );
+                })}
+              </ScrollStack>
+            </section>
           )}
           <Link
             href="/project"

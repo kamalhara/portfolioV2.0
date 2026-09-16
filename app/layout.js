@@ -2,6 +2,7 @@ import "./globals.css";
 import WelcomeLoader from "./components/WelcomeLoader";
 import ClickSpark from "./components/ClickSpark";
 import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -69,11 +70,14 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${inter.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
       <body suppressHydrationWarning>
-        <script
+        <Script
+          id="restore-theme"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html:
               'try{const r=document.documentElement;const t=localStorage.getItem("kamalveer-portfolio-theme-v2")||"light";r.dataset.theme=t;r.classList.toggle("dark",t==="dark");if(sessionStorage.getItem("kamalveer-portfolio-welcome-session-v1")==="seen")r.dataset.welcomeSeen="true"}catch(e){}',
@@ -81,7 +85,9 @@ export default function RootLayout({ children }) {
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
         />
         <a
           href="#main"

@@ -24,3 +24,12 @@ test("referenced optimized covers exist", () => {
     assert.ok(existsSync(`public${project.cover}`), project.cover);
   }
 });
+
+test("screenshot references are valid public asset paths", () => {
+  for (const project of projects.filter((item) => item.screenshot)) {
+    for (const screenshot of project.screenshot) {
+      assert.equal(typeof screenshot, "string", project.slug);
+      assert.ok(existsSync(`public/${screenshot}`), screenshot);
+    }
+  }
+});
