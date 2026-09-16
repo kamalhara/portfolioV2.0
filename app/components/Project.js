@@ -14,6 +14,7 @@ import { mainProjects } from "../data/project";
 import Heading from "../ui/Heading";
 import IPhoneFrame from "../ui/IPhoneFrame";
 import { FiArrowUpRight } from "react-icons/fi";
+import Magnet from "./Magnet";
 
 export default function Project() {
   const [activeProject, setActiveProject] = useState(null);
@@ -214,10 +215,16 @@ export default function Project() {
         Each project opens as an engineering dossier — the problem, the
         decisions, the architecture, and what broke along the way.
       </p>
-      <div>
+      <Magnet
+        padding={56}
+        magnetStrength={12}
+        wrapperClassName="mt-12 w-full"
+        innerClassName="w-full"
+        style={{ display: "block" }}
+      >
         <Link
           href="/project"
-          className="group mt-12 flex items-center justify-between gap-6 border-[1.5px] border-paper-border px-6 py-6 no-underline transition-all duration-300 ease-out hover:border-ink-text hover:bg-ink-text md:px-10 md:py-8"
+          className="group flex items-center justify-between gap-6 border-[1.5px] border-paper-border px-6 py-6 no-underline transition-all duration-300 ease-out hover:border-ink-text hover:bg-ink-text md:px-10 md:py-8"
         >
           <span className="text-[clamp(1.25rem,2.8vw,2.1rem)] font-medium leading-none tracking-tight text-ink-text transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:text-bg-cream">
             Explore all projects
@@ -229,7 +236,7 @@ export default function Project() {
             <FiArrowUpRight />
           </span>
         </Link>
-      </div>
+      </Magnet>
     </section>
   );
 }

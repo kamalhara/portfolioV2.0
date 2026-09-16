@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Magnet from "./Magnet";
 
 const farewells = [
   { text: "see you", lang: "en" },
@@ -94,12 +95,20 @@ export default function Footer() {
 
         {/* Bottom links */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-paper-border pt-6">
-          <a
-            href="mailto:kamalhara7@gmail.com"
-            className="font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
-          >
-            hello@kamalveer
-          </a>
+          <Magnet padding={36} magnetStrength={7} wrapperClassName="shrink-0">
+            <a
+              href="mailto:kamalhara7@gmail.com"
+              className="group inline-flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-widest text-ink-faint no-underline transition-colors duration-200 hover:text-ink-text"
+            >
+              Email me
+              <span
+                aria-hidden="true"
+                className="text-accent-orange transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              >
+                ↗
+              </span>
+            </a>
+          </Magnet>
           <a
             href="https://github.com/kamalhara"
             target="_blank"

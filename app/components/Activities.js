@@ -3,8 +3,63 @@
 import dynamic from "next/dynamic";
 import { cloneElement } from "react";
 import { FiArrowUpRight, FiGithub } from "react-icons/fi";
+import {
+  SiDocker,
+  SiExpo,
+  SiExpress,
+  SiFirebase,
+  SiMongodb,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPostgresql,
+  SiReact,
+  SiReactquery,
+  SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVercel,
+} from "react-icons/si";
 import Heading from "../ui/Heading";
 import { skillCategories } from "../data/skills";
+import LogoLoop from "./LogoLoop";
+
+const techLogos = [
+  { node: <SiReact />, title: "React", href: "https://react.dev" },
+  { node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
+  {
+    node: <SiReactquery />,
+    title: "React Query",
+    href: "https://reactquery.dev",
+  },
+  {
+    node: <SiTypescript />,
+    title: "TypeScript",
+    href: "https://www.typescriptlang.org",
+  },
+  {
+    node: <SiTailwindcss />,
+    title: "Tailwind CSS",
+    href: "https://tailwindcss.com",
+  },
+  { node: <SiNodedotjs />, title: "Node.js", href: "https://nodejs.org" },
+  { node: <SiExpress />, title: "Express", href: "https://expressjs.com" },
+  { node: <SiExpo />, title: "Expo", href: "https://expo.dev" },
+  { node: <SiReact />, title: "React Native", href: "https://reactnative.dev" },
+  {
+    node: <SiFirebase />,
+    title: "Firebase",
+    href: "https://firebase.google.com",
+  },
+  {
+    node: <SiPostgresql />,
+    title: "PostgreSQL",
+    href: "https://www.postgresql.org",
+  },
+  { node: <SiMongodb />, title: "MongoDB", href: "https://www.mongodb.com" },
+  { node: <SiSupabase />, title: "Supabase", href: "https://supabase.com" },
+  { node: <SiDocker />, title: "Docker", href: "https://www.docker.com" },
+  { node: <SiVercel />, title: "Vercel", href: "https://vercel.com" },
+];
 
 const GitHubCalendar = dynamic(
   () => import("react-github-calendar").then((module) => module.GitHubCalendar),
@@ -20,7 +75,53 @@ export default function Activities() {
     >
       <Heading label1="04 Activity" label2="Evidence, not claims" />
 
-      <div className="mt-12 grid gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
+      <div className="mt-8 border-y-[1.5px] border-paper-border py-5 sm:mt-10 sm:py-6">
+        <div className="mb-4 flex items-center justify-between gap-4 px-1 font-mono text-[11px] uppercase tracking-wider text-ink-muted sm:mb-5">
+          <span className="flex items-center gap-2.5">
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-accent-orange"
+            />
+            Core technologies
+          </span>
+          <span className="hidden text-ink-faint sm:inline">
+            Hover to pause
+          </span>
+        </div>
+        <LogoLoop
+          logos={techLogos}
+          speed={58}
+          direction="left"
+          logoHeight={24}
+          gap={14}
+          hoverSpeed={0}
+          fadeOut
+          fadeOutColor="var(--color-bg-cream)"
+          ariaLabel="Core technologies"
+          className="-mx-1 py-1"
+          renderItem={(item) => (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${item.title} website`}
+              className="group/logo inline-flex min-h-12 items-center gap-3 border border-paper-border bg-bg-cream-light px-4 text-ink-muted no-underline transition-[color,border-color,background-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-accent-orange/60 hover:bg-bg-cream hover:text-accent-orange focus-visible:border-accent-orange sm:px-5"
+            >
+              <span
+                aria-hidden="true"
+                className="text-[length:var(--logoloop-logoHeight)] transition-transform duration-300 ease-out group-hover/logo:scale-110"
+              >
+                {item.node}
+              </span>
+              <span className="whitespace-nowrap font-mono text-[12px] font-medium tracking-tight text-ink-text transition-colors duration-300 group-hover/logo:text-accent-orange">
+                {item.title}
+              </span>
+            </a>
+          )}
+        />
+      </div>
+
+      <div className="mt-12 grid gap-10 sm:mt-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-4">
           <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
             Selected stack

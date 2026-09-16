@@ -112,7 +112,7 @@ export default async function ProjectDetailPage({ params }) {
           </ScrollReveal>
           {project.cover && (
             <ScrollReveal delay={0.06}>
-              <div className="group relative aspect-[16/10] overflow-hidden border border-paper-border bg-bg-cream-light sm:aspect-16/8">
+              <div className="group relative aspect-16/10 overflow-hidden border border-paper-border bg-bg-cream-light sm:aspect-16/8">
                 <Image
                   src={project.cover}
                   alt={`${project.title} interface preview`}
