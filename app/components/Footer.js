@@ -29,7 +29,7 @@ export default function Footer() {
   const current = farewells[index];
 
   return (
-    <footer className="border-t border-paper-border bg-bg-cream px-4 pt-16 pb-10 sm:px-8 md:px-10 md:pt-28">
+    <footer className="border-t border-paper-border bg-bg-cream px-4 pt-16 pb-10 text-ink-text sm:px-8 md:px-10 md:pt-28">
       <div className="mx-auto max-w-350 text-center">
         {/* Rotating farewell */}
         <div className="flex h-[1.25em] items-center justify-center text-[clamp(2.25rem,11vw,4.5rem)] leading-none tracking-tight">
@@ -103,7 +103,7 @@ export default function Footer() {
               Email me
               <span
                 aria-hidden="true"
-                className="text-accent-orange transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                className="text-ink-faint transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-orange"
               >
                 ↗
               </span>

@@ -30,9 +30,9 @@ export default function Professional() {
                   href={experience.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative inline-block text-xl font-medium tracking-tight text-ink-text transition-colors duration-300 hover:text-accent-orange"
+                  className="group relative inline-block text-xl font-medium tracking-tight text-ink-text transition-colors duration-300"
                 >
-                  {experience.company}
+                  <span className="text-ink-text">{experience.company}</span>
                   <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-accent-orange transition-all duration-300 ease-out group-hover:w-full"></span>
                 </Link>
                 <div className="text-ink-muted">{experience.role}</div>

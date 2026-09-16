@@ -222,7 +222,7 @@ export default function Activities() {
               aria-hidden="true"
               className="text-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
             />
-            <span className="relative py-1 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-accent-orange after:transition-[width] after:duration-300 group-hover:after:w-full">
+            <span className="relative py-1 text-ink-muted transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-accent-orange after:transition-[width] after:duration-300 group-hover:text-accent-orange group-hover:after:w-full">
               kamalhara
             </span>
             <FiArrowUpRight

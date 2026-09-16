@@ -75,8 +75,12 @@ export default function ClickSpark({
 
       const { width, height } = canvas.getBoundingClientRect();
       context.clearRect(0, 0, width, height);
-      const resolvedColor =
-        sparkColor === "currentColor"
+      const customProperty = sparkColor.match(/^var\((--[^)]+)\)$/)?.[1];
+      const resolvedColor = customProperty
+        ? getComputedStyle(document.documentElement)
+            .getPropertyValue(customProperty)
+            .trim()
+        : sparkColor === "currentColor"
           ? getComputedStyle(canvas).color
           : sparkColor;
 

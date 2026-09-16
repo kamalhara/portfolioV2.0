@@ -90,7 +90,11 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         <WelcomeLoader />
-        <ClickSpark fixed className="min-h-screen text-accent-orange">
+        <ClickSpark
+          fixed
+          sparkColor="var(--color-accent-orange)"
+          className="min-h-screen"
+        >
           {children}
         </ClickSpark>
       </body>
