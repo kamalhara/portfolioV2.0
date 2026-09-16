@@ -10,6 +10,7 @@ export default function ClickSpark({
   duration = 360,
   easing = "ease-out",
   extraScale = 1,
+  fixed = false,
   className = "",
   children,
 }) {
@@ -24,7 +25,9 @@ export default function ClickSpark({
 
     let resizeTimeout;
     const resizeCanvas = () => {
-      const { width, height } = parent.getBoundingClientRect();
+      const { width, height } = fixed
+        ? { width: window.innerWidth, height: window.innerHeight }
+        : parent.getBoundingClientRect();
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
@@ -36,17 +39,19 @@ export default function ClickSpark({
       window.clearTimeout(resizeTimeout);
       resizeTimeout = window.setTimeout(resizeCanvas, 100);
     };
-    const observer = new ResizeObserver(handleResize);
+    const observer = fixed ? null : new ResizeObserver(handleResize);
 
-    observer.observe(parent);
+    observer?.observe(parent);
+    if (fixed) window.addEventListener("resize", handleResize);
     resizeCanvas();
 
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
+      window.removeEventListener("resize", handleResize);
       window.clearTimeout(resizeTimeout);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, []);
+  }, [fixed]);
 
   const ease = useCallback(
     (progress) => {
@@ -114,8 +119,8 @@ export default function ClickSpark({
 
     sparksRef.current.push(
       ...Array.from({ length: sparkCount }, (_, index) => ({
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
+        x: fixed ? event.clientX : event.clientX - rect.left,
+        y: fixed ? event.clientY : event.clientY - rect.top,
         angle: (2 * Math.PI * index) / sparkCount,
         startTime: now,
       })),
@@ -127,14 +132,11 @@ export default function ClickSpark({
   };
 
   return (
-    <div
-      className={`relative h-full w-full ${className}`}
-      onClick={handleClick}
-    >
+    <div className={`relative w-full ${className}`} onClick={handleClick}>
       <canvas
         ref={canvasRef}
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-0 z-10 block h-full w-full select-none"
+        className={`pointer-events-none top-0 left-0 z-90 block select-none ${fixed ? "fixed h-screen w-screen" : "absolute h-full w-full"}`}
       />
       {children}
     </div>

@@ -1,5 +1,6 @@
 import "./globals.css";
 import WelcomeLoader from "./components/WelcomeLoader";
+import ClickSpark from "./components/ClickSpark";
 import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -89,7 +90,9 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         <WelcomeLoader />
-        {children}
+        <ClickSpark fixed className="min-h-screen text-accent-orange">
+          {children}
+        </ClickSpark>
       </body>
     </html>
   );

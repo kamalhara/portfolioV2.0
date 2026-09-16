@@ -76,13 +76,13 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2 font-mono text-xs tracking-tight transition-opacity hover:opacity-70"
+          className="flex items-center gap-2 font-mono text-xs tracking-tight text-ink-text transition-opacity hover:opacity-70"
         >
           <span className="grid h-8 w-8 place-items-center rounded-sm bg-ink-text text-[10px] font-bold text-bg-cream">
             KS
           </span>
           <span className="max-[360px]:hidden">
-            <strong className="block text-[14px] font-semibold">
+            <strong className="block text-[14px] font-semibold text-ink-text">
               Kamalveer
             </strong>
             <p className="hidden text-[12px] uppercase tracking-widest text-ink-muted/70 sm:block ">

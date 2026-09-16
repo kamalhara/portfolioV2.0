@@ -2,18 +2,24 @@
 
 import dynamic from "next/dynamic";
 import { cloneElement } from "react";
-import { FiArrowUpRight, FiGithub } from "react-icons/fi";
+import { FiArrowUpRight, FiCloud, FiGithub } from "react-icons/fi";
 import {
+  SiClerk,
+  SiCloudinary,
   SiDocker,
   SiExpo,
   SiExpress,
   SiFirebase,
+  SiGit,
+  SiLangchain,
   SiMongodb,
+  SiMysql,
   SiNextdotjs,
   SiNodedotjs,
   SiPostgresql,
   SiReact,
   SiReactquery,
+  SiSocketdotio,
   SiSupabase,
   SiTailwindcss,
   SiTypescript,
@@ -50,15 +56,29 @@ const techLogos = [
     title: "Firebase",
     href: "https://firebase.google.com",
   },
+  { node: <SiClerk />, title: "Clerk", href: "https://clerk.com" },
+  {
+    node: <SiCloudinary />,
+    title: "Cloudinary",
+    href: "https://cloudinary.com",
+  },
+  {
+    node: <SiSocketdotio />,
+    title: "Socket.IO",
+    href: "https://socket.io",
+  },
   {
     node: <SiPostgresql />,
     title: "PostgreSQL",
     href: "https://www.postgresql.org",
   },
   { node: <SiMongodb />, title: "MongoDB", href: "https://www.mongodb.com" },
+  { node: <SiMysql />, title: "MySQL", href: "https://www.mysql.com" },
   { node: <SiSupabase />, title: "Supabase", href: "https://supabase.com" },
+  { node: <FiCloud />, title: "AWS", href: "https://aws.amazon.com" },
   { node: <SiDocker />, title: "Docker", href: "https://www.docker.com" },
-  { node: <SiVercel />, title: "Vercel", href: "https://vercel.com" },
+
+  { node: <SiGit />, title: "Git", href: "https://git-scm.com" },
 ];
 
 const GitHubCalendar = dynamic(
@@ -82,7 +102,7 @@ export default function Activities() {
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-accent-orange"
             />
-            Core technologies
+            Production toolkit
           </span>
           <span className="hidden text-ink-faint sm:inline">
             Hover to pause
@@ -97,8 +117,8 @@ export default function Activities() {
           hoverSpeed={0}
           fadeOut
           fadeOutColor="var(--color-bg-cream)"
-          ariaLabel="Core technologies"
-          className="-mx-1 py-1"
+          ariaLabel="Production technologies"
+          className="-mx-1 py-1 text-ink-muted"
           renderItem={(item) => (
             <a
               href={item.href}
@@ -109,7 +129,7 @@ export default function Activities() {
             >
               <span
                 aria-hidden="true"
-                className="text-[length:var(--logoloop-logoHeight)] transition-transform duration-300 ease-out group-hover/logo:scale-110"
+                className="text-[length:var(--logoloop-logoHeight)] text-ink-muted transition-[color,transform] duration-300 ease-out group-hover/logo:scale-110 group-hover/logo:text-accent-orange"
               >
                 {item.node}
               </span>
