@@ -5,7 +5,7 @@ export const projects = [
     frontEnd: "React, TypeScript, Lucide",
     backEnd: "Core definitions, CLI, Next.js documentation",
     description:
-      "An open-source state-icon system that gives React interfaces clear, accessible feedback across every application state.",
+      "An open-source React and TypeScript icon system for idle, loading, success, warning, error, and other interface states, with accessible labels, animated transitions, documentation, and a copy-and-own CLI.",
     technologies: "React · TypeScript · Lucide · Next.js · CLI",
     overview:
       "StateGlyph groups related interface states behind one typed React component, so actions can move from idle or loading to success, warning, error, and other outcomes without scattered icon logic. The project pairs animated transitions with reduced-motion support, accessibility guidance, per-icon state previews and usage examples, a copy-and-own CLI, and framework-independent icon definitions.",
@@ -32,7 +32,7 @@ export const projects = [
     frontEnd: "React Native, Expo Router, NativeWind",
     backEnd: "Express, Firebase Firestore, Trigger.dev",
     description:
-      "A location-based social app where nearby communities form around live rooms, then move into safer request-based conversations.",
+      "A location-aware social app for discovering nearby or global live rooms, chatting in real time, sharing media, and moving into private conversations through recipient-controlled message requests.",
     technologies:
       "React Native · Expo · Firebase · Clerk · Express · Cloudinary · Trigger.dev",
     overview:
@@ -63,7 +63,7 @@ export const projects = [
     frontEnd: "React Native , Expo , NativeWind",
     backEnd: "Node.js, Express, PostgreSQL",
     description:
-      "A ride-booking app that brings maps, driver discovery, payments, and trip history into one focused mobile flow.",
+      "A mobile ride-booking experience covering destination search, nearby driver comparison, route tracking, payment, and trip history, with map-based navigation and authenticated rider accounts.",
     technologies: "React Native · Expo  · Apple Maps · PostgreSQL · CLerk ",
     overview:
       "Ryde follows a trip from pickup search to payment. Riders can find a destination, compare nearby drivers, book a car, follow the route, and review past trips without leaving the app.",
@@ -93,7 +93,7 @@ export const projects = [
     frontEnd: "React.js, Next.js 16, Tailwind CSS 4 ",
     backEnd: "Express 5, Drizzle, PostgreSQL",
     description:
-      "A community product directory where makers can publish work, gather feedback, and discover what others are shipping.",
+      "A community product directory where makers create and manage listings while visitors search, filter, rate, and discuss new products through an authenticated full-stack web experience.",
     technologies:
       "Next.js 16 · Tailwind CSS 4 · Clerk · Express 5 · Drizzle · PostgreSQL",
     overview:
@@ -119,7 +119,7 @@ export const projects = [
     frontEnd: null,
     backEnd: "Node.js, Express, MongoDB",
     description:
-      "A tour-booking REST API with role-based access, secure authentication, reviews, and flexible query controls.",
+      "A secure tour-booking REST API that manages users, tours, and reviews with JWT authentication, role-based permissions, input protection, and flexible filtering, sorting, field selection, and pagination.",
     technologies: "Node.js · Express · MongoDB · JWT",
     overview:
       "Natours is the API layer for a tour marketplace. It covers accounts, permissions, tours, reviews, and the query features a catalogue needs, including filtering, sorting, field selection, and pagination.",
@@ -145,7 +145,7 @@ export const projects = [
     frontEnd: "Next.js, Supabase, Tailwind CSS",
     backEnd: "Supabase,",
     description:
-      "An operations dashboard for hotel staff to manage cabins and bookings while keeping occupancy and sales in view.",
+      "A staff operations dashboard for managing hotel cabins, guests, and bookings while monitoring occupancy, sales, and day-to-day performance through authenticated, real-time Supabase workflows.",
     technologies: "Next.js · Supabase · Tailwind CSS",
     overview:
       "This staff-facing dashboard turns day-to-day hotel operations into a clear set of workflows. The team can update cabins and bookings, check occupancy, and review sales without jumping between separate tools.",
@@ -171,7 +171,7 @@ export const projects = [
     frontEnd: "React Native , Expo , NativeWind",
     backEnd: null,
     description:
-      "A cross-platform expense tracker for logging everyday spending, reviewing categories, and keeping data in sync.",
+      "A cross-platform expense tracker for capturing, editing, and categorizing daily spending, visualizing summaries, and synchronizing authenticated user data through Firebase with offline support.",
     technologies: "React Native · Expo · Firebase · NativeWind",
     overview:
       "Dine Time keeps routine expense tracking quick on a phone. Entries are organized by category, summaries make spending patterns visible, and Firebase keeps the same data available across sessions.",
@@ -201,7 +201,7 @@ export const projects = [
     frontEnd: "Next.js, Supabase, Tailwind CSS",
     backEnd: "Supabase, PostgreSQL",
     description:
-      "A guest-facing hotel app for exploring cabins, managing reservations, and keeping booking details close at hand.",
+      "A guest-facing hotel booking application for browsing cabin availability, selecting dates, creating and managing reservations, and maintaining guest profiles through an authenticated Supabase-backed experience.",
     technologies: "Next.js · Supabase · Tailwind CSS",
     overview:
       "The Wild Oasis is the guest side of the hotel experience. Visitors can compare cabins, choose dates, manage a reservation, and keep their profile details current through a straightforward booking flow.",
@@ -225,7 +225,7 @@ export const projects = [
     frontEnd: "Next.js, Tailwind CSS",
     backEnd: null,
     description:
-      "A compact authentication interface exploring responsive layout, validation states, and accessible form patterns.",
+      "A responsive authentication interface focused on accessible sign-up and login flows, clear validation and error feedback, keyboard-friendly form controls, and consistent behavior across device sizes.",
     technologies: "Next.js · Tailwind CSS",
     overview:
       "Nexcent is a focused study in authentication UI. It handles the small but important details around layout, validation, error feedback, and keyboard-friendly form controls across screen sizes.",
@@ -250,7 +250,7 @@ export const projects = [
     frontEnd: "Vite, React",
     backEnd: null,
     description:
-      "A travel log that pairs an interactive map with a personal record of cities, dates, and notes from the road.",
+      "A React travel journal that combines an interactive map with a personal city list, travel dates, and notes, helping users record visited places and revisit the context of each trip.",
     technologies: "Vite · React",
     overview:
       "World Wise turns visited cities into a personal map. Selecting a place reveals its date and notes, while the city list makes it easy to move through an expanding travel history.",
