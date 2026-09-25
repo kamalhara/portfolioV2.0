@@ -1,6 +1,5 @@
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
-import ScrollExpand from "@/app/components/ScrollExpand";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import ScrollStack, { ScrollStackItem } from "@/app/components/ScrollStack";
 import { projects } from "@/app/data/project";
@@ -112,35 +111,6 @@ export default async function ProjectDetailPage({ params }) {
               </div>
             </header>
           </ScrollReveal>
-          {project.cover && (
-            <ScrollExpand
-              src={project.cover}
-              alt={`${project.title} interface preview`}
-              startWidth={60}
-              startHeight={60}
-              startRadius={0}
-              endRadius={0}
-              mediaZoom={1}
-              scrollDistance={0.72}
-              holdDistance={0.08}
-              smoothing={0.12}
-              overlayScrim={0}
-              useWindowScroll
-              preload
-              className="hidden md:block border-y border-paper-border bg-bg-cream-light"
-              mediaClassName={
-                project.coverFit === "contain"
-                  ? "bg-[#101311] object-contain"
-                  : project.screenshot
-                    ? "object-contain p-[6vh]"
-                    : "object-cover object-top"
-              }
-              style={{
-                width: "100vw",
-                marginLeft: "calc(50% - 50vw)",
-              }}
-            />
-          )}
           <ScrollReveal>
             <div className="grid grid-cols-1 gap-12 py-14 sm:py-20 md:grid-cols-[.72fr_1.3fr] md:gap-20">
               <aside>
