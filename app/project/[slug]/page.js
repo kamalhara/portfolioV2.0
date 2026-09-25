@@ -111,6 +111,26 @@ export default async function ProjectDetailPage({ params }) {
               </div>
             </header>
           </ScrollReveal>
+          {project.cover && (
+            <figure
+              className={`relative aspect-[16/10] w-full overflow-hidden border-y border-paper-border sm:aspect-2/1 ${project.coverFit === "contain" ? "bg-[#101311]" : "bg-bg-cream-light"}`}
+            >
+              <Image
+                src={project.cover}
+                alt={`${project.title} interface preview`}
+                fill
+                preload
+                sizes="(max-width: 640px) 100vw, 1040px"
+                className={
+                  project.coverFit === "contain"
+                    ? "object-contain object-center"
+                    : project.screenshot
+                      ? "object-contain object-center p-[6%]"
+                      : "object-cover object-top"
+                }
+              />
+            </figure>
+          )}
           <ScrollReveal>
             <div className="grid grid-cols-1 gap-12 py-14 sm:py-20 md:grid-cols-[.72fr_1.3fr] md:gap-20">
               <aside>
