@@ -131,7 +131,7 @@ export default function Project() {
                       alt=""
                       fill
                       sizes="(max-width: 767px) 92vw"
-                      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+                      className={`${project.coverFit === "contain" ? "bg-[#101311] object-contain object-center" : "object-cover object-top"} transition-transform duration-500 ease-out group-hover:scale-[1.025]`}
                     />
                   </span>
                 )}
@@ -139,20 +139,25 @@ export default function Project() {
                 <span className="col-start-2 flex min-w-0 flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] leading-relaxed text-ink-muted opacity-70 transition-all duration-300 group-hover:text-ink-text group-hover:opacity-100 md:col-start-3 md:justify-self-start md:pt-2.5">
                   <span
                     aria-hidden="true"
-                    className={index === 0 ? "text-accent-orange" : ""}
+                    className={project.featured ? "text-accent-orange" : ""}
                   >
-                    {index === 0 ? "●" : "○"}
+                    {project.featured ? "●" : "○"}
                   </span>
                   {project.technologies}
+                  {project.featured && (
+                    <span className="uppercase tracking-wider text-accent-orange md:hidden">
+                      Primary
+                    </span>
+                  )}
                 </span>
 
                 <span className="col-start-2 hidden text-right font-mono text-[11px] text-ink-muted md:col-start-4 md:justify-self-end md:pt-2.5 md:group-hover:text-ink-text">
-                  {index === 0 && (
+                  {project.featured && (
                     <span
                       aria-hidden="true"
                       className="mt-1 block text-[9px] uppercase tracking-widest text-ink-muted opacity-60 transition-colors duration-300 group-hover:text-accent-orange group-hover:opacity-100"
                     >
-                      Featured
+                      Primary
                     </span>
                   )}
                 </span>
@@ -200,7 +205,9 @@ export default function Project() {
                   className={
                     activeProject.isScreenshot
                       ? "object-contain object-center"
-                      : "object-cover object-top"
+                      : activeProject.coverFit === "contain"
+                        ? "bg-[#101311] object-contain object-center"
+                        : "object-cover object-top"
                   }
                 />
               )}

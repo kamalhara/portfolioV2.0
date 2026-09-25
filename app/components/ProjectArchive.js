@@ -11,6 +11,7 @@ const filters = [
   "Mobile App",
   "Web App",
   "Backend API",
+  "Open Source",
 ];
 
 export default function ProjectArchive({ projects }) {
@@ -82,9 +83,16 @@ export default function ProjectArchive({ projects }) {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="flex min-w-0 flex-col gap-1">
-                  <strong className="text-[clamp(1.35rem,6vw,1.5rem)] font-semibold tracking-tight transition-transform duration-300 ease-out group-hover:translate-x-1.5">
-                    {project.title}
-                  </strong>
+                  <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <strong className="text-[clamp(1.35rem,6vw,1.5rem)] font-semibold tracking-tight transition-transform duration-300 ease-out group-hover:translate-x-1.5">
+                      {project.title}
+                    </strong>
+                    {project.featured && (
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-accent-orange">
+                        Primary
+                      </span>
+                    )}
+                  </span>
                   <em className="font-serif text-[15px] leading-snug italic text-ink-muted transition-colors duration-300 group-hover:text-ink-text sm:text-base">
                     {project.description}
                   </em>

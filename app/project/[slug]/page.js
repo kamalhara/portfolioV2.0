@@ -78,7 +78,7 @@ export default async function ProjectDetailPage({ params }) {
               <div className="grid grid-cols-1 gap-8 py-12 sm:py-16 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                 <div>
                   <p className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-faint">
-                    Selected project
+                    {project.featured ? "Primary project" : "Selected project"}
                   </p>
                   <h1 className="mb-5 wrap-anywhere text-[clamp(3.2rem,14vw,8rem)] leading-[.86] font-medium tracking-[-.07em]">
                     {project.title}
@@ -129,9 +129,11 @@ export default async function ProjectDetailPage({ params }) {
               preload
               className="hidden md:block border-y border-paper-border bg-bg-cream-light"
               mediaClassName={
-                project.screenshot
-                  ? "object-contain p-[6vh]"
-                  : "object-cover object-top"
+                project.coverFit === "contain"
+                  ? "bg-[#101311] object-contain"
+                  : project.screenshot
+                    ? "object-contain p-[6vh]"
+                    : "object-cover object-top"
               }
               style={{
                 width: "100vw",

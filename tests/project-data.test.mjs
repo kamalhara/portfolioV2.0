@@ -8,6 +8,17 @@ test("project slugs are unique", () => {
   assert.equal(new Set(slugs).size, slugs.length);
 });
 
+test("StateGlyph is the sole primary project and leads the collection", () => {
+  assert.equal(projects[0].slug, "stateglyph");
+  assert.equal(projects[0].featured, true);
+  assert.deepEqual(
+    projects
+      .filter((project) => project.featured)
+      .map((project) => project.slug),
+    ["stateglyph"],
+  );
+});
+
 test("projects contain the fields used by routes", () => {
   for (const project of projects) {
     assert.ok(project.title);

@@ -1,5 +1,32 @@
 export const projects = [
   {
+    title: "StateGlyph",
+    slug: "stateglyph",
+    frontEnd: "React, TypeScript, Lucide",
+    backEnd: "Core definitions, CLI, Next.js documentation",
+    description:
+      "An open-source state-icon system that gives React interfaces clear, accessible feedback across every application state.",
+    technologies: "React · TypeScript · Lucide · Next.js · CLI",
+    overview:
+      "StateGlyph groups related interface states behind one typed React component, so actions can move from idle or loading to success, warning, error, and other outcomes without scattered icon logic. The project pairs animated transitions with reduced-motion support, accessibility guidance, per-icon state previews and usage examples, a copy-and-own CLI, and framework-independent icon definitions.",
+    keyFeatures: [
+      "Typed, state-aware React icons for idle, loading, success, warning, error, and other application states",
+      "Animated state transitions with reduced-motion support",
+      "Accessibility guidance for decorative icons, semantic labels, and predictable focus behavior",
+      "Per-icon documentation with supported states, live previews, and usage examples",
+      "CLI for copying editable icon components directly into an application",
+      "Open-source architecture spanning React components, core definitions, transitions, and documentation",
+    ],
+    img: "/stateglyph.png",
+    cover: "/stateglyph.png",
+    coverFit: "contain",
+    tone: "green",
+    type: "Open Source",
+    code: "https://github.com/kamalhara/StateGlyph",
+    live: "https://state-glyph-docs-sigma.vercel.app/",
+    featured: true,
+  },
+  {
     title: "Spotus",
     slug: "spotus",
     frontEnd: "React Native, Expo Router, NativeWind",
@@ -29,7 +56,6 @@ export const projects = [
     tone: "orange",
     type: "Mobile Product",
     code: "https://github.com/kamalhara/spotus",
-    featured: true,
   },
   {
     title: "Ryde",

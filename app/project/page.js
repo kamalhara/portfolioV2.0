@@ -9,7 +9,7 @@ import { FiArrowLeft } from "react-icons/fi";
 export const metadata = {
   title: "Project archive",
   description:
-    "Web, mobile, and backend projects built by software engineer Kamalveer Singh.",
+    "Open-source, web, mobile, and backend projects built by software engineer Kamalveer Singh.",
   alternates: { canonical: "/project" },
 };
 
@@ -40,8 +40,8 @@ export default function ProjectPage() {
                 Everything I&apos;ve shipped.
               </h1>
               <p className="font-serif text-lg leading-relaxed italic text-ink-muted sm:text-xl">
-                Mobile products, web platforms, and backend systems—indexed by
-                the problem each one was built to solve.
+                Open-source tools, mobile products, web platforms, and backend
+                systems—indexed by the problem each one was built to solve.
               </p>
             </div>
           </header>
