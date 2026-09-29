@@ -1,8 +1,6 @@
 import "./globals.css";
-import WelcomeLoader from "./components/WelcomeLoader";
-import ClickSpark from "./components/ClickSpark";
-import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
+import "./portfolio.css";
+import { Geist, Geist_Mono, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -14,10 +12,12 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
 });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://kamalveer-portfolio.aurora-lamp-4868.chatgpt.site";
+  "https://kamalhara.me";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -48,62 +48,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Kamalveer Singh",
-    url: siteUrl,
-    jobTitle: "Software Engineer",
-    sameAs: [
-      "https://github.com/kamalhara",
-      "https://www.linkedin.com/in/kamalveer-singh-bb7250335/",
-    ],
-    knowsAbout: [
-      "React",
-      "Next.js",
-      "React Native",
-      "Node.js",
-      "Mobile application development",
-    ],
-  };
-
   return (
     <html
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${inter.variable} ${instrument.variable} ${jetbrains.variable}`}
+      className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable}`}
     >
-      <body suppressHydrationWarning>
-        <Script
-          id="restore-theme"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html:
-              'try{const r=document.documentElement;const t=localStorage.getItem("kamalveer-portfolio-theme-v2")||"light";r.dataset.theme=t;r.classList.toggle("dark",t==="dark");if(sessionStorage.getItem("kamalveer-portfolio-welcome-session-v1")==="seen")r.dataset.welcomeSeen="true"}catch(e){}',
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-          }}
-        />
-        <a
-          href="#main"
-          className="fixed top-3 left-3 z-100 -translate-y-24 bg-ink-text px-4 py-3 text-sm font-semibold text-white focus:translate-y-0"
-        >
-          Skip to content
-        </a>
-        <WelcomeLoader />
-        <ClickSpark
-          fixed
-          sparkColor="var(--color-accent-orange)"
-          className="min-h-screen"
-        >
-          {children}
-        </ClickSpark>
-      </body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

@@ -1,56 +1,58 @@
-import Footer from "@/app/components/Footer";
-import Navbar from "@/app/components/Navbar";
-import ProjectArchive from "@/app/components/ProjectArchive";
-import ScrollReveal from "@/app/components/ScrollReveal";
-import { projects } from "@/app/data/project";
 import Link from "next/link";
-import { FiArrowLeft } from "react-icons/fi";
+import { projects } from "@/app/data/project";
+import { portfolio, projectSummaries } from "@/app/data/portfolio";
+import PortfolioDock from "@/app/components/Dock";
+import {
+  badge,
+  container,
+  listLink,
+  listTitle,
+  muted,
+  shell,
+} from "@/app/components/portfolioStyles";
 
 export const metadata = {
-  title: "Project archive",
-  description:
-    "Open-source, web, mobile, and backend projects built by software engineer Kamalveer Singh.",
+  title: "Projects",
+  description: `Selected projects by ${portfolio.name}.`,
   alternates: { canonical: "/project" },
 };
 
 export default function ProjectPage() {
   return (
-    <>
-      <Navbar />
-      <main
-        id="main"
-        className="mx-auto max-w-260 px-4 pt-8 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-12"
-      >
-        <ScrollReveal>
-          <header>
-            <div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-              <span className="flex items-center gap-2">
-                <Link
-                  href="/"
-                  className="group flex items-center gap-2 transition-colors duration-200 hover:text-ink-text"
+    <div className={shell}>
+      <main id="main" className={container}>
+        <header className="mb-9.75">
+          <h1 className="text-xl leading-[1.4] font-medium">Projects</h1>
+          <p className={muted}>
+            A collection of things I&apos;ve built, from open-source tools to
+            full-stack and mobile products.
+          </p>
+        </header>
+        <ul className="grid max-w-130 gap-4.75">
+          {projects.map((project) => (
+            <li key={project.slug}>
+              <Link href={`/project/${project.slug}`} className={listLink}>
+                <span className={listTitle}>
+                  {project.title}
+                  <span className={badge}>{project.type}</span>
+                </span>
+                <span
+                  className={`block max-w-127.5 transition-colors group-hover:text-(--rep-text) ${muted}`}
                 >
-                  <FiArrowLeft className="transition-transform duration-200 group-hover:-translate-x-1" />
-                  Home
-                </Link>
-              </span>
-              <h2 className="font-normal">Project index</h2>
-            </div>
-            <div className="grid grid-cols-1 gap-8 py-12 sm:py-16 md:grid-cols-2 md:items-end">
-              <h1 className="max-w-[8ch] text-[clamp(3.25rem,14vw,6rem)] leading-[.88] font-medium tracking-[-.07em]">
-                Everything I&apos;ve shipped.
-              </h1>
-              <p className="font-serif text-lg leading-relaxed italic text-ink-muted sm:text-xl">
-                Open-source tools, mobile products, web platforms, and backend
-                systems—indexed by the problem each one was built to solve.
-              </p>
-            </div>
-          </header>
-        </ScrollReveal>
-        <ScrollReveal delay={0.08}>
-          <ProjectArchive projects={projects} />
-        </ScrollReveal>
+                  {projectSummaries[project.slug] ?? project.description}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link
+          href="/"
+          className={`mt-11.5 inline-block underline underline-offset-4 hover:text-(--rep-text) ${muted}`}
+        >
+          ← back home
+        </Link>
       </main>
-      <Footer />
-    </>
+      <PortfolioDock />
+    </div>
   );
 }

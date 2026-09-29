@@ -1,17 +1,19 @@
-import Footer from "@/app/components/Footer";
-import Navbar from "@/app/components/Navbar";
-import ScrollReveal from "@/app/components/ScrollReveal";
-import ScrollStack, { ScrollStackItem } from "@/app/components/ScrollStack";
-import { projects } from "@/app/data/project";
-import IPhoneFrame from "@/app/ui/IPhoneFrame";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FiArrowLeft, FiArrowUpRight, FiGithub } from "react-icons/fi";
+import { projects } from "@/app/data/project";
+import PortfolioDock from "@/app/components/Dock";
+import {
+  badge,
+  container,
+  muted,
+  shell,
+} from "@/app/components/portfolioStyles";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
@@ -42,237 +44,113 @@ export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) notFound();
+
   return (
-    <>
-      <Navbar />
-      <main
-        id="main"
-        className="mx-auto max-w-260 px-4 pt-8 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-12"
-      >
+    <div className={shell}>
+      <main id="main" className={container}>
         <article>
-          <ScrollReveal>
-            <header>
-              <div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-                <span className="flex items-center gap-2 ">
-                  <Link
-                    href="/"
-                    className="group flex items-center gap-2 transition-colors duration-200 hover:text-ink-text"
-                  >
-                    <FiArrowLeft className="transition-transform duration-200 group-hover:-translate-x-1" />
-                    Home
-                  </Link>
-                </span>
-                <p>{project.type}</p>
-              </div>
-              <nav
-                aria-label="Breadcrumb"
-                className="mt-4 flex gap-2 font-mono text-[10px] uppercase text-ink-faint"
-              >
-                <Link href="/">Index</Link>
-                <span>/</span>
-                <Link href="/project">Work</Link>
-                <span>/</span>
-                <span>{project.title}</span>
-              </nav>
-              <div className="grid grid-cols-1 gap-8 py-12 sm:py-16 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-                <div>
-                  <p className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-faint">
-                    {project.featured ? "Primary project" : "Selected project"}
-                  </p>
-                  <h1 className="mb-5 wrap-anywhere text-[clamp(3.2rem,14vw,8rem)] leading-[.86] font-medium tracking-[-.07em]">
-                    {project.title}
-                  </h1>
-                  <em className="block max-w-2xl font-serif text-lg leading-relaxed italic text-ink-muted">
-                    {project.description}
-                  </em>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <a
-                    href={project.code}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex min-h-11 items-center gap-2 border border-ink-text px-4 text-xs font-semibold transition-all duration-200 hover:-translate-y-1 hover:bg-ink-text/20"
-                  >
-                    <FiGithub className="transition-transform duration-200 group-hover:-rotate-6" />{" "}
-                    Source
-                  </a>
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex min-h-11 items-center gap-2 border border-paper-border-dark px-4 text-xs font-semibold transition-all duration-200 hover:-translate-y-1 hover:border-ink-text hover:bg-ink-text/20 "
-                    >
-                      Live site{" "}
-                      <FiArrowUpRight className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </header>
-          </ScrollReveal>
-          {project.cover && (
-            <figure
-              className={`relative aspect-[16/10] w-full overflow-hidden border-y border-paper-border sm:aspect-2/1 ${project.coverFit === "contain" ? "bg-[#101311]" : "bg-bg-cream-light"}`}
+          <header>
+            <Link
+              href="/project"
+              className={`mb-7 inline-block underline underline-offset-4 hover:text-(--rep-text) ${muted}`}
             >
+              ← all projects
+            </Link>
+            <div className="mb-2">
+              {" "}
+              <span className={badge}>{project.type}</span>
+            </div>
+            <h1 className="text-[clamp(32px,6vw,60px)] leading-[1.15] font-medium tracking-[-.06em]">
+              {project.title}
+            </h1>
+            <p className={`mt-2.5 max-w-175 ${muted}`}>{project.description}</p>
+            <div className="mt-5 flex flex-wrap gap-4 text-sm">
+              <a
+                className="underline underline-offset-4"
+                href={project.code}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Source ↗
+              </a>
+              {project.live && (
+                <a
+                  className="underline underline-offset-4"
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Live site ↗
+                </a>
+              )}
+            </div>
+          </header>
+
+          {project.cover && (
+            <figure className="relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-(--rep-border) bg-(--rep-surface) max-[700px]:h-75 max-[480px]:h-57.5">
               <Image
                 src={project.cover}
                 alt={`${project.title} interface preview`}
                 fill
                 preload
-                sizes="(max-width: 640px) 100vw, 1040px"
+                sizes="(max-width: 800px) 100vw, 800px"
                 className={
                   project.coverFit === "contain"
-                    ? "object-contain object-center"
-                    : project.screenshot
-                      ? "object-contain object-center p-[6%]"
-                      : "object-cover object-top"
+                    ? "object-contain"
+                    : "object-cover object-top"
                 }
               />
             </figure>
           )}
-          <ScrollReveal>
-            <div className="grid grid-cols-1 gap-12 py-14 sm:py-20 md:grid-cols-[.72fr_1.3fr] md:gap-20">
-              <aside>
-                <dl className="border-t border-paper-border">
-                  {project.frontEnd && (
-                    <div className="border-b border-paper-border py-4">
-                      <dt className="font-mono text-[10px] uppercase text-ink-faint">
-                        Interface
-                      </dt>
-                      <dd className="mt-2 text-xs leading-relaxed">
-                        {project.frontEnd}
-                      </dd>
-                    </div>
-                  )}
-                  {project.backEnd && (
-                    <div className="border-b border-paper-border py-4">
-                      <dt className="font-mono text-[10px] uppercase text-ink-faint">
-                        System
-                      </dt>
-                      <dd className="mt-2 text-xs leading-relaxed">
-                        {project.backEnd}
-                      </dd>
-                    </div>
-                  )}
-                  <div className="border-b border-paper-border py-4">
-                    <dt className="font-mono text-[10px] uppercase text-ink-faint">
-                      Stack
-                    </dt>
-                    <dd className="mt-2 text-xs leading-relaxed">
-                      {project.technologies}
-                    </dd>
-                  </div>
-                </dl>
-              </aside>
-              <div>
-                <section>
-                  <p className="mb-4 font-mono text-[11px] uppercase text-ink-faint">
-                    01 / Context
-                  </p>
-                  <h2 className="mb-5 text-3xl font-medium tracking-tight">
-                    What it does
-                  </h2>
-                  <p className="text-sm leading-7 text-ink-muted">
-                    {project.overview}
-                  </p>
-                </section>
-                <section className="mt-16">
-                  <p className="mb-4 font-mono text-[11px] uppercase text-ink-faint">
-                    02 / Product surface
-                  </p>
-                  <h2 className="mb-5 text-3xl font-medium tracking-tight">
-                    Core features
-                  </h2>
-                  <ol className="border-t border-paper-border">
-                    {project.keyFeatures.map((feature, index) => (
-                      <li
-                        key={feature}
-                        className="grid grid-cols-[2.75rem_1fr] border-b border-paper-border py-4 text-sm leading-relaxed"
-                      >
-                        <span className="font-mono text-[10px] text-accent-orange">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ol>
-                </section>
-              </div>
-            </div>
-          </ScrollReveal>
-          {project.screenshot && (
-            <section
-              aria-labelledby="screens-title"
-              className="border-t border-paper-border py-12 sm:py-16"
-            >
-              <div className="flex items-center justify-between border-b border-paper-border pb-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-                <h2 id="screens-title" className="font-normal">
-                  Interface
-                </h2>
-                <p>
-                  {String(project.screenshot.length).padStart(2, "0")} screens
-                </p>
-              </div>
-              <ScrollStack
-                useWindowScroll
-                itemDistance={72}
-                itemScale={0.018}
-                itemStackDistance={18}
-                stackPosition="14%"
-                scaleEndPosition="5%"
-                baseScale={0.92}
-                blurAmount={0.35}
-                className="mx-auto max-w-3xl"
-              >
-                {project.screenshot.map((src, index) => {
-                  const img = (
-                    <Image
-                      src={`/${src}`}
-                      alt={`${project.title} screen ${index + 1}`}
-                      width={400}
-                      height={800}
-                      sizes="(max-width: 640px) 72vw, 280px"
-                      loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto w-full"
-                    />
-                  );
 
-                  return (
-                    <ScrollStackItem
-                      key={src}
-                      itemClassName="min-h-[72svh] overflow-hidden px-5 py-5 sm:px-8 sm:py-6"
-                    >
-                      <div className="flex items-center justify-between  font-mono text-[10px] uppercase tracking-wider text-ink-muted">
-                        <span>Screen {String(index + 1).padStart(2, "0")}</span>
-                      </div>
-                      <div className="flex min-h-[calc(72svh-5rem)] items-center justify-center py-1">
-                        {project.slug === "spotus" ? (
-                          <div className="w-full max-w-64">
-                            <IPhoneFrame>{img}</IPhoneFrame>
-                          </div>
-                        ) : (
-                          <figure className="w-full max-w-64 overflow-hidden border border-paper-border bg-bg-cream">
-                            {img}
-                          </figure>
-                        )}
-                      </div>
-                    </ScrollStackItem>
-                  );
-                })}
-              </ScrollStack>
+          <section className="mt-13.5">
+            <h2 className="mb-3 text-base font-medium">What it does</h2>
+            <p className={muted}>{project.overview}</p>
+          </section>
+          <section className="mt-13.5">
+            <h2 className="mb-3 text-base font-medium">Built with</h2>
+            <p className={muted}>{project.technologies}</p>
+          </section>
+          <section className="mt-13.5">
+            <h2 className="mb-3 text-base font-medium">Core features</h2>
+            <ul>
+              {project.keyFeatures.map((feature) => (
+                <li
+                  className={`border-b border-(--rep-border) py-2.5 ${muted}`}
+                  key={feature}
+                >
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </section>
+          {project.screenshot?.length > 0 && (
+            <section className="mt-13.5">
+              <h2 className="mb-3 text-base font-medium">Screens</h2>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
+                {project.screenshot.map((src, index) => (
+                  <Image
+                    className="h-auto w-full rounded-xl border border-(--rep-border)"
+                    key={src}
+                    src={`/${src}`}
+                    alt={`${project.title} screen ${index + 1}`}
+                    width={400}
+                    height={800}
+                    sizes="(max-width: 480px) 45vw, 200px"
+                  />
+                ))}
+              </div>
             </section>
           )}
           <Link
             href="/project"
-            className="group inline-flex items-center gap-2 border-b border-ink-text pb-1 text-xs font-semibold transition-colors hover:text-accent-orange"
+            className={`mt-13.5 inline-block underline underline-offset-4 hover:text-(--rep-text) ${muted}`}
           >
-            <FiArrowLeft className="transition-transform duration-200 group-hover:-translate-x-1" />{" "}
-            Back to project index
+            ← back to projects
           </Link>
         </article>
       </main>
-      <Footer />
-    </>
+      <PortfolioDock />
+    </div>
   );
 }
