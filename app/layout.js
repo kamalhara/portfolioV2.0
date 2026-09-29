@@ -1,5 +1,11 @@
 import "./globals.css";
-import { Geist, Geist_Mono, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Instrument_Serif,
+  Inter,
+  JetBrains_Mono,
+} from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -12,11 +18,12 @@ const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://kamalhara.me";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kamalhara.me";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -52,7 +59,7 @@ export default function RootLayout({ children }) {
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable}`}
+      className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable} overflow-hidden`}
     >
       <body suppressHydrationWarning>{children}</body>
     </html>

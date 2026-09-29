@@ -180,7 +180,7 @@ export default function MagneticLogoCard() {
     <button
       type="button"
       aria-label="Interactive dotted logo. Move the pointer to repel the dots, or click to send out a ripple."
-      className="relative aspect-square min-w-0 cursor-none touch-manipulation overflow-hidden rounded-[15px] border border-border bg-card"
+      className="relative aspect-square min-w-0 cursor-none touch-manipulation overflow-hidden rounded-[15px] border border-border bg-[#171717]"
       onPointerEnter={updatePointer}
       onPointerMove={updatePointer}
       onPointerLeave={() => {
