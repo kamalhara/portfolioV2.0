@@ -34,6 +34,9 @@ widget, create `.env.local` with `LASTFM_API_KEY` and `LASTFM_USERNAME` (see
 the deployment environment. The site now requires a host that runs Next.js
 server routes; static-only hosting cannot provide a live `/api/now-playing`
 endpoint. Apple preview audio is streamed from Apple's URL, never hosted here.
+The card preloads available previews when track data arrives, shows 1200×1200
+Apple catalog artwork where available, and links to a Spotify search for the
+detected track. Not every catalog track has a playable preview.
 
 ## Checks
 

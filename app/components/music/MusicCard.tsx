@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FiMusic } from "react-icons/fi";
-import { SiSpotify } from "react-icons/si";
 import type { MusicTrack } from "@/app/types/music";
 
 const POLL_INTERVAL = 10_000;
@@ -144,18 +143,18 @@ export default function MusicCard() {
           ? `${playing ? "Pause" : "Play"} preview of ${track.title}`
           : undefined
       }
-      onClick={() => void togglePreview()}
       onKeyDown={handleCardKeyDown}
-      className="relative col-span-1 flex h-full min-h-38 min-w-0 items-center gap-5 overflow-hidden rounded-[15px] border border-border bg-[#171717] p-3.75 text-white backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[700px]:gap-4.25 max-[700px]:p-3.5 max-[480px]:gap-3.5"
+      className="relative col-span-1 flex h-full min-h-38 min-w-0  items-center gap-5 rounded-2xl border border-border bg-[#171717] p-4 text-foreground backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[480px]:gap-3"
     >
-      <div className="relative aspect-square w-[min(38%,155px)] shrink-0 overflow-hidden rounded-xl bg-[#262626] shadow-md shadow-black/20">
+      <div className="relative aspect-square shrink-0 self-stretch overflow-hidden rounded-xl bg-muted shadow-md shadow-black/20">
         {track?.artwork ? (
           <Image
             src={track.artwork}
-            alt={`${track.title} by ${track.artist} album artwork`}
+            alt={`${track.title} by ${track.artist}`}
             fill
-            sizes="(min-width: 700px) 155px, 136px"
-            className="object-cover"
+            loading="eager"
+            sizes="(min-width: 700px) 160px, 42vw"
+            className="rounded-xl object-cover"
             unoptimized
           />
         ) : (
@@ -165,18 +164,18 @@ export default function MusicCard() {
         )}
       </div>
 
-      <div className="mt-8 flex min-w-0 flex-1 flex-col justify-center">
-        <span className="text-xs font-medium uppercase tracking-wider text-neutral-400">
+      <div className="mt-12 flex min-w-0 flex-1 flex-col">
+        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
           {track ? status : requestFailed ? "UNAVAILABLE" : "CHECKING MUSIC"}
         </span>
         <span
-          className="mt-0.5 truncate text-base font-semibold tracking-tight"
+          className="mt-0.5 truncate text-base font-semibold tracking-tight text-foreground"
           title={track?.title}
         >
           {track?.title ?? (requestFailed ? "Music unavailable" : "Loading…")}
         </span>
         <span
-          className="truncate text-sm text-neutral-300"
+          className="truncate text-sm text-muted-foreground"
           title={track?.artist}
         >
           {track?.artist}
@@ -189,7 +188,7 @@ export default function MusicCard() {
               event.stopPropagation();
               void togglePreview();
             }}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-sm font-medium text-white transition-colors hover:bg-white/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-700 px-3.5 py-1 text-sm font-medium text-white transition-colors hover:bg-neutral-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 [html.dark_&]:bg-white/10 [html.dark_&]:hover:bg-white/20"
           >
             {playing ? (
               <svg
@@ -221,30 +220,7 @@ export default function MusicCard() {
             )}
             {previewFailed ? "Unavailable" : playing ? "Pause" : "Play"}
           </button>
-          {track && (
-            <a
-              href={track.spotifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(event) => event.stopPropagation()}
-              className="inline-flex items-center gap-1 text-xs text-neutral-400 transition-colors hover:text-[#1DB954] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              <SiSpotify aria-hidden="true" />
-              Spotify
-            </a>
-          )}
         </div>
-        {track?.previewUrl && track.appleMusicUrl && (
-          <a
-            href={track.appleMusicUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(event) => event.stopPropagation()}
-            className="mt-1 text-[9px] leading-tight text-neutral-500 underline-offset-2 hover:text-neutral-300 hover:underline"
-          >
-            Preview provided courtesy of iTunes
-          </a>
-        )}
       </div>
       {track?.appleMusicUrl && (
         <a
@@ -252,7 +228,7 @@ export default function MusicCard() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={(event) => event.stopPropagation()}
-          className="absolute right-4 top-4 text-neutral-500 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="absolute right-4 top-4 text-neutral-500 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
           aria-label={`Open ${track.title} in Apple Music`}
           title="Open in Apple Music"
         >
@@ -260,7 +236,7 @@ export default function MusicCard() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             className="h-4 w-4"
-            fill="currentColor"
+            fill="#A1A1A1"
             aria-hidden="true"
           >
             <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />

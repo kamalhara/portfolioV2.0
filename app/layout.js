@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable} overflow-hidden`}
+      className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable}`}
     >
       <body suppressHydrationWarning>{children}</body>
     </html>

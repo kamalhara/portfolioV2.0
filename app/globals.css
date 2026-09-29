@@ -90,6 +90,10 @@ html[data-theme="dark"] {
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
 }
 body {
   margin: 0;
