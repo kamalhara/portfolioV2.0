@@ -9,8 +9,8 @@ const GitHubCalendar = dynamic(
 
 export default function PortfolioActivity() {
   return (
-    <div className="overflow-hidden rounded-[15px] border border-(--rep-border) bg-(--rep-surface) px-5 pt-6 pb-4">
-      <div className="overflow-x-auto text-(--rep-muted) [scrollbar-width:thin] [&>div]:min-w-177.5 [&_svg]:max-w-none">
+    <div className="overflow-hidden rounded-[15px] border border-border bg-card px-5 pt-6 pb-4">
+      <div className="overflow-x-auto text-muted-foreground [scrollbar-width:thin] [&>div]:min-w-177.5 [&_svg]:max-w-none">
         <GitHubCalendar
           username="kamalhara"
           colorScheme="dark"

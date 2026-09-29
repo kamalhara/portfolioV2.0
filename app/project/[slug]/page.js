@@ -3,12 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/app/data/project";
 import PortfolioDock from "@/app/components/Dock";
-import {
-  badge,
-  container,
-  muted,
-  shell,
-} from "@/app/components/portfolioStyles";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -46,24 +40,24 @@ export default async function ProjectDetailPage({ params }) {
   if (!project) notFound();
 
   return (
-    <div className={shell}>
-      <main id="main" className={container}>
+    <div className="min-h-screen bg-background text-[15.7px] leading-[1.64] tracking-[-0.025em] text-foreground [font-family:var(--font-geist)] max-[480px]:text-[15.5px]">
+      <main id="main" className="mx-auto w-[min(800px,calc(100%-50px))] pt-[99px] pb-40 max-[700px]:pt-[54px]">
         <article>
           <header>
             <Link
               href="/project"
-              className={`mb-7 inline-block underline underline-offset-4 hover:text-(--rep-text) ${muted}`}
+              className="mb-7 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
               ← all projects
             </Link>
             <div className="mb-2">
               {" "}
-              <span className={badge}>{project.type}</span>
+              <span className="inline-flex min-h-[19px] items-center rounded-full bg-[#3f251b] px-2 py-px text-[11px] leading-[1.2] tracking-normal">{project.type}</span>
             </div>
             <h1 className="text-[clamp(32px,6vw,60px)] leading-[1.15] font-medium tracking-[-.06em]">
               {project.title}
             </h1>
-            <p className={`mt-2.5 max-w-175 ${muted}`}>{project.description}</p>
+            <p className="mt-2.5 max-w-175 text-muted-foreground">{project.description}</p>
             <div className="mt-5 flex flex-wrap gap-4 text-sm">
               <a
                 className="underline underline-offset-4"
@@ -87,7 +81,7 @@ export default async function ProjectDetailPage({ params }) {
           </header>
 
           {project.cover && (
-            <figure className="relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-(--rep-border) bg-(--rep-surface) max-[700px]:h-75 max-[480px]:h-57.5">
+            <figure className="relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-border bg-card max-[700px]:h-75 max-[480px]:h-57.5">
               <Image
                 src={project.cover}
                 alt={`${project.title} interface preview`}
@@ -105,18 +99,18 @@ export default async function ProjectDetailPage({ params }) {
 
           <section className="mt-13.5">
             <h2 className="mb-3 text-base font-medium">What it does</h2>
-            <p className={muted}>{project.overview}</p>
+            <p className="text-muted-foreground">{project.overview}</p>
           </section>
           <section className="mt-13.5">
             <h2 className="mb-3 text-base font-medium">Built with</h2>
-            <p className={muted}>{project.technologies}</p>
+            <p className="text-muted-foreground">{project.technologies}</p>
           </section>
           <section className="mt-13.5">
             <h2 className="mb-3 text-base font-medium">Core features</h2>
             <ul>
               {project.keyFeatures.map((feature) => (
                 <li
-                  className={`border-b border-(--rep-border) py-2.5 ${muted}`}
+                  className="border-b border-border py-2.5 text-muted-foreground"
                   key={feature}
                 >
                   {feature}
@@ -130,7 +124,7 @@ export default async function ProjectDetailPage({ params }) {
               <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
                 {project.screenshot.map((src, index) => (
                   <Image
-                    className="h-auto w-full rounded-xl border border-(--rep-border)"
+                    className="h-auto w-full rounded-xl border border-border"
                     key={src}
                     src={`/${src}`}
                     alt={`${project.title} screen ${index + 1}`}
@@ -144,7 +138,7 @@ export default async function ProjectDetailPage({ params }) {
           )}
           <Link
             href="/project"
-            className={`mt-13.5 inline-block underline underline-offset-4 hover:text-(--rep-text) ${muted}`}
+            className="mt-13.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             ← back to projects
           </Link>

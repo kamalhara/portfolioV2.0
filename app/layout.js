@@ -1,5 +1,4 @@
 import "./globals.css";
-import "./portfolio.css";
 import { Geist, Geist_Mono, Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });

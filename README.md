@@ -19,12 +19,13 @@ Open [http://localhost:3000](http://localhost:3000).
 - `app/data/experience.js` — work experience
 - `app/data/skills.js` — tech stack
 - `app/data/nowPlaying.js` — music widget
-- `app/components/magneticLogo.js` — dotted logo coordinates
-- `app/components/MagneticLogoCard.js` — logo hover and ripple behavior
+- `app/components/magneticLogo/magneticLogo.js` — dotted logo coordinates
+- `app/components/magneticLogo/MagneticLogoCard.js` — logo hover and ripple behavior
 
-The homepage layout is in `app/components/PortfolioHome.js`. Project routes
-are in `app/project/`. Component styling uses Tailwind utilities; theme tokens
-live in `app/portfolio.css`. Static images and the résumé are in `public/`.
+The homepage layout is in `app/components/Home.js`. Project routes are in
+`app/project/`. Component styling uses Tailwind utilities directly in each
+component; shared light and dark theme tokens live in `app/globals.css`.
+Static images and the résumé are in `public/`.
 
 Set `NEXT_PUBLIC_SITE_URL` if deploying under a different domain.
 

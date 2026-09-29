@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { FiCheck, FiCopy } from "react-icons/fi";
 import { portfolio } from "@/app/data/portfolio";
 import nowPlaying from "@/app/data/nowPlaying";
-import { card } from "../components/portfolioStyles";
 import MagneticLogoCard from "../components/magneticLogo/MagneticLogoCard";
 
 function getIndiaTime() {
@@ -37,7 +36,7 @@ export function EmailCopy() {
 
   return (
     <button
-      className="mt-5.5 inline-flex cursor-pointer items-center gap-1.5 text-(--rep-muted) transition-colors hover:text-(--rep-text) [&_svg]:size-3.5"
+      className="mt-5.5 inline-flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground [&_svg]:size-3.5"
       type="button"
       onClick={copyEmail}
     >
@@ -91,7 +90,7 @@ function MusicCard() {
           togglePlay();
         }
       }}
-      className={`relative col-span-1 flex h-full cursor-pointer items-center gap-5 bg-(--rep-surface) backdrop-blur-xl backdrop-saturate-150 transition-colors hover:border-[#484848] hover:bg-(--rep-surface-hover) max-[700px]:col-span-2 max-[700px]:gap-4.25 max-[700px]:p-3.5 max-[480px]:gap-3.5 ${card} p-3.75`}
+      className="relative col-span-1 flex h-full cursor-pointer items-center gap-5 overflow-hidden rounded-[15px] border border-border bg-card p-3.75 backdrop-blur-xl backdrop-saturate-150 transition-colorsd max-[700px]:col-span-2 max-[700px]:gap-4.25 max-[700px]:p-3.5 max-[480px]:gap-3.5"
     >
       {/* Album artwork */}
       <div className="relative aspect-square shrink-0 self-stretch">
@@ -107,13 +106,13 @@ function MusicCard() {
 
       {/* Song info */}
       <div className="flex min-w-0 flex-1 flex-col mt-12">
-        <span className="text-xs font-medium uppercase tracking-wider text-(--rep-muted)">
-          {playing ? "Now Playing" : "Recently Played"}
+        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          Recently Played
         </span>
-        <span className="mt-0.5 truncate text-base font-semibold tracking-tight text-(--rep-text)">
+        <span className="mt-0.5 truncate text-base font-semibold tracking-tight text-foreground">
           {nowPlaying.title}
         </span>
-        <span className="truncate text-sm text-(--rep-muted)">
+        <span className="truncate text-sm text-muted-foreground">
           {nowPlaying.artist}
         </span>
         <button
