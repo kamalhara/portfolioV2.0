@@ -177,6 +177,14 @@ img {
   outline-offset: 4px;
 }
 
+#portfolio-search-dialog input:focus-visible {
+  outline: none;
+}
+
+.command-menu :is(a, button):focus-visible {
+  outline: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -1,26 +1,106 @@
 "use client";
 
+import {
+  Activity,
+  BriefcaseBusiness,
+  FileText,
+  FolderKanban,
+  House,
+  Layers3,
+  Mail,
+  MessageCircle,
+  PanelsTopLeft,
+  UserRound,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiMoon, FiSearch, FiSun, FiX } from "react-icons/fi";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { portfolio } from "@/app/data/portfolio";
+import { LuBot } from "react-icons/lu";
 
 const quickLinks = [
-  { label: "Projects", description: "Selected work", href: "/#projects" },
+  {
+    label: "Home",
+    description: "Back to the homepage",
+    href: "/",
+    icon: House,
+  },
+
+  {
+    label: "Projects",
+    description: "Selected work",
+    href: "/#projects",
+    icon: FolderKanban,
+  },
   {
     label: "Experience",
     description: "Where I've worked",
     href: "/#experience",
+    icon: BriefcaseBusiness,
   },
-  { label: "Tech stack", description: "Tools I use", href: "/#stack" },
+  {
+    label: "About",
+    description: "A little about me",
+    href: "/#about",
+    icon: UserRound,
+  },
+  {
+    label: "Tech stack",
+    description: "Tools I use",
+    href: "/#stack",
+    icon: Layers3,
+  },
+  {
+    label: "Interfaces",
+    description: "Interface explorations",
+    href: "/#interfaces",
+    icon: PanelsTopLeft,
+  },
   {
     label: "Activity",
     description: "Recent GitHub activity",
     href: "/#activity",
+    icon: Activity,
   },
+];
+
+const commandGroups = [
   {
-    label: "All projects",
-    description: "Browse the full collection",
-    href: "/project",
+    label: "Featured",
+    items: [
+      {
+        label: "Ask Assistant",
+        description: "Ask me anything",
+        href: `mailto:${portfolio.email}`,
+        icon: LuBot,
+      },
+    ],
+  },
+  { label: "Views", items: quickLinks },
+  {
+    label: "Socials",
+    items: [
+      {
+        label: "GitHub",
+        href: portfolio.github,
+        icon: FaGithub,
+        external: true,
+      },
+      {
+        label: "LinkedIn",
+        href: portfolio.linkedin,
+        icon: FaLinkedin,
+        external: true,
+      },
+      { label: "Email", href: `mailto:${portfolio.email}`, icon: Mail },
+      {
+        label: "Resume",
+        href: portfolio.resume,
+        icon: FileText,
+        external: true,
+      },
+    ],
   },
 ];
 
@@ -122,17 +202,24 @@ export default function PortfolioDock() {
     }
   }
 
-  const filteredLinks = quickLinks.filter((item) =>
-    `${item.label} ${item.description}`
-      .toLowerCase()
-      .includes(query.trim().toLowerCase()),
-  );
+  const searchTerm = query.trim().toLowerCase();
+  const filteredGroups = commandGroups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) =>
+        `${item.label} ${item.description ?? ""}`
+          .toLowerCase()
+          .includes(searchTerm),
+      ),
+    }))
+    .filter((group) => group.items.length);
+  const showSettings = "toggle theme light dark".includes(searchTerm);
 
   return (
     <>
       {searchOpen && (
         <div
-          className="fixed inset-0 z-60 flex justify-center bg-black/50 px-4 pt-[min(22vh,180px)] backdrop-blur-sm"
+          className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) closeSearch();
           }}
@@ -142,49 +229,120 @@ export default function PortfolioDock() {
             id="portfolio-search-dialog"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="portfolio-search-title"
+            aria-labelledby="command-modal-title"
             onKeyDown={trapDialogFocus}
-            className="h-fit w-full max-w-md overflow-hidden rounded-2xl border border-border bg-background text-foreground shadow-2xl"
+            className="command-menu w-full max-w-lg text-foreground"
           >
-            <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-              <FiSearch
-                className="size-4 shrink-0 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <input
-                ref={searchInputRef}
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search projects, experience, or skills"
-                aria-label="Search portfolio sections"
-                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground focus:ring-none"
-              />
-            </div>
-            <nav
-              className="max-h-80 overflow-y-auto p-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              aria-label="Search results"
-            >
-              {filteredLinks.length ? (
-                filteredLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
+            <h2 id="command-modal-title" className="sr-only">
+              Command menu
+            </h2>
+            <div className="rounded-3xl border border-border bg-background p-2 shadow-2xl">
+              <div className="flex items-center gap-2 px-3 py-1">
+                <FiSearch
+                  className="size-4 shrink-0 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Type something or Ask Assistant..."
+                  aria-label="Search commands"
+                  className="w-full appearance-none border-none bg-transparent text-base font-medium text-foreground outline-none placeholder:text-muted-foreground focus:outline-none"
+                />
+              </div>
+
+              <div className="mt-2 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <nav
+                  className="max-h-[45dvh] overflow-y-auto px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                  aria-label="Command results"
+                >
+                  {filteredGroups.map((group) => (
+                    <div key={group.label} className="mb-2 mt-4">
+                      <h3 className="mx-1 px-2 py-2 text-xs font-medium text-muted-foreground">
+                        {group.label}
+                      </h3>
+                      <div className="flex flex-col gap-0.5">
+                        {group.items.map((item) => {
+                          const Icon = item.icon;
+                          const ItemLink =
+                            item.external || item.href.startsWith("mailto:")
+                              ? "a"
+                              : Link;
+
+                          return (
+                            <ItemLink
+                              key={item.href}
+                              href={item.href}
+                              target={item.external ? "_blank" : undefined}
+                              rel={
+                                item.external
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              }
+                              onClick={closeSearch}
+                              className="group mx-1 flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-[13px] leading-none transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5 focus-visible:ring-2 focus-visible:ring-ring/40 dark:hover:bg-foreground/10"
+                            >
+                              <Icon
+                                className="size-4 shrink-0 text-foreground/80"
+                                aria-hidden="true"
+                              />
+                              <span className="flex-1">{item.label}</span>
+                            </ItemLink>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  {showSettings && (
+                    <div className="mb-2 mt-4">
+                      <h3 className="mx-1 px-2 py-2 text-xs font-medium text-muted-foreground">
+                        Settings
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={toggleTheme}
+                        className="mx-1 flex w-[calc(100%-0.5rem)] cursor-pointer items-center gap-3 rounded-lg px-2.5 py-2.5 text-left text-[13px] leading-none transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5 focus-visible:ring-2 focus-visible:ring-ring/40 dark:hover:bg-foreground/10"
+                      >
+                        {light ? (
+                          <FiMoon
+                            className="size-4 shrink-0 text-foreground/80"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <FiSun
+                            className="size-4 shrink-0 text-foreground/80"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span>Toggle Theme</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {!filteredGroups.length && !showSettings && (
+                    <p className="px-3 py-4 text-sm text-muted-foreground">
+                      No matching commands.
+                    </p>
+                  )}
+                </nav>
+                <div className="flex items-center justify-between border-t border-border bg-card/80 px-4 py-3 text-xs text-muted-foreground backdrop-blur-md">
+                  <span className="font-medium">Actions</span>
+                  <button
+                    type="button"
                     onClick={closeSearch}
-                    className="flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5 focus-visible:outline-none"
+                    className="flex cursor-pointer items-center gap-2 rounded-sm transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                   >
-                    <span className="text-sm font-medium">{item.label}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.description}
-                    </span>
-                  </Link>
-                ))
-              ) : (
-                <p className="px-3 py-4 text-sm text-muted-foreground">
-                  No matching sections.
-                </p>
-              )}
-            </nav>
+                    <span>Close</span>
+                    <kbd className="hidden rounded border border-border bg-background/70 px-1.5 py-0.5 text-[10px] text-muted-foreground shadow-sm sm:block dark:shadow-none">
+                      Esc
+                    </kbd>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -193,7 +351,7 @@ export default function PortfolioDock() {
         <div className="pointer-events-auto">
           {menuOpen && (
             <nav
-              className="mx-auto mb-2 grid w-52 gap-px rounded-2xl border border-border bg-background p-2 shadow-2xl sm:hidden [&_a]:rounded-lg [&_a]:px-3 [&_a]:py-2 [&_a]:text-sm [&_a]:text-muted-foreground [&_a:hover]:bg-foreground/5 [&_a:hover]:text-foreground"
+              className="mx-auto mb-2 grid w-52 gap-px rounded-2xl border border-border bg-card p-2 shadow-2xl sm:hidden [&_a]:rounded-lg [&_a]:px-3 [&_a]:py-2 [&_a]:text-sm [&_a]:text-muted-foreground [&_a:hover]:bg-foreground/5 [&_a:hover]:text-foreground"
               aria-label="Quick navigation"
             >
               {quickLinks.map((item) => (
