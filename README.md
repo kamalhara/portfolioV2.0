@@ -18,6 +18,9 @@ Open [http://localhost:3000](http://localhost:3000).
 - `app/data/project.js` — project descriptions, links, and screenshots
 - `app/data/experience.js` — work experience
 - `app/data/skills.js` — tech stack
+- `app/data/assistantFacts.js` — public professional details for the assistant
+- `app/components/Assisstant.js` — existing assistant dialog and Worker client
+- `worker/src/knowledge.ts` — portfolio evidence assembled from the site data
 - `app/components/music/MusicCard.tsx` — live music widget and preview player
 - `app/api/now-playing/route.ts` — server-only Last.fm and Apple catalog lookup
 - `app/components/magneticLogo/magneticLogo.js` — dotted logo coordinates
@@ -47,3 +50,59 @@ npm run build
 ```
 
 Run `npm start` after building to serve the production app.
+
+## Recruiter assistant
+
+The existing Dock assistant sends questions to a Cloudflare Worker. The Worker
+retrieves up to five relevant portfolio sections using Workers AI embeddings,
+generates an answer with Llama 4 Scout, and optionally tries Gemini 2.5 Flash
+Lite for a rate limit, timeout, network error, or server error. If generation
+fails, it returns the relevant portfolio text directly. A SQLite Durable Object
+stores the embedding index, two recent exchanges per visitor, and usage counts.
+No model credentials are included in the browser bundle.
+
+### Local setup
+
+1. Copy `worker/.dev.vars.example` to `worker/.dev.vars` and replace
+   `PORTFOLIO_CHAT_COOKIE_SECRET` with a random secret of at least 32 characters.
+   Add `GEMINI_API_KEY` only if your Google AI project can access the configured
+   model; Cloudflare AI and direct search work without it.
+2. Set `NEXT_PUBLIC_ASSISTANT_API_URL=http://localhost:8787/chat` in
+   `.env.local`. The development build uses that URL by default when the variable
+   is absent.
+3. Run `npm run assistant:dev` in one terminal and `npm run dev` in another.
+   Cloudflare Workers AI uses remote preview, so sign in with Wrangler when it
+   prompts and ensure the account has a registered `workers.dev` subdomain.
+4. Check `http://localhost:8787/health`, open the portfolio, and choose
+   **Ask Assistant** from the Dock.
+
+The account ID and API token are handled by Wrangler login for local development
+and deployment. Do not put either in `NEXT_PUBLIC_*` variables. A CI deployment
+may use `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as server-side secrets.
+
+### Production setup
+
+1. Set a new production cookie secret with
+   `npx wrangler secret put PORTFOLIO_CHAT_COOKIE_SECRET --config worker/wrangler.jsonc`.
+   Optionally set `GEMINI_API_KEY` with the same command. Never commit either
+   value or `.dev.vars`.
+2. Set `ALLOWED_ORIGINS` in `worker/wrangler.jsonc` to the actual portfolio
+   origins, then run `npm run assistant:deploy`.
+3. Attach the Worker to a same-site custom domain such as
+   `assistant.kamalhara.me` in Cloudflare Workers settings. The signed,
+   HTTP-only cookie uses `SameSite=Lax`, so a `workers.dev` URL on a separately
+   hosted portfolio will not reliably preserve visitor limits in browsers.
+4. Set `NEXT_PUBLIC_ASSISTANT_API_URL=https://assistant.kamalhara.me/chat` in
+   the portfolio host and redeploy the Next.js app. Adjust the hostname if the
+   production site uses another domain.
+
+The Worker allows six AI-generated replies per anonymous cookie over a rolling
+24 hours, one question every five seconds, and 200 AI-generated replies across
+all visitors per UTC day. Direct text fallback does not spend an AI reply.
+The limit state links to projects, skills, the resume, GitHub, and contact.
+Updating portfolio content changes the knowledge version and rebuilds the
+stored embedding index on the next request.
+
+The brief mentions VeloChat and a college project-management portal, but their
+details and links are absent from this repository. Add verified entries to
+`app/data/project.js` before the assistant describes them.

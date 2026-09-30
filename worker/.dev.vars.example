@@ -1,0 +1,3 @@
+PORTFOLIO_CHAT_COOKIE_SECRET=replace_with_a_random_32_character_secret
+# Optional if your Google AI project can call gemini-2.5-flash-lite:
+GEMINI_API_KEY=

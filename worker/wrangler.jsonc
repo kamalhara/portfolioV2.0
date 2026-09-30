@@ -4,5 +4,14 @@
   "compatibility_date": "2026-09-30",
   "ai": {
     "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "USAGE", "class_name": "UsageStore" }]
+  },
+  "exports": {
+    "UsageStore": { "type": "durable-object", "storage": "sqlite" }
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "http://localhost:3000,https://kamalhara.me,https://www.kamalhara.me"
   }
 }
