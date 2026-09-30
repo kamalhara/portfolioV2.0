@@ -22,7 +22,7 @@ export default function StackSection() {
             <ul className="flex flex-wrap gap-1.75">
               {category.skills.map((skill) => (
                 <li
-                  className="rounded-full border border-border bg-card hover:text-gray-200 px-2.75 py-0.75 text-xs leading-[1.6] whitespace-nowrap text-muted-foreground [font-family:var(--font-geist-mono)] flex items-center justify-center gap-1.25 transition-[transform,color] duration-200 motion-safe:hover:-translate-y-0.5"
+                  className="rounded-full border border-border bg-card hover:text-gray-200 px-2.75 py-0.75 text-xs leading-[1.6] whitespace-nowrap text-muted-foreground [font-family:var(--font-geist-mono)] flex items-center justify-center gap-1.25 transition-[transform,color] duration-200 "
                   key={skill.name}
                 >
                   {skill.icon}

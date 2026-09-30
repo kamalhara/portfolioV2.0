@@ -255,7 +255,7 @@ export default function PortfolioDock() {
         ) : searchOpen ? (
           <motion.div
             key="search-dialog"
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.22 }}
@@ -403,6 +403,11 @@ export default function PortfolioDock() {
           </motion.div>
         ) : null}
       </AnimatePresence>
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-16.5 backdrop-blur-[32px] mask-[linear-gradient(to_bottom,transparent,black_35%)]"
+      />
 
       <div className="pointer-events-none fixed bottom-4.5 left-1/2 z-50 -translate-x-1/2">
         <div className="pointer-events-auto">

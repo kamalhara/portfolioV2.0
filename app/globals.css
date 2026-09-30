@@ -302,6 +302,67 @@ img {
   outline: none;
 }
 
+.music-player-range {
+  --range-fill: color-mix(in srgb, var(--color-foreground) 70%, transparent);
+  --range-track: color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  appearance: none;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.music-player-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--range-fill) 0 var(--range-progress),
+    var(--range-track) var(--range-progress) 100%
+  );
+}
+
+.music-player-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-foreground);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.music-player-range:is(:hover, :focus-visible)::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+.music-player-range::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--range-track);
+}
+
+.music-player-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--range-fill);
+}
+
+.music-player-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-foreground);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.music-player-range:is(:hover, :focus-visible)::-moz-range-thumb {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
