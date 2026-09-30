@@ -35,11 +35,15 @@ export function EmailCopy() {
 
   return (
     <button
-      className="mt-5.5 inline-flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground [&_svg]:size-3.5"
+      className="ui-press mt-5.5 inline-flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground [&_svg]:size-3.5"
       type="button"
       onClick={copyEmail}
     >
-      {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
+      {copied ? (
+        <FiCheck className="content-enter" aria-hidden="true" />
+      ) : (
+        <FiCopy className="content-enter" aria-hidden="true" />
+      )}
       <span>{copied ? "Copied" : portfolio.email}</span>
     </button>
   );
@@ -243,7 +247,7 @@ function ClockCard() {
 export default function PortfolioWidgets() {
   return (
     <div
-      className="mt-11.75 grid grid-cols-[2.07fr_1fr_1fr] gap-4 max-[700px]:mt-10.75 max-[700px]:grid-cols-2 max-[700px]:gap-3"
+      className="widget-grid mt-11.75 grid grid-cols-[2.07fr_1fr_1fr] gap-4 max-[700px]:mt-10.75 max-[700px]:grid-cols-2 max-[700px]:gap-3"
       aria-label="Featured project and live widgets"
     >
       <MusicCard />

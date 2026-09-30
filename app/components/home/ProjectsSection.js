@@ -28,11 +28,11 @@ export default function ProjectsSection() {
           return (
             <li
               key={project.slug}
-              className="group -ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 hover:bg-[#1C1C1A] focus-within:bg-[#1C1C1A]"
+              className="group -ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 transition-colors duration-300 hover:bg-[#1C1C1A] focus-within:bg-[#1C1C1A]"
             >
               <Link
                 href={`/project/${project.slug}`}
-                className="block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
+                className="ui-nudge block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
               >
                 <span className="flex flex-wrap items-center gap-2.25 text-foreground transition-colors">
                   {project.title}
@@ -54,7 +54,7 @@ export default function ProjectsSection() {
       </ul>
       <Link
         href="/project"
-        className="mt-7 inline-block text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+        className="ui-nudge mt-7 inline-block text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
       >
         more projects
       </Link>

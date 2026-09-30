@@ -4,12 +4,17 @@ import { useEffect } from "react";
 
 const revealSelector = [
   "#main-content > *",
+  "#projects > ul > li",
+  "#interfaces > div > a",
+  "#stack > div > div",
   "#main > header",
   "#main > ul > li",
   "#main > a",
   "#main article > header",
   "#main article > figure",
   "#main article > section",
+  "#main article section li",
+  "#main article section img",
   "#main article > a",
 ].join(", ");
 
@@ -38,7 +43,8 @@ export default function ScrollReveal() {
         if (element.hasAttribute("data-scroll-reveal")) continue;
 
         const bounds = element.getBoundingClientRect();
-        const visible = bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0;
+        const visible =
+          bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0;
         element.dataset.scrollReveal = visible ? "visible" : "pending";
         if (!visible) observer.observe(element);
       }

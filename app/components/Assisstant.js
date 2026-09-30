@@ -1,14 +1,22 @@
 "use client";
 
-import { ArrowLeft, ArrowUp, MessageSquareDashed, RotateCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowUp,
+  MessageSquareDashed,
+  RotateCcw,
+} from "lucide-react";
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { portfolio } from "@/app/data/portfolio";
 import { projects } from "@/app/data/project";
 
 function getReply(message) {
   const question = message.toLowerCase();
-  const project = projects.find((item) => question.includes(item.title.toLowerCase()));
+  const project = projects.find((item) =>
+    question.includes(item.title.toLowerCase()),
+  );
 
   if (project) {
     return {
@@ -20,7 +28,10 @@ function getReply(message) {
 
   if (/project|work|portfolio|built/.test(question)) {
     return {
-      text: `Some featured projects are ${projects.slice(0, 4).map((item) => item.title).join(", ")}. Explore the project list for details.`,
+      text: `Some featured projects are ${projects
+        .slice(0, 4)
+        .map((item) => item.title)
+        .join(", ")}. Explore the project list for details.`,
       href: "/project",
       linkLabel: "View projects",
     };
@@ -69,6 +80,7 @@ export default function Assisstant({ onBack, onClose }) {
   const dialogRef = useRef(null);
   const inputRef = useRef(null);
   const conversationRef = useRef(null);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => inputRef.current?.focus());
@@ -141,7 +153,7 @@ export default function Assisstant({ onBack, onClose }) {
                 type="button"
                 onClick={onBack}
                 aria-label="Back to search"
-                className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+                className="ui-press inline-flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
               >
                 <ArrowLeft className="size-[18px]" aria-hidden="true" />
               </button>
@@ -162,7 +174,7 @@ export default function Assisstant({ onBack, onClose }) {
                   inputRef.current?.focus();
                 }}
                 aria-label="New chat"
-                className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+                className="ui-press inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
               >
                 <RotateCcw className="size-4" aria-hidden="true" />
               </button>
@@ -176,45 +188,68 @@ export default function Assisstant({ onBack, onClose }) {
                   aria-label="Conversation"
                   className="h-full overflow-y-auto overscroll-contain px-4 py-5 sm:px-5"
                 >
-                  {messages.length === 0 ? (
-                    <div className="flex h-full flex-col items-center justify-center px-4 text-center">
-                      <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground">
-                        <MessageSquareDashed className="size-6" aria-hidden="true" />
-                      </span>
-                      <h4 className="mt-4 text-base font-medium text-foreground">
-                        Ask me anything about my work
-                      </h4>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-4" aria-live="polite">
-                      {messages.map((message, index) => (
-                        <div
-                          key={index}
-                          className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-6 ${
-                            message.role === "user"
-                              ? "ml-auto bg-foreground text-background"
-                              : "mr-auto border border-border bg-background text-foreground"
-                          }`}
-                        >
-                          <p>{message.text}</p>
-                          {message.href && (
-                            <Link
-                              href={message.href}
-                              onClick={onClose}
-                              className="mt-2 inline-block font-medium underline underline-offset-4"
-                            >
-                              {message.linkLabel}
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <AnimatePresence mode="wait" initial={false}>
+                    {messages.length === 0 ? (
+                      <motion.div
+                        key="empty"
+                        initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.28 }}
+                        className="flex h-full flex-col items-center justify-center px-4 text-center"
+                      >
+                        <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground">
+                          <MessageSquareDashed
+                            className="size-6"
+                            aria-hidden="true"
+                          />
+                        </span>
+                        <h4 className="mt-4 text-base font-medium text-foreground">
+                          Ask me anything about my work
+                        </h4>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="conversation"
+                        initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.28 }}
+                        className="flex flex-col gap-4"
+                        aria-live="polite"
+                      >
+                        {messages.map((message, index) => (
+                          <div
+                            key={index}
+                            className={`message-enter max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-6 ${
+                              message.role === "user"
+                                ? "ml-auto bg-foreground text-background"
+                                : "mr-auto border border-border bg-background text-foreground"
+                            }`}
+                          >
+                            <p>{message.text}</p>
+                            {message.href && (
+                              <Link
+                                href={message.href}
+                                onClick={onClose}
+                                className="mt-2 inline-block font-medium underline underline-offset-4"
+                              >
+                                {message.linkLabel}
+                              </Link>
+                            )}
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
-              <form onSubmit={sendMessage} className="relative z-30 px-3 pb-3 pt-1">
-                <div className="relative w-full rounded-[19px] border border-border bg-background/95 backdrop-blur">
+              <form
+                onSubmit={sendMessage}
+                className="relative z-30 px-3 pb-3 pt-1"
+              >
+                <div className="relative w-full rounded-[19px] border border-border bg-background/95 backdrop-blur transition-colors duration-200 focus-within:border-border-strong">
                   <textarea
                     ref={inputRef}
                     rows={1}
@@ -226,7 +261,11 @@ export default function Assisstant({ onBack, onClose }) {
                       event.currentTarget.style.height = `${Math.min(event.currentTarget.scrollHeight, 160)}px`;
                     }}
                     onKeyDown={(event) => {
-                      if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                      if (
+                        event.key === "Enter" &&
+                        !event.shiftKey &&
+                        !event.nativeEvent.isComposing
+                      ) {
                         event.preventDefault();
                         event.currentTarget.form?.requestSubmit();
                       }
@@ -245,7 +284,7 @@ export default function Assisstant({ onBack, onClose }) {
                       type="submit"
                       disabled={!draft.trim()}
                       aria-label="Send message"
-                      className="inline-flex size-8 items-center justify-center rounded-lg bg-foreground text-background transition-colors hover:opacity-80 disabled:bg-foreground/10 disabled:text-muted-foreground"
+                      className="ui-press inline-flex size-8 items-center justify-center rounded-lg bg-foreground text-background transition-colors hover:opacity-80 disabled:bg-foreground/10 disabled:text-muted-foreground"
                     >
                       <ArrowUp className="size-[18px]" aria-hidden="true" />
                     </button>

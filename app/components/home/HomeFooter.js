@@ -20,7 +20,7 @@ export default function HomeFooter() {
         aria-label="Social links"
       >
         <a
-          className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          className="ui-nudge inline-block text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           href={portfolio.linkedin}
           target="_blank"
           rel="noopener noreferrer"
@@ -28,13 +28,13 @@ export default function HomeFooter() {
           LinkedIn
         </a>
         <a
-          className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          className="ui-nudge inline-block text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           href={`mailto:${portfolio.email}`}
         >
           Email
         </a>
         <a
-          className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          className="ui-nudge inline-block text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           href={portfolio.github}
           target="_blank"
           rel="noopener noreferrer"
@@ -42,7 +42,7 @@ export default function HomeFooter() {
           GitHub
         </a>
         <a
-          className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          className="ui-nudge inline-block text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           href={portfolio.resume}
           target="_blank"
           rel="noopener noreferrer"

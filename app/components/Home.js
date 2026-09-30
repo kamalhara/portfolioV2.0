@@ -12,12 +12,6 @@ import StackSection from "./home/StackSection";
 export default function Home() {
   return (
     <div className="home-page min-h-screen bg-background text-[15.7px] leading-[1.64] tracking-[-0.025em] text-foreground [font-family:var(--font-geist)] max-[480px]:text-[15.5px]">
-      <a
-        className="fixed top-3 left-3 z-100 -translate-y-[150%] bg-foreground px-3 py-2 text-background focus:translate-y-0"
-        href="#main-content"
-      >
-        Skip to main content
-      </a>
       <main
         id="main-content"
         className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5"

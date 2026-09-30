@@ -42,12 +42,15 @@ export default async function ProjectDetailPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background text-[15.7px] leading-[1.64] tracking-[-0.025em] text-foreground [font-family:var(--font-geist)] max-[480px]:text-[15.5px]">
-      <main id="main" className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5">
+      <main
+        id="main"
+        className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5"
+      >
         <article>
           <header>
             <Link
               href="/project"
-              className="mb-7 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              className="ui-nudge mb-7 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
               ← all projects
             </Link>
@@ -57,10 +60,12 @@ export default async function ProjectDetailPage({ params }) {
             <h1 className="text-[clamp(32px,6vw,60px)] leading-[1.15] font-medium tracking-[-.06em]">
               {project.title}
             </h1>
-            <p className="mt-2.5 max-w-175 text-muted-foreground">{project.description}</p>
+            <p className="mt-2.5 max-w-175 text-muted-foreground">
+              {project.description}
+            </p>
             <div className="mt-5 flex flex-wrap gap-4 text-sm">
               <a
-                className="underline underline-offset-4"
+                className="ui-nudge inline-block underline underline-offset-4"
                 href={project.code}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -69,7 +74,7 @@ export default async function ProjectDetailPage({ params }) {
               </a>
               {project.live && (
                 <a
-                  className="underline underline-offset-4"
+                  className="ui-nudge inline-block underline underline-offset-4"
                   href={project.live}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -81,7 +86,7 @@ export default async function ProjectDetailPage({ params }) {
           </header>
 
           {project.cover && (
-            <figure className="relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-border bg-card max-[700px]:h-75 max-[480px]:h-57.5">
+            <figure className="media-zoom relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-border bg-card max-[700px]:h-75 max-[480px]:h-57.5">
               <Image
                 src={project.cover}
                 alt={`${project.title} interface preview`}
@@ -124,7 +129,7 @@ export default async function ProjectDetailPage({ params }) {
               <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
                 {project.screenshot.map((src, index) => (
                   <Image
-                    className="h-auto w-full rounded-xl border border-border"
+                    className="ui-lift h-auto w-full rounded-xl border border-border"
                     key={src}
                     src={`/${src}`}
                     alt={`${project.title} screen ${index + 1}`}
@@ -138,7 +143,7 @@ export default async function ProjectDetailPage({ params }) {
           )}
           <Link
             href="/project"
-            className="mt-13.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            className="ui-nudge mt-13.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             ← back to projects
           </Link>

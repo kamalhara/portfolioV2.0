@@ -111,25 +111,136 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  main {
-    animation: page-enter 0.4s var(--motion-ease-emphasized) backwards;
+  #main {
+    animation: page-enter 0.7s var(--motion-ease-emphasized) backwards;
+  }
+
+  .home-intro > *,
+  .widget-grid > * {
+    animation: page-enter 0.72s var(--motion-ease-emphasized) backwards;
+  }
+
+  .home-intro > :nth-child(2) {
+    animation-delay: 65ms;
+  }
+
+  .home-intro > :nth-child(3),
+  .widget-grid > :nth-child(2) {
+    animation-delay: 130ms;
+  }
+
+  .home-intro > :nth-child(4),
+  .widget-grid > :nth-child(3) {
+    animation-delay: 195ms;
   }
 
   html.motion-ready [data-scroll-reveal] {
     transition:
-      opacity 0.48s var(--motion-ease-emphasized),
-      transform 0.48s var(--motion-ease-emphasized);
+      opacity 0.7s var(--motion-ease-emphasized),
+      transform 0.7s var(--motion-ease-emphasized);
+    transition-delay: var(--reveal-delay, 0ms);
   }
 
   html.motion-ready [data-scroll-reveal="pending"] {
     opacity: 0;
-    transform: translateY(12px) scale(0.995);
+    transform: translateY(22px) scale(0.99);
+  }
+
+  #projects > ul > li:nth-child(2),
+  #interfaces > div > a:nth-child(2),
+  #main > ul > li:nth-child(3n + 2) {
+    --reveal-delay: 60ms;
+  }
+
+  #projects > ul > li:nth-child(3),
+  #interfaces > div > a:nth-child(3),
+  #main > ul > li:nth-child(3n) {
+    --reveal-delay: 120ms;
+  }
+
+  .ui-lift {
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-emphasized),
+      border-color var(--motion-duration-base) ease,
+      background-color var(--motion-duration-base) ease;
+  }
+
+  .ui-lift:is(:hover, :focus-visible, :focus-within) {
+    transform: translateY(-2px);
+  }
+
+  .ui-nudge {
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-emphasized),
+      color var(--motion-duration-base) ease;
+  }
+
+  .ui-nudge:is(:hover, :focus-visible) {
+    transform: translateX(3px);
+  }
+
+  .ui-press {
+    transition:
+      transform var(--motion-duration-fast) var(--motion-ease-standard),
+      color var(--motion-duration-fast) ease,
+      background-color var(--motion-duration-fast) ease;
+  }
+
+  .ui-press:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  .dialog-panel {
+    animation: panel-enter 0.48s var(--motion-ease-emphasized) both;
+  }
+
+  .content-enter {
+    animation: content-enter 0.44s var(--motion-ease-emphasized) both;
+  }
+
+  .message-enter {
+    animation: content-enter 0.4s var(--motion-ease-emphasized) both;
+  }
+
+  .activity-calendar > * {
+    animation: content-enter 0.55s var(--motion-ease-emphasized) both;
+  }
+
+  .media-zoom img {
+    transition: transform var(--motion-duration-slow)
+      var(--motion-ease-emphasized);
+  }
+
+  .media-zoom:is(:hover, :focus-within) img {
+    transform: scale(1.025);
+  }
+
+  @keyframes panel-enter {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes content-enter {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
   }
 
   @keyframes page-enter {
     from {
-      opacity: 0.88;
-      transform: translateY(8px);
+      opacity: 0.82;
+      transform: translateY(18px);
     }
   }
 }
@@ -148,8 +259,10 @@ body {
     background-color: color-mix(in srgb, var(--color-background) 93%, black);
   }
 
-  .home-page:has(#projects > ul > li:is(:hover, :focus-within)) > :not(#main-content),
-  #main-content:has(#projects > ul > li:is(:hover, :focus-within)) > :not(#projects) {
+  .home-page:has(#projects > ul > li:is(:hover, :focus-within))
+    > :not(#main-content),
+  #main-content:has(#projects > ul > li:is(:hover, :focus-within))
+    > :not(#projects) {
     filter: blur(8px) brightness(0.9);
   }
 }
@@ -178,6 +291,10 @@ img {
 }
 
 #portfolio-search-dialog input:focus-visible {
+  outline: none;
+}
+
+#portfolio-assistant-dialog textarea:focus-visible {
   outline: none;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { FiMusic } from "react-icons/fi";
 import type { MusicTrack } from "@/app/types/music";
@@ -15,6 +16,7 @@ export default function MusicCard() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const trackIdRef = useRef<string | null>(null);
   const previewUrlRef = useRef<string | null>(null);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     let active = true;
@@ -125,6 +127,7 @@ export default function MusicCard() {
     : track?.isNowPlaying
       ? "NOW PLAYING"
       : "LAST PLAYED";
+  const contentKey = `${track?.id ?? "empty"}-${requestFailed ? "failed" : status}`;
 
   function handleCardKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     if (event.target !== event.currentTarget) return;
@@ -144,42 +147,79 @@ export default function MusicCard() {
           : undefined
       }
       onKeyDown={handleCardKeyDown}
-      className="relative col-span-1 flex h-full min-h-38 min-w-0  items-center gap-5 rounded-2xl border border-border bg-[#171717] p-4 text-foreground backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[480px]:gap-3"
+      onClick={() => {
+        if (track?.previewUrl && !previewFailed) void togglePreview();
+      }}
+      className={`ui-lift media-zoom relative col-span-1 flex h-full min-h-38 min-w-0 items-center gap-5 rounded-2xl border border-border bg-[#171717] p-4 text-foreground backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[480px]:gap-3 ${track?.previewUrl && !previewFailed ? "cursor-pointer" : ""}`}
     >
       <div className="relative aspect-square shrink-0 self-stretch overflow-hidden rounded-xl bg-muted shadow-md shadow-black/20">
-        {track?.artwork ? (
-          <Image
-            src={track.artwork}
-            alt={`${track.title} by ${track.artist}`}
-            fill
-            loading="eager"
-            sizes="(min-width: 700px) 160px, 42vw"
-            className="rounded-xl object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-neutral-500">
-            <FiMusic className="size-8" aria-hidden="true" />
-          </div>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {track?.artwork ? (
+            <motion.div
+              key={track.id}
+              initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+              transition={{ duration: reduceMotion ? 0 : 0.3 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={track.artwork}
+                alt={`${track.title} by ${track.artist}`}
+                fill
+                loading="eager"
+                sizes="(min-width: 700px) 160px, 42vw"
+                className="rounded-xl object-cover"
+                unoptimized
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="no-artwork"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.22 }}
+              className="flex h-full items-center justify-center text-neutral-500"
+            >
+              <FiMusic className="size-8" aria-hidden="true" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="mt-12 flex min-w-0 flex-1 flex-col">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          {track ? status : requestFailed ? "UNAVAILABLE" : "CHECKING MUSIC"}
-        </span>
-        <span
-          className="mt-0.5 truncate text-base font-semibold tracking-tight text-foreground"
-          title={track?.title}
-        >
-          {track?.title ?? (requestFailed ? "Music unavailable" : "Loading…")}
-        </span>
-        <span
-          className="truncate text-sm text-muted-foreground"
-          title={track?.artist}
-        >
-          {track?.artist}
-        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={contentKey}
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+            transition={{ duration: reduceMotion ? 0 : 0.28 }}
+            className="flex min-w-0 flex-col"
+          >
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              {track
+                ? status
+                : requestFailed
+                  ? "UNAVAILABLE"
+                  : "CHECKING MUSIC"}
+            </span>
+            <span
+              className="mt-0.5 truncate text-base font-semibold tracking-tight text-foreground"
+              title={track?.title}
+            >
+              {track?.title ??
+                (requestFailed ? "Music unavailable" : "Loading…")}
+            </span>
+            <span
+              className="truncate text-sm text-muted-foreground"
+              title={track?.artist}
+            >
+              {track?.artist}
+            </span>
+          </motion.div>
+        </AnimatePresence>
         <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <button
             type="button"
@@ -188,7 +228,7 @@ export default function MusicCard() {
               event.stopPropagation();
               void togglePreview();
             }}
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-700 px-3.5 py-1 text-sm font-medium text-white transition-colors hover:bg-neutral-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 [html.dark_&]:bg-white/10 [html.dark_&]:hover:bg-white/20"
+            className="ui-press flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-700 px-3.5 py-1 text-sm font-medium text-white transition-colors hover:bg-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 [html.dark_&]:bg-white/10 [html.dark_&]:hover:bg-white/20"
           >
             {playing ? (
               <svg

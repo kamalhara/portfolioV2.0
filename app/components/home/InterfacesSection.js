@@ -22,7 +22,7 @@ export default function InterfacesSection() {
       <div className="grid grid-cols-3 gap-4 max-[700px]:gap-2.5 max-[480px]:grid-cols-1 max-[480px]:gap-3">
         {interfaceProjects.map((project) => (
           <Link
-            className="group block min-w-0 overflow-hidden rounded-[15px] border border-border bg-card p-1.5 pb-2 transition-colors hover:border-border-strong hover:bg-muted"
+            className="ui-lift group block min-w-0 overflow-hidden rounded-[15px] border border-border bg-card p-1.5 pb-2 transition-[border-color,background-color] duration-300 hover:border-border-strong hover:bg-muted"
             href={`/project/${project.slug}`}
             key={project.slug}
           >

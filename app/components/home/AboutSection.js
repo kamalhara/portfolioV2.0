@@ -16,12 +16,11 @@ export default function AboutSection() {
       <p className="max-w-167.5">{portfolio.about}</p>
       <p className="mt-3.25 max-w-167.5 text-muted-foreground">
         My recent work spans mobile products, open-source components,
-        authentication, real-time messaging, maps, and the services behind
-        them.
+        authentication, real-time messaging, maps, and the services behind them.
       </p>
       <a
         href={portfolio.resume}
-        className="mt-7 inline-block text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+        className="ui-nudge mt-7 inline-block text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
         target="_blank"
         rel="noopener noreferrer"
       >
