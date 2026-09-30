@@ -6,6 +6,7 @@ import {
   FileText,
   FolderKanban,
   House,
+  HousesIcon,
   Layers3,
   Mail,
   MessageCircle,
@@ -17,7 +18,11 @@ import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiMoon, FiSearch, FiSun, FiX } from "react-icons/fi";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { portfolio } from "@/app/data/portfolio";
-import { LuBot } from "react-icons/lu";
+import { LuBot, LuHouse } from "react-icons/lu";
+import { BsArrowLeftCircle, BsHouse } from "react-icons/bs";
+import { TfiArrowCircleLeft } from "react-icons/tfi";
+import { usePathname, useRouter } from "next/navigation";
+import Assisstant from "@/app/components/Assisstant";
 
 const quickLinks = [
   {
@@ -72,7 +77,7 @@ const commandGroups = [
       {
         label: "Ask Assistant",
         description: "Ask me anything",
-        href: `mailto:${portfolio.email}`,
+        action: "assistant",
         icon: LuBot,
       },
     ],
@@ -107,9 +112,12 @@ const commandGroups = [
 const ringCircumference = 2 * Math.PI * 7.75;
 
 export default function PortfolioDock() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [light, setLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const searchButtonRef = useRef(null);
@@ -150,18 +158,20 @@ export default function PortfolioDock() {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setMenuOpen(false);
+        setAssistantOpen(false);
         setSearchOpen(true);
-      } else if (event.key === "Escape" && (searchOpen || menuOpen)) {
+      } else if (event.key === "Escape" && (searchOpen || assistantOpen || menuOpen)) {
         setSearchOpen(false);
+        setAssistantOpen(false);
         setMenuOpen(false);
         setQuery("");
-        if (searchOpen) searchButtonRef.current?.focus();
+        if (searchOpen || assistantOpen) searchButtonRef.current?.focus();
       }
     }
 
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [menuOpen, searchOpen]);
+  }, [assistantOpen, menuOpen, searchOpen]);
 
   useEffect(() => {
     if (!searchOpen) return;
@@ -217,6 +227,18 @@ export default function PortfolioDock() {
 
   return (
     <>
+      {assistantOpen && (
+        <Assisstant
+          onBack={() => {
+            setAssistantOpen(false);
+            setSearchOpen(true);
+          }}
+          onClose={() => {
+            setAssistantOpen(false);
+            searchButtonRef.current?.focus();
+          }}
+        />
+      )}
       {searchOpen && (
         <div
           className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
@@ -267,13 +289,16 @@ export default function PortfolioDock() {
                         {group.items.map((item) => {
                           const Icon = item.icon;
                           const ItemLink =
-                            item.external || item.href.startsWith("mailto:")
+                            item.action
+                              ? "button"
+                              : item.external || item.href.startsWith("mailto:")
                               ? "a"
                               : Link;
 
                           return (
                             <ItemLink
-                              key={item.href}
+                              key={item.href ?? item.label}
+                              type={item.action ? "button" : undefined}
                               href={item.href}
                               target={item.external ? "_blank" : undefined}
                               rel={
@@ -281,8 +306,15 @@ export default function PortfolioDock() {
                                   ? "noopener noreferrer"
                                   : undefined
                               }
-                              onClick={closeSearch}
-                              className="group mx-1 flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-[13px] leading-none transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5 focus-visible:ring-2 focus-visible:ring-ring/40 dark:hover:bg-foreground/10"
+                              onClick={() => {
+                                if (item.action === "assistant") {
+                                  setSearchOpen(false);
+                                  setAssistantOpen(true);
+                                } else {
+                                  closeSearch();
+                                }
+                              }}
+                              className="group mx-1 flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-left text-[13px] leading-none transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5 focus-visible:ring-2 focus-visible:ring-ring/40 dark:hover:bg-foreground/10"
                             >
                               <Icon
                                 className="size-4 shrink-0 text-foreground/80"
@@ -421,20 +453,25 @@ export default function PortfolioDock() {
               )}
             </button>
 
-            <button
-              type="button"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((value) => !value)}
-              className="relative flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:hidden [html.dark_&]:hover:bg-foreground/10"
-            >
-              {menuOpen ? (
-                <FiX className="size-4" aria-hidden="true" />
-              ) : (
-                <FiMenu className="size-4" aria-hidden="true" />
-              )}
-            </button>
-
+            {pathname !== "/" && (
+              <>
+                <Link
+                  href="/"
+                  aria-label="Go to home"
+                  className="relative flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [html.dark_&]:hover:bg-foreground/10"
+                >
+                  <LuHouse />
+                </Link>
+                <button
+                  type="button"
+                  aria-label="Go back"
+                  onClick={() => router.back()}
+                  className="relative flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [html.dark_&]:hover:bg-foreground/10"
+                >
+                  <TfiArrowCircleLeft />
+                </button>
+              </>
+            )}
             {scrollProgress > 0 && (
               <div
                 role="progressbar"
