@@ -32,7 +32,7 @@ export default function ProjectsSection() {
             >
               <Link
                 href={`/project/${project.slug}`}
-                className="ui-nudge block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
+                className="ui-nudge block w-fit max-w-full"
               >
                 <span className="flex flex-wrap items-center gap-2.25 text-foreground transition-colors">
                   {project.title}

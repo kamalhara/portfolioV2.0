@@ -249,8 +249,17 @@ export default function Assisstant({ onBack, onClose }) {
                 onSubmit={sendMessage}
                 className="relative z-30 px-3 pb-3 pt-1"
               >
-                <div className="relative w-full rounded-[19px] border border-border bg-background/95 backdrop-blur transition-colors duration-200 focus-within:border-border-strong">
-                  <textarea
+                <div className="group relative w-full">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -inset-2 rounded-3xl blur-xl opacity-0 transition-opacity duration-500 group-focus-within:opacity-[0.12]"
+                    style={{
+                      background:
+                        "linear-gradient(115deg, rgb(236, 72, 153), rgb(139, 92, 246), rgb(59, 130, 246), rgb(236, 72, 153))",
+                    }}
+                  />
+                  <div className="relative w-full rounded-[19px] border border-border bg-background/95 backdrop-blur transition-colors duration-200 focus-within:border-border-strong">
+                    <textarea
                     ref={inputRef}
                     rows={1}
                     maxLength={500}
@@ -290,6 +299,7 @@ export default function Assisstant({ onBack, onClose }) {
                     </button>
                   </div>
                 </div>
+              </div>
               </form>
             </div>
           </div>

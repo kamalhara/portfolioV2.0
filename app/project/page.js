@@ -29,7 +29,7 @@ export default function ProjectPage() {
             <li key={project.slug}>
               <Link
                 href={`/project/${project.slug}`}
-                className="ui-nudge group block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
+                className="ui-nudge group block w-fit max-w-full"
               >
                 <span className="flex flex-wrap items-center gap-2.25 text-foreground transition-colors group-hover:text-muted-foreground group-focus-visible:text-muted-foreground">
                   {project.title}

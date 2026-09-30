@@ -286,8 +286,12 @@ img {
   color: var(--color-background);
 }
 :focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--color-ring);
   outline-offset: 4px;
+}
+
+:focus-visible:not([class*="rounded"]) {
+  border-radius: 0.5rem;
 }
 
 #portfolio-search-dialog input:focus-visible {
