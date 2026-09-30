@@ -89,10 +89,12 @@ export class UsageStore extends DurableObject<Env> {
   async status(
     visitorId: string,
     now: number,
+    unlimited = false,
   ): Promise<{
-    remaining: number;
+    remaining: number | null;
     globalAvailable: boolean;
   }> {
+    if (unlimited) return { remaining: null, globalAvailable: true };
     this.ctx.storage.sql.exec(
       "DELETE FROM reservations WHERE expires_at <= ?",
       now,
@@ -107,6 +109,7 @@ export class UsageStore extends DurableObject<Env> {
   async reserve(
     visitorId: string,
     now: number,
+    unlimited = false,
   ): Promise<UsageDecision & { ticket?: string; history?: Exchange[] }> {
     return this.ctx.storage.transactionSync(() => {
       const sql = this.ctx.storage.sql;
@@ -124,6 +127,7 @@ export class UsageStore extends DurableObject<Env> {
         globalCount,
         lastQuestionAt: visitor?.last_at ?? 0,
         now,
+        unlimited,
       });
       if (!decision.allowed) return decision;
 
@@ -151,7 +155,8 @@ export class UsageStore extends DurableObject<Env> {
     answer: string,
     aiGenerated: boolean,
     now: number,
-  ): Promise<number> {
+    unlimited = false,
+  ): Promise<number | null> {
     return this.ctx.storage.transactionSync(() => {
       const sql = this.ctx.storage.sql;
       const reservation = sql
@@ -160,7 +165,7 @@ export class UsageStore extends DurableObject<Env> {
           ticket,
         )
         .toArray()[0] as ReservationRow | undefined;
-      if (!reservation) return 0;
+      if (!reservation) return unlimited ? null : 0;
       sql.exec("DELETE FROM reservations WHERE ticket = ?", ticket);
       if (aiGenerated) {
         sql.exec(
@@ -186,6 +191,7 @@ export class UsageStore extends DurableObject<Env> {
         JSON.stringify(history),
         reservation.visitor_id,
       );
+      if (unlimited) return null;
       return Math.max(
         0,
         VISITOR_LIMIT - this.counts(reservation.visitor_id, now).visitorCount,

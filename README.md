@@ -66,7 +66,9 @@ No model credentials are included in the browser bundle.
 1. Copy `worker/.dev.vars.example` to `worker/.dev.vars` and replace
    `PORTFOLIO_CHAT_COOKIE_SECRET` with a random secret of at least 32 characters.
    Add `GEMINI_API_KEY` only if your Google AI project can access the configured
-   model; Cloudflare AI and direct search work without it.
+   model; Cloudflare AI and direct search work without it. The local example sets
+   `ASSISTANT_DEV_MODE=true`, which removes question and cooldown limits while
+   testing. Leave this variable unset in production.
 2. Set `NEXT_PUBLIC_ASSISTANT_API_URL=http://localhost:8787/chat` in
    `.env.local`. The development build uses that URL by default when the variable
    is absent.
@@ -99,9 +101,17 @@ may use `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as server-side secret
 The Worker allows six AI-generated replies per anonymous cookie over a rolling
 24 hours, one question every five seconds, and 200 AI-generated replies across
 all visitors per UTC day. Direct text fallback does not spend an AI reply.
+These limits apply in production; local dev mode allows unlimited testing.
 The limit state links to projects, skills, the resume, GitHub, and contact.
 Updating portfolio content changes the knowledge version and rebuilds the
 stored embedding index on the next request.
+
+Recruiter recommendations are curated in `app/data/assistantFacts.js`.
+StateGlyph, Spotus, Productify, and Ryde are showcase examples; World Wise is
+still available for direct questions but is not presented as a strongest
+project. The Worker sends only the most relevant short evidence to the model,
+asks for a one-sentence answer, and caps replies at 45 words. When a requested
+fact has no supporting portfolio evidence, it says so instead of guessing.
 
 The brief mentions VeloChat and a college project-management portal, but their
 details and links are absent from this repository. Add verified entries to

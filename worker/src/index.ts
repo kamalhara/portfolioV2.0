@@ -2,13 +2,20 @@ import { visitorIdentity } from "./cookie";
 import { embedSections, embedText } from "./embedding";
 import { knowledge, knowledgeVersion, type KnowledgeLink } from "./knowledge";
 import { generateAnswer } from "./providers";
-import { directAnswer, rankByEmbedding, rankByText } from "./retrieval";
+import {
+  directAnswer,
+  rankByEmbedding,
+  rankByText,
+  selectEvidence,
+} from "./retrieval";
+import { compactAnswer } from "./response-format";
 import { parseQuestion } from "./validation";
 export { UsageStore } from "./UsageStore";
 
 type RuntimeEnv = Env & {
   GEMINI_API_KEY?: string;
   PORTFOLIO_CHAT_COOKIE_SECRET?: string;
+  ASSISTANT_DEV_MODE?: string;
 };
 
 const LIMIT_MESSAGE =
@@ -61,10 +68,18 @@ function safeLinks(sections: typeof knowledge): KnowledgeLink[] {
       seen.add(link.href);
       return true;
     })
-    .slice(0, 4);
+    .slice(0, 3);
 }
 
 async function relevantSections(question: string, env: Env) {
+  const curated = selectEvidence(question, [], knowledge);
+  if (curated.length) return curated;
+  if (
+    rankByText(knowledge, question, 1).length === 0 &&
+    !/^(hi|hello|hey)[.!?\s]*$/i.test(question)
+  ) {
+    return [];
+  }
   try {
     const store = env.USAGE.getByName("portfolio-assistant");
     const cached = await store.getIndex(knowledgeVersion);
@@ -79,15 +94,24 @@ async function relevantSections(question: string, env: Env) {
       vectors = Array.from(cached, (vector) => Array.from(vector));
     }
     const questionVector = await embedText(env.AI, question);
-    return rankByEmbedding(knowledge, vectors, questionVector, 5);
+    return selectEvidence(
+      question,
+      rankByEmbedding(knowledge, vectors, questionVector, 5),
+      knowledge,
+    );
   } catch {
-    return rankByText(knowledge, question, 5);
+    return selectEvidence(
+      question,
+      rankByText(knowledge, question, 5),
+      knowledge,
+    );
   }
 }
 
 export default {
   async fetch(request, env): Promise<Response> {
     const runtime = env as RuntimeEnv;
+    const developmentMode = runtime.ASSISTANT_DEV_MODE === "true";
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");
 
@@ -131,8 +155,18 @@ export default {
     const store = env.USAGE.getByName("portfolio-assistant");
 
     if (request.method === "GET" && url.pathname === "/status") {
-      const status = await store.status(identity.id, Date.now());
-      return response(request, env, status, 200, identity.setCookie);
+      const status = await store.status(
+        identity.id,
+        Date.now(),
+        developmentMode,
+      );
+      return response(
+        request,
+        env,
+        { ...status, developmentMode },
+        200,
+        identity.setCookie,
+      );
     }
     if (request.method === "POST" && url.pathname === "/reset") {
       await store.resetHistory(identity.id);
@@ -155,7 +189,11 @@ export default {
       );
     }
 
-    const reserved = await store.reserve(identity.id, Date.now());
+    const reserved = await store.reserve(
+      identity.id,
+      Date.now(),
+      developmentMode,
+    );
     if (!reserved.allowed || !reserved.ticket) {
       const limitReached =
         reserved.reason === "visitor_limit" ||
@@ -183,17 +221,22 @@ export default {
     const sections = await relevantSections(question, env);
     let answer: string;
     let source: "cloudflare" | "gemini" | "portfolio" = "portfolio";
-    try {
-      const generated = await generateAnswer(env.AI, runtime.GEMINI_API_KEY, {
-        question,
-        sections,
-        history: reserved.history ?? [],
-      });
-      answer = generated.text;
-      source = generated.provider;
-    } catch {
+    if (!sections.length) {
       answer = directAnswer(sections);
+    } else {
+      try {
+        const generated = await generateAnswer(env.AI, runtime.GEMINI_API_KEY, {
+          question,
+          sections,
+          history: reserved.history ?? [],
+        });
+        answer = generated.text;
+        source = generated.provider;
+      } catch {
+        answer = directAnswer(sections);
+      }
     }
+    answer = compactAnswer(answer);
 
     const remaining = await store.complete(
       reserved.ticket,
@@ -201,6 +244,7 @@ export default {
       answer,
       source !== "portfolio",
       Date.now(),
+      developmentMode,
     );
     return response(
       request,
@@ -211,6 +255,7 @@ export default {
         source,
         remaining,
         limitReached: remaining === 0,
+        developmentMode,
       },
       200,
       identity.setCookie,

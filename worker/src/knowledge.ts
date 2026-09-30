@@ -52,9 +52,40 @@ const profileSections: KnowledgeSection[] = [
   {
     id: "strengths",
     title: "Strengths",
-    text: `${portfolio.name} identifies these strengths: ${assistantFacts.strengths.join(", ")}. His projects provide examples of this work.`,
+    text: `${portfolio.name}'s strongest skills are ${assistantFacts.strengths.join(", ")}. StateGlyph, Spotus, and Productify demonstrate this work.`,
     links: [{ label: "Projects", href: "/project" }],
   },
+  {
+    id: "showcase-projects",
+    title: "Recruiter showcase projects",
+    text: `Kamal's recommended showcase projects, in order: ${assistantFacts.showcaseProjects
+      .map((item, index) => {
+        const project = projects.find(
+          (candidate) => candidate.slug === item.slug,
+        );
+        return `${index + 1}. ${project?.title ?? item.slug}: ${item.reason}`;
+      })
+      .join(
+        "; ",
+      )}. These are recommendations based on Kamal's featured portfolio work, not measured rankings.`,
+    links: assistantFacts.showcaseProjects.slice(0, 3).map((item) => ({
+      label:
+        projects.find((project) => project.slug === item.slug)?.title ??
+        item.slug,
+      href: `/project/${item.slug}`,
+    })),
+  },
+  ...Object.entries(assistantFacts.projectAssessments).map(([slug, text]) => ({
+    id: `assessment:${slug}`,
+    title: `${projects.find((project) => project.slug === slug)?.title ?? slug} portfolio assessment`,
+    text,
+    links: [
+      {
+        label: projects.find((project) => project.slug === slug)?.title ?? slug,
+        href: `/project/${slug}`,
+      },
+    ],
+  })),
   {
     id: "improving",
     title: "Areas being strengthened",
@@ -82,7 +113,7 @@ const profileSections: KnowledgeSection[] = [
   {
     id: "contact",
     title: "Contact and profiles",
-    text: `Contact ${portfolio.name} at ${portfolio.email}.`,
+    text: `Contact ${portfolio.name} at ${portfolio.email}. His GitHub and LinkedIn profiles are linked in the portfolio.`,
     links: [
       { label: "Email", href: `mailto:${portfolio.email}` },
       { label: "GitHub", href: portfolio.github },

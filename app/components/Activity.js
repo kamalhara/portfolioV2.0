@@ -17,6 +17,7 @@ export default function PortfolioActivity() {
           theme={{
             dark: ["#252525", "#454545", "#666666", "#a4a4a4", "#e5e5e5"],
           }}
+          year={new Date().getFullYear()}
           blockSize={10}
           blockMargin={3}
           blockRadius={2}

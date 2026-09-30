@@ -18,14 +18,6 @@ const apiUrl =
     ? "http://localhost:8787/chat"
     : null);
 
-const portfolioLinks = [
-  { label: "View Projects", href: "/project" },
-  { label: "Technical Skills", href: "/#stack" },
-  { label: "Download Resume", href: portfolio.resume },
-  { label: "GitHub", href: portfolio.github },
-  { label: "Contact Kamal", href: `mailto:${portfolio.email}` },
-];
-
 function safeHref(href) {
   return (
     typeof href === "string" &&
@@ -62,6 +54,7 @@ export default function Assisstant({ onBack, onClose }) {
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
   const [remaining, setRemaining] = useState(null);
+  const [developmentMode, setDevelopmentMode] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
   const dialogRef = useRef(null);
@@ -86,8 +79,12 @@ export default function Assisstant({ onBack, onClose }) {
         return response.json();
       })
       .then((status) => {
+        setDevelopmentMode(Boolean(status.developmentMode));
         setRemaining(status.remaining);
-        setLimitReached(status.remaining === 0 || !status.globalAvailable);
+        setLimitReached(
+          !status.developmentMode &&
+            (status.remaining === 0 || !status.globalAvailable),
+        );
       })
       .catch((cause) => {
         if (cause.name !== "AbortError") {
@@ -120,6 +117,11 @@ export default function Assisstant({ onBack, onClose }) {
         body: JSON.stringify({ question }),
       });
       const result = await response.json();
+      if (result.developmentMode) {
+        setDevelopmentMode(true);
+        setRemaining(null);
+        setLimitReached(false);
+      }
       if (typeof result.remaining === "number") setRemaining(result.remaining);
       if (result.limitReached) setLimitReached(true);
       if (!response.ok) {
@@ -262,11 +264,8 @@ export default function Assisstant({ onBack, onClose }) {
                           />
                         </span>
                         <h4 className="mt-4 text-base font-medium text-foreground">
-                          Ask me about Kamal&apos;s work
+                          Ask me anythign about my work
                         </h4>
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          Projects, experience, skills, and collaboration
-                        </p>
                       </motion.div>
                     ) : (
                       <motion.div
@@ -283,8 +282,8 @@ export default function Assisstant({ onBack, onClose }) {
                             key={index}
                             className={`message-enter max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-6 ${
                               message.role === "user"
-                                ? "ml-auto bg-foreground text-background"
-                                : "mr-auto border border-border bg-background text-foreground"
+                                ? "ml-auto bg-[#232322] text-white"
+                                : "mr-auto   text-foreground"
                             }`}
                           >
                             <p className="whitespace-pre-wrap">
@@ -334,18 +333,6 @@ export default function Assisstant({ onBack, onClose }) {
                     <p className="mt-3 text-xs text-muted-foreground">
                       The assistant is not configured yet.
                     </p>
-                  )}
-                  {(limitReached || !apiUrl || error) && (
-                    <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
-                      {portfolioLinks.map((link) => (
-                        <AssistantLink
-                          key={link.href}
-                          href={link.href}
-                          label={link.label}
-                          onClose={onClose}
-                        />
-                      ))}
-                    </div>
                   )}
                 </div>
               </div>
@@ -397,9 +384,11 @@ export default function Assisstant({ onBack, onClose }) {
                     />
                     <div className="flex items-center justify-between gap-2 px-2.5 pb-2 pt-0.5">
                       <span className="px-1.5 text-[11px] text-muted-foreground/70">
-                        {remaining === null
-                          ? "Enter to send"
-                          : `${remaining} AI replies left`}
+                        {developmentMode
+                          ? "Dev mode · unlimited questions"
+                          : remaining === null
+                            ? "Enter to send"
+                            : `${remaining} AI replies left`}
                       </span>
                       <button
                         type="submit"

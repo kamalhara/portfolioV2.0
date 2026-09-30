@@ -1,3 +1,5 @@
+import { assistantFacts } from "../../app/data/assistantFacts.js";
+import { projects } from "../../app/data/project.js";
 import type { KnowledgeSection } from "./knowledge";
 
 const stopWords = new Set([
@@ -5,13 +7,24 @@ const stopWords = new Set([
   "are",
   "can",
   "does",
+  "did",
+  "do",
   "for",
   "has",
+  "have",
+  "he",
+  "him",
   "his",
   "how",
+  "in",
+  "is",
+  "it",
   "kamal",
   "kamalveer",
+  "of",
+  "on",
   "the",
+  "to",
   "their",
   "this",
   "what",
@@ -31,6 +44,10 @@ function terms(text: string): string[] {
   );
 }
 
+function containsWord(text: string, word: string): boolean {
+  return new RegExp(`\\b${word}\\b`).test(text);
+}
+
 export function rankByText(
   sections: KnowledgeSection[],
   question: string,
@@ -42,18 +59,35 @@ export function rankByText(
   );
   const improvementQuestion =
     /\b(weak|weaker|weakness|improv|strengthen|gap)\w*\b/i.test(question);
+  const educationQuestion =
+    /\b(education|degree|study|college|university)\b/i.test(question);
+  const availabilityQuestion =
+    /\b(available|availability|hire|hired|opportunities|freelance)\b/i.test(
+      question,
+    );
+  const contactQuestion = /\b(contact|email|reach)\b/i.test(question);
+  const resumeQuestion = /\b(resume|cv|résumé)\b/i.test(question);
+  const technologyQuestion =
+    /\b(tech|technologies|stack|languages|tools|frameworks)\b/i.test(question);
   const scored = sections.map((section) => {
     const title = section.title.toLowerCase();
     const body = section.text.toLowerCase();
     const lexicalScore = query.reduce(
       (sum, term) =>
-        sum + (title.includes(term) ? 4 : 0) + (body.includes(term) ? 1 : 0),
+        sum +
+        (containsWord(title, term) ? 4 : 0) +
+        (containsWord(body, term) ? 1 : 0),
       0,
     );
     const score =
       lexicalScore +
       (locationQuestion && section.id === "location" ? 12 : 0) +
-      (improvementQuestion && section.id === "improving" ? 12 : 0);
+      (improvementQuestion && section.id === "improving" ? 12 : 0) +
+      (educationQuestion && section.id === "education" ? 12 : 0) +
+      (availabilityQuestion && section.id === "opportunities" ? 12 : 0) +
+      (contactQuestion && section.id === "contact" ? 12 : 0) +
+      (resumeQuestion && section.id === "resume" ? 12 : 0) +
+      (technologyQuestion && section.id === "skills:frontend" ? 8 : 0);
     return { section, score };
   });
   const matched = scored
@@ -61,9 +95,85 @@ export function rankByText(
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map(({ section }) => section);
-  return matched.length
-    ? matched
-    : sections.filter((section) => section.id === "about");
+  return matched;
+}
+
+function projectInQuestion(question: string) {
+  const normalized = question.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return projects.find((project) =>
+    normalized.includes(project.title.toLowerCase().replace(/[^a-z0-9]/g, "")),
+  );
+}
+
+export function selectEvidence(
+  question: string,
+  ranked: KnowledgeSection[],
+  all: KnowledgeSection[],
+): KnowledgeSection[] {
+  const byId = new Map(all.map((section) => [section.id, section]));
+  const selected: KnowledgeSection[] = [];
+  const add = (id: string) => {
+    const section = byId.get(id);
+    if (section && !selected.includes(section)) selected.push(section);
+  };
+  const comparison =
+    /\b(best|top|strongest|flagship|showcase|recommend|most impressive)\b/i.test(
+      question,
+    );
+  const projectQuestion = /\b(projects?|portfolio|work)\b/i.test(question);
+  const skillQuestion =
+    /\b(skills?|strengths?|good at|expertise|technologies|tech stack)\b/i.test(
+      question,
+    );
+  const namedProject = projectInQuestion(question);
+
+  if (comparison && projectQuestion) {
+    if (namedProject) {
+      add(`assessment:${namedProject.slug}`);
+      add("showcase-projects");
+      add(`project:${namedProject.slug}`);
+    } else {
+      add("showcase-projects");
+      const slugs = /\b(mobile|app)\b/i.test(question)
+        ? ["spotus", "ryde"]
+        : /\b(backend|api|server)\b/i.test(question)
+          ? ["productify", "natours-backend-api"]
+          : assistantFacts.showcaseProjects
+              .slice(0, 3)
+              .map((item) => item.slug);
+      slugs.forEach((slug) => add(`project:${slug}`));
+    }
+    return selected;
+  }
+
+  if (
+    comparison &&
+    skillQuestion &&
+    !/\b(backend|database|mobile)\b/i.test(question)
+  ) {
+    add("strengths");
+    add("skills:frontend");
+    return selected;
+  }
+
+  if (namedProject) {
+    add(`assessment:${namedProject.slug}`);
+    add(`project:${namedProject.slug}`);
+    if (/\b(tech|stack|built with|framework)\b/i.test(question)) {
+      add(`technology:${namedProject.slug}`);
+    } else {
+      add(`features:${namedProject.slug}`);
+    }
+    return selected;
+  }
+
+  if (
+    rankByText(all, question, 1).length === 0 &&
+    !/^(hi|hello|hey)[.!?\s]*$/i.test(question)
+  ) {
+    return [];
+  }
+  return ranked.slice(0, 4);
 }
 
 export function cosineSimilarity(a: number[], b: number[]): number {
@@ -100,9 +210,9 @@ export function rankByEmbedding(
 
 export function directAnswer(sections: KnowledgeSection[]): string {
   if (!sections.length)
-    return "The portfolio does not specify that detail. Contact Kamal for more information.";
+    return "I don't have that detail in Kamal's portfolio. Please ask him directly.";
   return sections
-    .slice(0, 2)
+    .slice(0, 1)
     .map((section) => section.text)
-    .join("\n\n");
+    .join("");
 }

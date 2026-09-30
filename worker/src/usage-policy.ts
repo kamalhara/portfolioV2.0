@@ -7,7 +7,7 @@ export type LimitReason = "visitor_limit" | "global_limit" | "cooldown";
 export type UsageDecision = {
   allowed: boolean;
   reason?: LimitReason;
-  remaining: number;
+  remaining: number | null;
   retryAfterSeconds?: number;
 };
 
@@ -16,7 +16,9 @@ export function checkUsage(input: {
   globalCount: number;
   lastQuestionAt: number;
   now: number;
+  unlimited?: boolean;
 }): UsageDecision {
+  if (input.unlimited) return { allowed: true, remaining: null };
   const remaining = Math.max(0, VISITOR_LIMIT - input.visitorCount);
   if (remaining === 0) {
     return { allowed: false, reason: "visitor_limit", remaining: 0 };
