@@ -146,19 +146,6 @@ export default function PortfolioDock() {
             onKeyDown={trapDialogFocus}
             className="h-fit w-full max-w-md overflow-hidden rounded-2xl border border-border bg-background text-foreground shadow-2xl"
           >
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <h2 id="portfolio-search-title" className="text-sm font-medium">
-                Explore the portfolio
-              </h2>
-              <button
-                type="button"
-                onClick={closeSearch}
-                aria-label="Close search"
-                className="flex size-7 cursor-pointer items-center justify-center rounded-full text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
-              >
-                <FiX className="size-4" aria-hidden="true" />
-              </button>
-            </div>
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">
               <FiSearch
                 className="size-4 shrink-0 text-muted-foreground"
@@ -171,7 +158,7 @@ export default function PortfolioDock() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search projects, experience, or skills"
                 aria-label="Search portfolio sections"
-                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground focus:ring-none"
               />
             </div>
             <nav

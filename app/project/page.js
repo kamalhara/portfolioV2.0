@@ -21,7 +21,7 @@ export default function ProjectPage() {
             full-stack and mobile products.
           </p>
         </header>
-        <ul className="grid max-w-130 gap-4.75">
+        <ul className="grid max-w-130 gap-1.5">
           {projects.map((project) => (
             <li key={project.slug}>
               <Link href={`/project/${project.slug}`} className="group block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand">

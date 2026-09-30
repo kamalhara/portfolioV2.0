@@ -20,12 +20,13 @@ export default function StackSection() {
               {category.title}
             </h3>
             <ul className="flex flex-wrap gap-1.75">
-              {category.skills.map(([name]) => (
+              {category.skills.map((skill) => (
                 <li
-                  className="rounded-full border border-border bg-card px-2.75 py-0.75 text-[11px] leading-[1.6] whitespace-nowrap text-muted-foreground [font-family:var(--font-geist-mono)]"
-                  key={name}
+                  className="rounded-full border border-border bg-card hover:text-gray-200 px-2.75 py-0.75 text-xs leading-[1.6] whitespace-nowrap text-muted-foreground [font-family:var(--font-geist-mono)] flex items-center justify-center gap-1.25"
+                  key={skill.name}
                 >
-                  {name.trim()}
+                  {skill.icon}
+                  {skill.name}
                 </li>
               ))}
             </ul>

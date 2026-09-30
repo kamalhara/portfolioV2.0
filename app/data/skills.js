@@ -1,49 +1,109 @@
+import {
+  BsJavascript,
+  BsTypescript,
+  BsChatSquareText,
+  BsClaude,
+} from "react-icons/bs";
+import Image from "next/image";
+import CursorLogo from "@/app/ui/CursorLogo";
+import { DiReact } from "react-icons/di";
+import {
+  SiNextdotjs,
+  SiRedux,
+  SiTailwindcss,
+  SiShadcnui,
+  SiFramer,
+  SiExpo,
+  SiFirebase,
+  SiNodedotjs,
+  SiExpress,
+  SiPostgresql,
+  SiMongodb,
+  SiSocketdotio,
+  SiSupabase,
+  SiLangchain,
+  SiRedis,
+  SiOpenai,
+  SiNotion,
+} from "react-icons/si";
+import { GiBearFace } from "react-icons/gi";
+import {
+  FaAws,
+  FaRobot,
+  FaWandMagicSparkles,
+  FaDatabase,
+  FaGitAlt,
+} from "react-icons/fa6";
+import { PiNotionLogo } from "react-icons/pi";
+
 export const skillCategories = [
   {
-    title: "Web",
+    title: "Frontend",
     skills: [
-      ["React", "interfaces"],
-      ["Next.js", "full-stack"],
-      ["Tailwind ", "CSS"],
-      ["TypeScript", "typed "],
+      { name: "TypeScript", icon: <BsTypescript size={14} /> },
+      { name: "JavaScript", icon: <BsJavascript size={14} /> },
+      { name: "React.js", icon: <DiReact size={18} /> },
+      { name: "Next.js", icon: <SiNextdotjs size={14} /> },
+      { name: "Redux", icon: <SiRedux size={14} /> },
+      { name: "Zustand", icon: <GiBearFace size={14} /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss size={14} /> },
+      { name: "Shadcn UI", icon: <SiShadcnui size={14} /> },
+      { name: "Motion", icon: <SiFramer size={14} /> },
     ],
   },
   {
     title: "Mobile",
     skills: [
-      ["React Native", "cross-platform"],
-      ["Expo", "delivery"],
-      ["NativeWind", "styling"],
-      ["Firebase", "realtime + push"],
+      { name: "React Native", icon: <DiReact size={18} /> },
+      { name: "Expo", icon: <SiExpo size={14} /> },
+      { name: "NativeWind", icon: <SiTailwindcss size={14} /> },
+      { name: "Firebase", icon: <SiFirebase size={14} /> },
     ],
   },
   {
     title: "Backend",
     skills: [
-      ["Node.js", "services"],
-      ["Express", "APIs"],
-      ["PostgreSQL", "SQL"],
-      ["MongoDB", "NoSQL"],
-      ["WebSockets", "realtime"],
+      { name: "Node.js", icon: <SiNodedotjs size={14} /> },
+      { name: "Express", icon: <SiExpress size={14} /> },
+      { name: "PostgreSQL", icon: <SiPostgresql size={14} /> },
+      { name: "MongoDB", icon: <SiMongodb size={14} /> },
+      { name: "Redis", icon: <SiRedis size={14} /> },
+      { name: "AWS", icon: <FaAws size={14} /> },
+      { name: "Supabase", icon: <SiSupabase size={14} /> },
+      { name: "WebSockets", icon: <SiSocketdotio size={14} /> },
+      { name: "git", icon: <FaGitAlt size={14} /> },
     ],
   },
   {
-    title: "Platform",
+    title: "AI & Tools",
     skills: [
-      ["Supabase", "backend platform"],
-      ["Clerk", "identity"],
-      ["AWS", "cloud"],
-      ["Vercel", "deployment"],
+      { name: "Claude", icon: <BsClaude size={14} /> },
+      { name: "ChatGPT", icon: <SiOpenai size={14} /> },
+      { name: "Cursor", icon: <CursorLogo /> },
+      {
+        name: "Gemini",
+        icon: (
+          <Image
+            src="/google-gemini-icon.svg"
+            alt=""
+            aria-hidden="true"
+            width={14}
+            height={14}
+          />
+        ),
+      },
+
+      { name: "Notion", icon: <SiNotion size={14} /> },
     ],
   },
   {
     title: "Agentic AI",
     skills: [
-      ["Generative AI", "applications"],
-      ["LLMs", "reasoning"],
-      ["LangChain", "orchestration"],
-      ["AI agents", "workflows"],
-      ["RAG", "grounded context"],
+      { name: "Generative AI", icon: <FaRobot size={14} /> },
+      { name: "LLMs", icon: <BsChatSquareText size={14} /> },
+      { name: "LangChain", icon: <SiLangchain size={14} /> },
+      { name: "AI agents", icon: <FaWandMagicSparkles size={14} /> },
+      { name: "RAG", icon: <FaDatabase size={14} /> },
     ],
   },
 ];
