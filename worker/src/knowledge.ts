@@ -25,10 +25,17 @@ const profileSections: KnowledgeSection[] = [
     title: "About Kamalveer",
     text: joinFacts([
       `Name: ${portfolio.name}.`,
+      `Preferred short name: ${assistantFacts.preferredName}.`,
       `Role: ${portfolio.role}.`,
       portfolio.currently,
       portfolio.about,
     ]),
+    links: [],
+  },
+  {
+    id: "age",
+    title: "Age and birth year",
+    text: `${portfolio.name} was ${assistantFacts.ageAsOf} and was born in ${assistantFacts.birthYear}. Do not calculate a current age without his full date of birth.`,
     links: [],
   },
   {
@@ -40,7 +47,19 @@ const profileSections: KnowledgeSection[] = [
   {
     id: "education",
     title: "Education",
-    text: `${portfolio.name} is a ${assistantFacts.education}.`,
+    text: `${portfolio.name} is ${assistantFacts.education}.`,
+    links: [],
+  },
+  {
+    id: "languages",
+    title: "Spoken and programming languages",
+    text: `Spoken languages: ${assistantFacts.languages.join(", ")}. Primary programming languages: ${assistantFacts.programmingLanguages.join(", ")}.`,
+    links: [],
+  },
+  {
+    id: "time-zones",
+    title: "Time zone coordination",
+    text: assistantFacts.timeZones,
     links: [],
   },
   ...Object.entries(assistantFacts.skills).map(([category, skills]) => ({
@@ -52,7 +71,19 @@ const profileSections: KnowledgeSection[] = [
   {
     id: "strengths",
     title: "Strengths",
-    text: `${portfolio.name}'s strongest skills are ${assistantFacts.strengths.join(", ")}. StateGlyph, Spotus, and Productify demonstrate this work.`,
+    text: `${portfolio.name} identifies ${assistantFacts.strengths.join(", ")} as his strongest areas. StateGlyph, Spotus, and Productify are examples in his portfolio.`,
+    links: [{ label: "Projects", href: "/project" }],
+  },
+  {
+    id: "interests",
+    title: "Project interests",
+    text: `${portfolio.name} enjoys ${assistantFacts.interests.join(", ")}. These are interests and services he is open to discussing, not claims that every category is a completed production project.`,
+    links: [{ label: "Projects", href: "/project" }],
+  },
+  {
+    id: "end-to-end-delivery",
+    title: "End-to-end and solo app delivery",
+    text: assistantFacts.delivery,
     links: [{ label: "Projects", href: "/project" }],
   },
   {
@@ -67,7 +98,7 @@ const profileSections: KnowledgeSection[] = [
       })
       .join(
         "; ",
-      )}. These are recommendations based on Kamal's featured portfolio work, not measured rankings.`,
+      )}. These are portfolio highlights based on featured work, not measured rankings.`,
     links: assistantFacts.showcaseProjects.slice(0, 3).map((item) => ({
       label:
         projects.find((project) => project.slug === item.slug)?.title ??
@@ -87,16 +118,22 @@ const profileSections: KnowledgeSection[] = [
     ],
   })),
   {
-    id: "improving",
-    title: "Areas being strengthened",
-    text: `${portfolio.name} is currently strengthening ${assistantFacts.improving.join(", ")}. He has worked with role-based authorization in projects such as Natours; complex production permissions remain an area of growth.`,
-    links: [{ label: "Natours API", href: "/project/natours-backend-api" }],
+    id: "why-hire",
+    title: "Why hire Kamal",
+    text: `Based on his portfolio, ${portfolio.name} can contribute across web and mobile interfaces, APIs, and product design. He completed a remote, part-time internship and has public project examples. Specific role fit should be discussed with him.`,
+    links: [{ label: "Projects", href: "/project" }],
   },
   {
     id: "goals",
     title: "Career goals",
     text: assistantFacts.goals,
     links: [],
+  },
+  {
+    id: "talmee-next-step",
+    title: "Why Kamal is seeking a new role after Talmee",
+    text: assistantFacts.talmeeNextStep,
+    links: [{ label: "Contact Kamal", href: `mailto:${portfolio.email}` }],
   },
   {
     id: "opportunities",
@@ -123,7 +160,7 @@ const profileSections: KnowledgeSection[] = [
   {
     id: "resume",
     title: "Resume",
-    text: `${portfolio.name}'s public resume summarizes full-stack and mobile experience, including React, Next.js, React Native, Node.js, Express, PostgreSQL, MongoDB, REST APIs, authentication, and deployment. Download it from the portfolio.`,
+    text: `${portfolio.name}'s public resume summarizes full-stack and mobile work, including React, Next.js, React Native, Node.js, Express, PostgreSQL, MongoDB, REST APIs, and authentication. His Talmee internship ran February to August 2026.`,
     links: [{ label: "Download resume", href: portfolio.resume }],
   },
 ];

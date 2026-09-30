@@ -23,7 +23,7 @@ export const projects = [
     tone: "green",
     type: "Open Source",
     code: "https://github.com/kamalhara/StateGlyph",
-    live: "https://state-glyph-docs-sigma.vercel.app/",
+    live: "https://stateglyph.js.org/",
     featured: true,
   },
   {
@@ -36,14 +36,14 @@ export const projects = [
     technologies:
       "React Native · Expo · Firebase · Clerk · Express · Cloudinary · Trigger.dev",
     overview:
-      "Spotus is a mobile social-discovery product built around place and proximity. People can browse global rooms or discover conversations within a configurable nearby radius, join live discussions, react and share media, then request a private conversation when they want to continue one-to-one. The product connects a React Native client to an authenticated API with geohash search, real-time data, background cleanup, push delivery, moderation, analytics, and crash reporting.",
+      "Spotus is a mobile social-discovery product built around place and proximity. People can browse global rooms or discover conversations within a configurable nearby radius, join live discussions, react and share media, then request a private conversation when they want to continue one-to-one. The project connects a React Native client to location queries, real-time Firestore data, media uploads, push notifications, and moderation features.",
     keyFeatures: [
       "Geohash-based nearby-room discovery with a configurable search radius alongside a separate global discovery feed",
       "Real-time room conversations with typing indicators, reactions, read receipts, pinned messages, and continuously updated activity",
       "Recipient-controlled direct-message requests that keep private conversations separate from public room participation",
       "Passwordless OTP, Google OAuth, and Apple Sign-In flows handled through Clerk across supported devices",
       "Camera and gallery media sharing through authenticated, signed uploads to Cloudinary",
-      "Push notifications, moderation controls, analytics, crash reporting, and scheduled cleanup for expired rooms",
+      "Push notifications and moderation controls support active room conversations",
     ],
     screenshot: [
       "spotus/welcome.png",
@@ -60,15 +60,15 @@ export const projects = [
   {
     title: "Ryde",
     slug: "ryde",
-    frontEnd: "React Native , Expo , NativeWind",
-    backEnd: "Node.js, Express, PostgreSQL",
+    frontEnd: "React Native, Expo, NativeWind",
+    backEnd: "Expo API routes, Neon PostgreSQL",
     description:
-      "A mobile ride-booking experience covering destination search, nearby driver comparison, route tracking, payment, and trip history, with map-based navigation and authenticated rider accounts.",
-    technologies: "React Native · Expo  · Apple Maps · PostgreSQL · CLerk ",
+      "An educational mobile ride-booking app with destination search, driver comparison, map-based routes, authentication, booking, payment integration, and trip history.",
+    technologies: "React Native · Expo · Clerk · PostgreSQL · Stripe",
     overview:
       "Ryde guides riders through an end-to-end booking flow, beginning with account access and destination search before moving into nearby-driver comparison, ride selection, route confirmation, and payment. Map-based screens keep pickup, destination, driver location, pricing, and estimated arrival time visible during the decision process. Completed bookings remain available in a structured trip history for later reference.",
     keyFeatures: [
-      "Interactive map views with live driver locations, pickup and destination context, and route directions",
+      "Interactive map views with location, pickup and destination context, and route directions",
       "Destination search and address autocomplete powered by OpenStreetMap data",
       "Driver comparison cards that surface ratings, estimated arrival time, vehicle details, and ride pricing before booking",
       "A focused confirmation flow that carries the selected route and driver through booking and payment",
@@ -93,18 +93,18 @@ export const projects = [
     frontEnd: "React.js, Next.js 16, Tailwind CSS 4 ",
     backEnd: "Express 5, Drizzle, PostgreSQL",
     description:
-      "A community product directory where makers create and manage listings while visitors search, filter, rate, and discuss new products through an authenticated full-stack web experience.",
+      "A full-stack product directory where makers create and manage listings while visitors browse products and leave comments.",
     technologies:
       "Next.js 16 · Tailwind CSS 4 · Clerk · Express 5 · Drizzle · PostgreSQL",
     overview:
-      "Productify gives makers a dedicated place to publish, update, and organize the products they are building. The wider community can browse the directory, search and filter listings, open detailed product pages, then contribute feedback through ratings and comments. Clerk manages identity while an Express API, Drizzle ORM, and PostgreSQL keep product and community data structured behind the Next.js interface.",
+      "Productify lets makers publish, update, and manage products while visitors browse listings and leave comments. Clerk manages identity, and an Express API with Drizzle ORM and PostgreSQL stores product and community data behind the Next.js interface. Search, filtering, and ratings are listed as future enhancements in the project repository.",
     keyFeatures: [
       "Clerk-based registration, sign-in, and protected maker workflows for authenticated account access",
       "Create, edit, publish, and manage product listings from a single maker-facing experience",
-      "Structured product detail pages that bring descriptions, maker information, ratings, and discussion together",
-      "Community feedback through comments and ratings attached to individual products",
-      "Search, filtering, and sorting controls for navigating an expanding product directory",
-      "Server-rendered Next.js pages backed by an Express API and type-safe Drizzle queries against PostgreSQL",
+      "Structured product detail pages with descriptions, maker information, and comments",
+      "Community feedback through comments attached to individual products",
+      "A product directory for browsing listings from different makers",
+      "Next.js pages backed by an Express API and Drizzle queries against PostgreSQL",
     ],
     img: "/productify.jpeg",
     cover: "/productify.jpeg",
@@ -119,7 +119,7 @@ export const projects = [
     frontEnd: null,
     backEnd: "Node.js, Express, MongoDB",
     description:
-      "A secure tour-booking REST API that manages users, tours, and reviews with JWT authentication, role-based permissions, input protection, and flexible filtering, sorting, field selection, and pagination.",
+      "A tour-booking REST API built while following a Node.js course, covering users, tours, and reviews with JWT authentication, role-based permissions, filtering, sorting, and pagination.",
     technologies: "Node.js · Express · MongoDB · JWT",
     overview:
       "Natours is the backend API for a tour marketplace, organizing the core workflows around accounts, tour inventory, reviews, and protected operations. Its REST endpoints support complete resource management while reusable query utilities give catalogue consumers control over filtering, sorting, selected fields, and pagination. Authentication, permission checks, validation, sanitization, centralized errors, and secure password flows form the security boundary around the data.",
@@ -142,21 +142,21 @@ export const projects = [
   {
     title: "The Wild Oasis - Owner Dashboard",
     slug: "the-wild-oasis-staff",
-    frontEnd: "Next.js, Supabase, Tailwind CSS",
-    backEnd: "Supabase,",
+    frontEnd: "React, Vite, Styled Components",
+    backEnd: "Supabase",
     description:
-      "A staff operations dashboard for managing hotel cabins, guests, and bookings while monitoring occupancy, sales, and day-to-day performance through authenticated, real-time Supabase workflows.",
-    technologies: "Next.js · Supabase · Tailwind CSS",
+      "A React and Vite hotel operations dashboard for managing cabins and bookings while monitoring occupancy and sales with Supabase-backed data.",
+    technologies: "React · Vite · Styled Components · Supabase · React Query",
     overview:
-      "The Wild Oasis owner dashboard turns daily hotel operations into a focused workspace for staff and managers. Teams can maintain cabin inventory, review guest information, process bookings, and monitor occupancy and sales without switching between disconnected tools. Supabase supplies authentication, persisted data, and real-time updates while the dashboard translates operational records into actionable tables, forms, and performance views.",
+      "The Wild Oasis owner dashboard brings cabin and booking management together with sales and occupancy views. The repository uses React, Vite, Styled Components, React Query, Recharts, and Supabase for authentication and data.",
     keyFeatures: [
       "Centralized management workflows for cabins, guest records, reservations, and booking status changes",
       "Operational tables and forms designed for routine staff updates without leaving the dashboard",
       "Sales summaries and performance charts that make recent booking activity easier to evaluate",
       "Occupancy visualizations for understanding current utilization and upcoming demand",
-      "Role-based access controls that separate staff and owner responsibilities within authenticated sessions",
-      "Real-time Supabase subscriptions that keep shared operational data current across active sessions",
-      "Responsive Tailwind CSS interface with secure Supabase-backed authentication and data persistence",
+      "Supabase-backed authentication for dashboard access",
+      "React Query and Supabase-backed data flows for operational updates",
+      "Responsive interface built with Styled Components",
     ],
     img: "/wild-oasis-staff.webp",
     cover: "/wild-oasis-staff.webp",
@@ -166,23 +166,22 @@ export const projects = [
     live: "https://the-wild-oasis-staff-mauve.vercel.app/",
   },
   {
-    title: "Dine time app",
+    title: "DineTime",
     slug: "dine-time-app",
-    frontEnd: "React Native , Expo , NativeWind",
+    frontEnd: "React Native, Expo, NativeWind",
     backEnd: null,
     description:
-      "A cross-platform expense tracker for capturing, editing, and categorizing daily spending, visualizing summaries, and synchronizing authenticated user data through Firebase with offline support.",
+      "A cross-platform restaurant discovery and table-reservation app with authentication, restaurant details, booking, and reservation history.",
     technologies: "React Native · Expo · Firebase · NativeWind",
     overview:
-      "Dine Time keeps everyday expense tracking quick enough to use consistently on a phone. Users can record purchases, assign categories, correct previous entries, and review summaries that turn individual transactions into a clearer picture of spending patterns. Firebase keeps authenticated data synchronized across sessions, while local caching supports continuity when connectivity is limited and reminders help maintain the habit.",
+      "DineTime helps people browse restaurants, choose a date, time, and party size, and make a table reservation. Its React Native and Expo client uses Firebase for authentication and data, with AsyncStorage for local persistence. Offline support and push notifications are listed as future work in the repository.",
     keyFeatures: [
-      "Fast create, edit, and delete flows for expense entries with reusable spending categories",
-      "Charts and summary views that translate transaction history into understandable category-level patterns",
-      "Real-time Firebase synchronization so authenticated users see consistent data across supported devices and sessions",
-      "Secure account access and user-scoped storage for keeping personal financial records separated",
-      "Responsive React Native screens styled with NativeWind for consistent use across mobile form factors",
-      "Local caching that keeps core records available when the device has limited or interrupted connectivity",
-      "Push reminders that prompt users to capture expenses before they are forgotten",
+      "Restaurant browsing with detail pages and location-oriented discovery",
+      "Table booking with date, time, and party-size selection",
+      "Reservation history and profile screens",
+      "Account sign-in and sign-up backed by Firebase",
+      "React Native and Expo screens styled with NativeWind",
+      "AsyncStorage for local persistence",
     ],
     screenshot: [
       "dine-time/welcome.webp",
@@ -226,17 +225,16 @@ export const projects = [
     frontEnd: "Next.js, Tailwind CSS",
     backEnd: null,
     description:
-      "A responsive authentication interface focused on accessible sign-up and login flows, clear validation and error feedback, keyboard-friendly form controls, and consistent behavior across device sizes.",
+      "A responsive Next.js login and sign-up interface. Social sign-in buttons are UI placeholders, not working authentication integrations.",
     technologies: "Next.js · Tailwind CSS",
     overview:
-      "Nexcent is a focused exploration of the interface details that make authentication feel clear and trustworthy. Its sign-up and login screens establish a consistent visual hierarchy, guide users through required fields, and surface validation feedback close to the point of action. Responsive layouts, keyboard-friendly controls, accessible states, and Next.js delivery keep the experience usable across device sizes and input methods.",
+      "Nexcent explores responsive login and sign-up interface design with Next.js and Tailwind CSS. The repository describes Google and GitHub sign-in buttons as UI-only placeholders; it is not presented as a complete authentication system.",
     keyFeatures: [
       "Responsive sign-up and login layouts that preserve hierarchy and comfortable form spacing from mobile to desktop",
       "Clear labels, input affordances, and focused calls to action that reduce ambiguity during account access",
-      "Field-level validation and error messaging placed close to the controls that require attention",
-      "Keyboard-friendly interaction and visible focus behavior for navigating the complete form without a pointer",
-      "Accessible structure and feedback states that support a broader range of users and assistive technologies",
-      "Next.js rendering and a clean integration boundary for connecting the interface to an authentication backend",
+      "Back-button navigation between interface screens",
+      "Social sign-in UI placeholders without a connected authentication backend",
+      "Next.js and Tailwind CSS interface components",
     ],
     img: "/nexcent.webp",
     cover: "/nexcent.webp",

@@ -1,9 +1,9 @@
 // Homepage copy lives here so the layout can be edited without touching JSX.
 export const portfolio = {
   name: "Kamalveer Singh",
-  role: "Full-stack and mobile software engineer",
+  role: "Full-stack web and mobile software engineer",
   currently:
-    "Building mobile experiences at Talmee. Outside work, I create open-source tools and full-stack products with React, React Native, and Node.js.",
+    "Open to software engineering opportunities. I build web and mobile products with React, React Native, and Node.js, and I am especially interested in AI integrations and open-source tools.",
   email: "kamalhara7@gmail.com",
   location: "India",
   github: "https://github.com/kamalhara",
@@ -17,11 +17,12 @@ export const portfolio = {
 export const projectSummaries = {
   stateglyph: "An icon system that understands interface state.",
   spotus: "Live conversations shaped by place and proximity.",
-  ryde: "A complete ride-booking flow for mobile.",
+  ryde: "An educational ride-booking app for mobile.",
   productify: "A product directory built for makers and communities.",
   "natours-backend-api": "A secure REST API for tour booking and management.",
   "the-wild-oasis-staff": "A hotel operations dashboard for staff and owners.",
-  "dine-time-app": "A mobile expense tracker with offline support.",
+  "dine-time-app":
+    "A mobile app for discovering restaurants and booking tables.",
   "the-wild-oasis": "A guest-facing booking experience for hotel stays.",
   nexcent: "An accessible, responsive authentication interface.",
   "world-wise": "A travel journal built around an interactive map.",

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { knowledge } from "../worker/src/knowledge.ts";
 import {
+  answerFromPolicy,
   directAnswer,
   rankByText,
   rankByEmbedding,
@@ -78,7 +79,29 @@ test("a named weaker project is assessed before the showcase", () => {
   );
   assert.equal(evidence[0].id, "assessment:world-wise");
   assert.equal(evidence[1].id, "showcase-projects");
-  assert.match(evidence[0].text, /does not consider it one of his strongest/);
+  assert.match(
+    evidence[0].text,
+    /not among Kamal's selected showcase projects/,
+  );
+});
+
+test("common project names retrieve the intended project", () => {
+  assert.equal(
+    selectEvidence("What is Natours built with?", knowledge, knowledge)[0].id,
+    "project:natours-backend-api",
+  );
+  assert.equal(
+    selectEvidence("What is Dine Time?", knowledge, knowledge)[0].id,
+    "project:dine-time-app",
+  );
+  assert.equal(
+    selectEvidence(
+      "What powers the Wild Oasis staff dashboard?",
+      knowledge,
+      knowledge,
+    )[0].id,
+    "project:the-wild-oasis-staff",
+  );
 });
 
 test("missing facts have no supporting evidence", () => {
@@ -86,7 +109,7 @@ test("missing facts have no supporting evidence", () => {
     selectEvidence("What is Kamal's GPA?", knowledge, knowledge),
     [],
   );
-  assert.match(directAnswer([]), /don't have that detail/);
+  assert.match(directAnswer([]), /don't have a verified answer/);
 });
 
 test("responses are capped to a short answer", () => {
@@ -97,16 +120,40 @@ test("responses are capped to a short answer", () => {
   assert.ok(compactAnswer(longAnswer).split(/\s+/).length <= 45);
 });
 
-test("text retrieval finds relevant portfolio evidence", () => {
+test("text retrieval finds verified profile evidence", () => {
   assert.equal(
     rankByText(knowledge, "Where is Kamal located?")[0].id,
     "location",
   );
-  assert.ok(
-    rankByText(knowledge, "What are his weaker backend areas?").some(
-      (section) => section.id === "improving",
-    ),
+  assert.equal(rankByText(knowledge, "How old is Kamal?")[0].id, "age");
+  assert.equal(
+    rankByText(knowledge, "What languages does Kamal speak?")[0].id,
+    "languages",
   );
+});
+
+test("sensitive and unsupported questions have concise direct answers", () => {
+  assert.match(
+    answerFromPolicy("How old is Kamal?"),
+    /20 as of September 2026/,
+  );
+  assert.match(
+    answerFromPolicy("What salary does he want?"),
+    /contact him directly/,
+  );
+  assert.doesNotMatch(
+    answerFromPolicy("What are his weaknesses?"),
+    /security|scaling|permissions/,
+  );
+  assert.match(
+    answerFromPolicy("Tell me about the college portal"),
+    /verified answer/,
+  );
+  assert.match(
+    answerFromPolicy("How many users does Spotus have?"),
+    /verified answer/,
+  );
+  assert.equal(answerFromPolicy("What did he build in Spotus?"), null);
 });
 
 test("semantic ranker selects the closest vector", () => {

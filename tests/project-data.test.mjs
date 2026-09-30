@@ -30,6 +30,21 @@ test("projects contain the fields used by routes", () => {
   }
 });
 
+test("project descriptions match the linked repositories' core facts", () => {
+  const bySlug = Object.fromEntries(
+    projects.map((project) => [project.slug, project]),
+  );
+  assert.match(bySlug["dine-time-app"].description, /restaurant/i);
+  assert.doesNotMatch(bySlug["dine-time-app"].description, /expense/i);
+  assert.match(bySlug["the-wild-oasis-staff"].technologies, /Vite/);
+  assert.doesNotMatch(bySlug["the-wild-oasis-staff"].technologies, /Next\.js/);
+  assert.doesNotMatch(
+    bySlug.productify.keyFeatures.join(" "),
+    /ratings|search|filter/i,
+  );
+  assert.match(bySlug["natours-backend-api"].description, /course/i);
+});
+
 test("referenced optimized covers exist", () => {
   for (const project of projects.filter((item) => item.cover)) {
     assert.ok(existsSync(`public${project.cover}`), project.cover);

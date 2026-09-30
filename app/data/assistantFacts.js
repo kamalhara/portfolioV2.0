@@ -1,72 +1,84 @@
-// Public professional details supplied for the recruiter assistant.
-// Keep this file in sync with the portfolio and resume when those change.
+// Public recruiter-assistant facts. Personal details come from Kamal's answers;
+// technical details are limited to his resume and linked project repositories.
+// Do not turn an unconfirmed feature into a claim about production use or impact.
 export const assistantFacts = {
+  preferredName: "Kamal Hara",
   location: "Ludhiana, Punjab, India",
-  education: "BCA student",
-  strengths: [
-    "frontend development",
-    "responsive interfaces",
-    "animations",
-    "converting designs into code",
-    "complete application development and deployment",
+  ageAsOf: "20 as of September 2026",
+  birthYear: 2006,
+  education:
+    "Pursuing a Bachelor of Computer Applications at Gulzar Group of Institutes; expected to graduate in 2027",
+  languages: ["Punjabi", "Hindi", "English (fluent)"],
+  programmingLanguages: ["TypeScript", "JavaScript"],
+  timeZones:
+    "Can coordinate working hours with a company or client across time zones; ask Kamal about a specific schedule.",
+  strengths: ["frontend development", "backend development", "UI/UX design"],
+  interests: [
+    "AI-integrated web and mobile applications",
+    "chat applications",
+    "open-source libraries",
+    "custom client projects",
   ],
-  // Curated from the portfolio's featured work and Kamal's own assessment.
+  delivery:
+    "Kamal is comfortable taking a web or mobile application from UI/UX through frontend and backend implementation. Project scope, timeline, and any specialist needs should be discussed with him.",
+  // Portfolio highlights, not an objective quality ranking.
   showcaseProjects: [
     {
       slug: "stateglyph",
       reason:
-        "open-source React and TypeScript component system with documentation, accessibility work, and a CLI",
+        "open-source TypeScript and React packages, documentation, accessibility support, and a CLI",
     },
     {
       slug: "spotus",
       reason:
-        "full-stack mobile social product with location discovery, real-time chat, and an authenticated API",
+        "React Native social app with location-based discovery and real-time messaging",
     },
     {
       slug: "productify",
       reason:
-        "full-stack web product with Next.js, Express, Drizzle, and PostgreSQL",
+        "deployed Next.js and Express product directory with PostgreSQL-backed listings and comments",
     },
     {
       slug: "ryde",
       reason:
-        "mobile ride-booking flow with maps, authentication, and a PostgreSQL-backed service",
+        "educational React Native ride-booking app with maps, authentication, and booking flows",
     },
   ],
   projectAssessments: {
     "world-wise":
-      "World Wise is in the portfolio, but Kamal does not consider it one of his strongest or flagship projects.",
+      "World Wise is in the portfolio but is not among Kamal's selected showcase projects. This is a portfolio assessment, not a statement about the project's quality.",
   },
-  improving: [
-    "complex role-based permissions",
-    "production backend security",
-    "large-scale performance",
-    "advanced backend architecture",
-  ],
   goals:
-    "Full-stack web and mobile roles, with an interest in applied generative AI and agentic AI integration.",
+    "Seeking software engineering opportunities, with a preference for an on-site role in India and an interest in full-stack web, mobile, and AI-integrated products.",
   opportunities:
-    "Open to suitable junior, internship, startup, and freelance opportunities. Contact Kamal to confirm current availability.",
+    "Kamal is looking for job opportunities. He prefers an on-site role in India and can coordinate with teams or clients across time zones. Ask him directly about availability, salary, and a specific work arrangement.",
   freelance:
-    "Web and mobile application development, responsive interface implementation, and full-stack feature delivery.",
+    "Interested in discussing web and mobile applications, AI integrations, chat applications, open-source tooling, and custom development with clients. Confirm scope and availability with Kamal.",
+  talmeeNextStep:
+    "After the part-time remote internship, Kamal chose to seek an on-site software engineering role in India to gain in-person professional experience.",
+  responsePreferences: {
+    unknown:
+      "I don't have a verified answer to that. Please contact Kamal directly or check the portfolio.",
+    weakness:
+      "Please ask Kamal directly; his stated strengths are frontend, backend, and UI/UX design.",
+    salary:
+      "Kamal is open to discussing compensation for a specific role. Please contact him directly.",
+    roleFit:
+      "Based on his portfolio, Kamal has relevant full-stack web and mobile experience. Share the role requirements with him to assess fit.",
+  },
   skills: {
-    frontend: [
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Tailwind CSS",
-      "Redux Toolkit",
-      "Zustand",
-    ],
+    frontend: ["JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"],
     mobile: ["React Native", "Expo", "NativeWind"],
-    backend: [
-      "Node.js",
-      "Express",
-      "REST APIs",
-      "authentication",
-      "authorization",
+    backend: ["Node.js", "Express", "REST APIs", "authentication"],
+    data: ["PostgreSQL", "MySQL", "MongoDB", "Firebase", "Drizzle ORM"],
+    tools: [
+      "Git",
+      "GitHub",
+      "Clerk",
+      "Cloudinary",
+      "Vercel",
+      "Postman",
+      "Vitest",
     ],
-    data: ["PostgreSQL", "MongoDB", "MySQL", "Supabase", "Firebase"],
   },
 };

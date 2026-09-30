@@ -106,13 +106,12 @@ The limit state links to projects, skills, the resume, GitHub, and contact.
 Updating portfolio content changes the knowledge version and rebuilds the
 stored embedding index on the next request.
 
-Recruiter recommendations are curated in `app/data/assistantFacts.js`.
-StateGlyph, Spotus, Productify, and Ryde are showcase examples; World Wise is
-still available for direct questions but is not presented as a strongest
-project. The Worker sends only the most relevant short evidence to the model,
-asks for a one-sentence answer, and caps replies at 45 words. When a requested
-fact has no supporting portfolio evidence, it says so instead of guessing.
-
-The brief mentions VeloChat and a college project-management portal, but their
-details and links are absent from this repository. Add verified entries to
-`app/data/project.js` before the assistant describes them.
+Public profile facts and portfolio assessments are curated in
+`app/data/assistantFacts.js`. Project descriptions in `app/data/project.js`
+should match the linked repositories; planned features must be identified as
+planned. StateGlyph, Spotus, Productify, and Ryde are portfolio highlights,
+while World Wise is not recommended as a showcase project. The Worker sends
+short evidence to the model, asks for a one-sentence answer, and caps replies
+at 45 words. It answers age, salary, and other sensitive questions from fixed
+rules and refers unsupported questions to Kamal or the portfolio. Update the
+public resume and these data files together when facts change.

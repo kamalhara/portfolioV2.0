@@ -3,6 +3,7 @@ import { embedSections, embedText } from "./embedding";
 import { knowledge, knowledgeVersion, type KnowledgeLink } from "./knowledge";
 import { generateAnswer } from "./providers";
 import {
+  answerFromPolicy,
   directAnswer,
   rankByEmbedding,
   rankByText,
@@ -218,10 +219,13 @@ export default {
       );
     }
 
-    const sections = await relevantSections(question, env);
+    const policyAnswer = answerFromPolicy(question);
+    const sections = policyAnswer ? [] : await relevantSections(question, env);
     let answer: string;
     let source: "cloudflare" | "gemini" | "portfolio" = "portfolio";
-    if (!sections.length) {
+    if (policyAnswer) {
+      answer = policyAnswer;
+    } else if (!sections.length) {
       answer = directAnswer(sections);
     } else {
       try {
