@@ -6,6 +6,7 @@ import {
   Inter,
   JetBrains_Mono,
 } from "next/font/google";
+import ScrollReveal from "@/app/components/ScrollReveal";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -61,7 +62,10 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable}`}
     >
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <ScrollReveal />
+      </body>
     </html>
   );
 }

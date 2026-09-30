@@ -109,6 +109,51 @@ body {
     background-color 0.35s ease,
     color 0.35s ease;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  main {
+    animation: page-enter 0.4s var(--motion-ease-emphasized) backwards;
+  }
+
+  html.motion-ready [data-scroll-reveal] {
+    transition:
+      opacity 0.48s var(--motion-ease-emphasized),
+      transform 0.48s var(--motion-ease-emphasized);
+  }
+
+  html.motion-ready [data-scroll-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0.88;
+      transform: translateY(8px);
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  .home-page {
+    transition: background-color 0.28s ease;
+  }
+
+  .home-page > :not(#main-content),
+  #main-content > :not(#projects) {
+    transition: filter 0.28s ease;
+  }
+
+  .home-page:has(#projects > ul > li:is(:hover, :focus-within)) {
+    background-color: color-mix(in srgb, var(--color-background) 93%, black);
+  }
+
+  .home-page:has(#projects > ul > li:is(:hover, :focus-within)) > :not(#main-content),
+  #main-content:has(#projects > ul > li:is(:hover, :focus-within)) > :not(#projects) {
+    filter: blur(8px) brightness(0.9);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
