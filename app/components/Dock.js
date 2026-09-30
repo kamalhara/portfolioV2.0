@@ -132,7 +132,7 @@ export default function PortfolioDock() {
     <>
       {searchOpen && (
         <div
-          className="fixed inset-0 z-[60] flex justify-center bg-black/50 px-4 pt-[min(22vh,180px)] backdrop-blur-sm"
+          className="fixed inset-0 z-60 flex justify-center bg-black/50 px-4 pt-[min(22vh,180px)] backdrop-blur-sm"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) closeSearch();
           }}
@@ -236,7 +236,7 @@ export default function PortfolioDock() {
                 setMenuOpen(false);
                 setSearchOpen(true);
               }}
-              className="flex h-8 w-40 cursor-pointer items-center gap-2 rounded-full bg-foreground/5 px-3 text-muted-foreground transition-colors hover:bg-foreground/8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-[210px] [html.dark_&]:bg-foreground/8 [html.dark_&]:hover:bg-foreground/12"
+              className="flex h-8 w-40 cursor-pointer items-center gap-2 rounded-full bg-foreground/5 px-3 text-muted-foreground transition-colors hover:bg-foreground/8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-52.5 [html.dark_&]:bg-foreground/8 [html.dark_&]:hover:bg-foreground/12"
             >
               <FiSearch className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="flex-1 truncate text-left text-[12.5px]">
@@ -246,10 +246,10 @@ export default function PortfolioDock() {
                 className="hidden shrink-0 items-center gap-1 sm:flex"
                 aria-hidden="true"
               >
-                <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[6px] bg-foreground/8 px-1 text-[11px] font-medium leading-none">
+                <kbd className="flex h-4.5 min-w-4.5 items-center justify-center rounded-md bg-foreground/8 px-1 text-[11px] font-medium leading-none">
                   ⌘
                 </kbd>
-                <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[6px] bg-foreground/8 px-1 text-[11px] font-medium leading-none">
+                <kbd className="flex h-4.5 min-w-4.5 items-center justify-center rounded-md bg-foreground/8 px-1 text-[11px] font-medium leading-none">
                   K
                 </kbd>
               </span>
@@ -270,9 +270,9 @@ export default function PortfolioDock() {
               className="relative flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [html.dark_&]:hover:bg-foreground/10"
             >
               {light ? (
-                <FiMoon className="size-[17px]" aria-hidden="true" />
+                <FiMoon className="size-4.25" aria-hidden="true" />
               ) : (
-                <FiSun className="size-[17px]" aria-hidden="true" />
+                <FiSun className="size-4.25" aria-hidden="true" />
               )}
             </button>
 

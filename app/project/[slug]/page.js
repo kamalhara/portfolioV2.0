@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/app/data/project";
 import PortfolioDock from "@/app/components/Dock";
+import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -41,7 +42,7 @@ export default async function ProjectDetailPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background text-[15.7px] leading-[1.64] tracking-[-0.025em] text-foreground [font-family:var(--font-geist)] max-[480px]:text-[15.5px]">
-      <main id="main" className="mx-auto w-[min(800px,calc(100%-50px))] pt-[99px] pb-40 max-[700px]:pt-[54px]">
+      <main id="main" className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5">
         <article>
           <header>
             <Link
@@ -51,8 +52,7 @@ export default async function ProjectDetailPage({ params }) {
               ← all projects
             </Link>
             <div className="mb-2">
-              {" "}
-              <span className="inline-flex min-h-[19px] items-center rounded-full bg-[#3f251b] px-2 py-px text-[11px] leading-[1.2] tracking-normal">{project.type}</span>
+              <ProjectTypeBadge type={project.type} />
             </div>
             <h1 className="text-[clamp(32px,6vw,60px)] leading-[1.15] font-medium tracking-[-.06em]">
               {project.title}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
 import { mainProjects } from "@/app/data/project";
 import { projectSummaries } from "@/app/data/portfolio";
 
@@ -19,18 +20,22 @@ export default function ProjectsSection() {
       </h2>
       <ul className="grid gap-4.5">
         {previewProjects.map((project) => (
-          <li key={project.slug}>
+          <li
+            key={project.slug}
+            className="-ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 hover:bg-[#1C1C1A]"
+          >
             <Link
               href={`/project/${project.slug}`}
-              className="group block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand"
+              className="group block w-fit max-w-full outline-offset-4 focus-visible:outline-2 focus-visible:outline-brand "
             >
-              <span className="flex flex-wrap items-center gap-2.25 text-foreground group-hover:underline group-hover:decoration-muted-foreground group-hover:underline-offset-4">
+              <span className="flex flex-wrap items-center gap-2.25 text-foreground transition-colors group-focus-visible:text-muted-foreground">
                 {project.title}
-                <span className="inline-flex min-h-4.75 items-center rounded-full bg-[#3f251b] px-2 py-px text-[11px] leading-[1.2] tracking-normal font-semibold">
-                  {project.type}
-                </span>
+                <ProjectTypeBadge
+                  type={project.type}
+                  className="font-semibold"
+                />
               </span>
-              <span className="block text-muted-foreground transition-colors group-hover:text-foreground">
+              <span className="block text-muted-foreground">
                 {projectSummaries[project.slug] ?? project.description}
               </span>
             </Link>
