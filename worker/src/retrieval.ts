@@ -159,6 +159,38 @@ export function selectEvidence(
     );
   const namedProject = projectInQuestion(question);
 
+  if (/^(hi|hello|hey)[.!?\s]*$/i.test(question.trim())) {
+    add("about");
+    return selected;
+  }
+
+  if (/\b(age|how old|birth year|born)\b/i.test(question) && !namedProject) {
+    add("age");
+    return selected;
+  }
+
+  if (
+    /\b(why (?:should .* )?hire|should .* hire|hire him|hire kamal|good fit|suitable|qualified)\b/i.test(
+      question,
+    )
+  ) {
+    add("why-hire");
+    if (/\b(mobile|react native|expo)\b/i.test(question)) {
+      add("skills:mobile");
+      add("project:spotus");
+    } else if (/\b(backend|back.end|api|server)\b/i.test(question)) {
+      add("skills:backend");
+      add("project:productify");
+    } else if (/\b(frontend|front.end|react|next\.js)\b/i.test(question)) {
+      add("skills:frontend");
+      add("project:stateglyph");
+    } else {
+      add("strengths");
+      add("resume");
+    }
+    return selected;
+  }
+
   if (comparison && projectQuestion) {
     if (namedProject) {
       add(`assessment:${namedProject.slug}`);
@@ -250,9 +282,6 @@ export function directAnswer(sections: KnowledgeSection[]): string {
 
 export function answerFromPolicy(question: string): string | null {
   const normalized = question.trim();
-  if (/^(hi|hello|hey)[.!?\s]*$/i.test(normalized)) {
-    return "Hi! Ask me about Kamal's projects, skills, experience, or job search.";
-  }
   if (
     /\b(weakness(?:es)?|weak(?:er)? points?|weak(?:er)? (?:skills?|areas?)|areas? (?:to improve|for improvement)|development gaps?|biggest flaw|worst (?:skill|project)|bad at|struggles? with|limitations?)\b/i.test(
       normalized,
@@ -261,12 +290,19 @@ export function answerFromPolicy(question: string): string | null {
     return assistantFacts.responsePreferences.weakness;
   }
   if (
-    /\b(salary|compensation|pay|hourly rate|freelance rate)\b/i.test(normalized)
+    /\b(salary|compensation|hourly rate|freelance rate|expected pay|pay expectations|pay him|pay kamal|his pay)\b/i.test(
+      normalized,
+    ) ||
+    /\b(?:what|how much)\b.*\bpay\b/i.test(normalized)
   ) {
     return assistantFacts.responsePreferences.salary;
   }
-  if (/\b(age|how old|birth year|born)\b/i.test(normalized)) {
-    return `Kamal was ${assistantFacts.ageAsOf} and was born in ${assistantFacts.birthYear}.`;
+  if (
+    /\b(passwords?|api keys?|secrets?|confidential|private (?:address|phone|information|details)|home address)\b/i.test(
+      normalized,
+    )
+  ) {
+    return assistantFacts.responsePreferences.unknown;
   }
   if (/\b(rcd|college portal|management portal)\b/i.test(normalized)) {
     return assistantFacts.responsePreferences.unknown;
@@ -277,13 +313,6 @@ export function answerFromPolicy(question: string): string | null {
     )
   ) {
     return assistantFacts.responsePreferences.unknown;
-  }
-  if (
-    /\b(why (?:should .* )?hire|should .* hire|good fit for (?:the|this|our) role)\b/i.test(
-      normalized,
-    )
-  ) {
-    return assistantFacts.responsePreferences.roleFit;
   }
   return null;
 }

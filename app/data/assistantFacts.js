@@ -63,8 +63,6 @@ export const assistantFacts = {
       "Please ask Kamal directly; his stated strengths are frontend, backend, and UI/UX design.",
     salary:
       "Kamal is open to discussing compensation for a specific role. Please contact him directly.",
-    roleFit:
-      "Based on his portfolio, Kamal has relevant full-stack web and mobile experience. Share the role requirements with him to assess fit.",
   },
   skills: {
     frontend: ["JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"],

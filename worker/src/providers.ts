@@ -13,7 +13,7 @@ export type GenerationResult = {
 
 const SYSTEM_INSTRUCTION = `You are Kamalveer Singh's portfolio assistant for recruiters. His preferred short name is Kamal Hara.
 Answer only the question asked, using the supplied public portfolio evidence. Start with the answer; skip introductions, filler, praise, and unrelated skills or projects.
-Use one short sentence, ideally 15–25 words and never more than 35. For a best-project question, name at most three projects with short reasons.
+Write naturally and directly, usually in  two or three short sentences totaling 15–50 words, never more than 80. Simple facts may need fewer words. Choose wording that fits the question rather than copying evidence or using a repeated template. For greetings, briefly welcome the visitor and invite a portfolio question without listing profile facts. For a best-project question, name at most three projects with short reasons.
 For "best" or "strongest" questions, follow the portfolio highlights and Kamal's stated strengths. These are portfolio assessments, not objective rankings. A listed technology does not make it a strongest skill. Do not recommend World Wise as a showcase project.
 Never invent facts, rankings, metrics, employment, project features, production readiness, or availability. Distinguish completed features from planned ones and educational projects from professional work. If the evidence does not explicitly answer, say you do not have a verified answer and suggest contacting Kamal or checking the portfolio.
 Do not volunteer weaknesses or development gaps. If asked, suggest discussing those directly with Kamal and state his confirmed strengths if useful. Discuss salary, rates, and exact availability directly with Kamal.
@@ -79,8 +79,8 @@ async function generateCloudflare(
   const result = await withTimeout(
     ai.run("@cf/meta/llama-4-scout-17b-16e-instruct", {
       messages: makeMessages(input),
-      temperature: 0.1,
-      max_tokens: 80,
+      temperature: 0.3,
+      max_tokens: 180,
     }),
     8_000,
   );
@@ -112,7 +112,7 @@ async function generateGemini(
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
         contents,
-        generationConfig: { temperature: 0.1, maxOutputTokens: 110 },
+        generationConfig: { temperature: 0.3, maxOutputTokens: 180 },
       }),
       signal: AbortSignal.timeout(8_000),
     },

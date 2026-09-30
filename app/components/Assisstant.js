@@ -2,14 +2,24 @@
 
 import {
   ArrowLeft,
+  ArrowDown,
   ArrowUp,
+  ArrowUpRight,
+  Check,
+  Copy,
   MessageSquareDashed,
   RotateCcw,
 } from "lucide-react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { portfolio } from "@/app/data/portfolio";
+
+const glowColors = [
+  "rgb(236, 72, 153)",
+  "rgb(139, 92, 246)",
+  "rgb(59, 130, 246)",
+];
+const glowGradient = `linear-gradient(115deg, ${[...glowColors, glowColors[0]].join(", ")})`;
 
 const configuredUrl = process.env.NEXT_PUBLIC_ASSISTANT_API_URL;
 const apiUrl =
@@ -29,11 +39,18 @@ function safeHref(href) {
 
 function AssistantLink({ href, label, onClose }) {
   if (!safeHref(href)) return null;
-  const className = "font-medium underline underline-offset-4";
+  const className =
+    "assistant-link ui-press inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-xs font-semibold leading-5 text-card transition-opacity hover:opacity-80";
+  const content = (
+    <>
+      {label}
+      <ArrowUpRight className="size-3.5" aria-hidden="true" />
+    </>
+  );
   if (href.startsWith("/")) {
     return (
       <Link href={href} onClick={onClose} className={className}>
-        {label}
+        {content}
       </Link>
     );
   }
@@ -44,8 +61,81 @@ function AssistantLink({ href, label, onClose }) {
       rel={href.startsWith("https://") ? "noopener noreferrer" : undefined}
       className={className}
     >
-      {label}
+      {content}
     </a>
+  );
+}
+
+function AnimatedAnswer({ text, reduceMotion }) {
+  if (reduceMotion) return <p className="whitespace-pre-wrap">{text}</p>;
+  return (
+    <p className="whitespace-pre-wrap">
+      {text.split(/(\s+)/).map((word, index) =>
+        /^\s+$/.test(word) ? (
+          word
+        ) : (
+          <span
+            key={index}
+            className="assistant-reply-word"
+            style={{
+              "--reveal-delay": `${Math.floor(index / 2) * 18}ms`,
+              "--reveal-color":
+                glowColors[Math.floor(index / 2) % glowColors.length],
+            }}
+          >
+            {word}
+          </span>
+        ),
+      )}
+    </p>
+  );
+}
+
+function CopyAnswer({ text }) {
+  const [status, setStatus] = useState("idle");
+  const resetRef = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(resetRef.current), []);
+
+  async function copy() {
+    window.clearTimeout(resetRef.current);
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("copied");
+    } catch {
+      setStatus("failed");
+    }
+    resetRef.current = window.setTimeout(() => setStatus("idle"), 2000);
+  }
+
+  return (
+    <div className="mt-2 flex items-center gap-2">
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={status === "copied" ? "Response copied" : "Copy response"}
+        title={status === "copied" ? "Copied" : "Copy response"}
+        className="ui-press inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+      >
+        {status === "copied" ? (
+          <Check className="size-4" aria-hidden="true" />
+        ) : (
+          <Copy className="size-4" aria-hidden="true" />
+        )}
+      </button>
+      <span
+        role="status"
+        className={
+          status === "failed" ? "text-xs text-muted-foreground" : "sr-only"
+        }
+      >
+        {status === "copied"
+          ? "Response copied to clipboard"
+          : status === "failed"
+            ? "Could not copy. Please select the text to copy it."
+            : ""}
+      </span>
+    </div>
   );
 }
 
@@ -57,9 +147,15 @@ export default function Assisstant({ onBack, onClose }) {
   const [developmentMode, setDevelopmentMode] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
+  const [scrollState, setScrollState] = useState({
+    overflow: false,
+    progress: 0,
+    atBottom: true,
+  });
   const dialogRef = useRef(null);
   const inputRef = useRef(null);
   const conversationRef = useRef(null);
+  const conversationContentRef = useRef(null);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -95,11 +191,44 @@ export default function Assisstant({ onBack, onClose }) {
   }, []);
 
   useEffect(() => {
+    const conversation = conversationRef.current;
+    const content = conversationContentRef.current;
+    if (!conversation || !content) return;
+    const updateScroll = () => {
+      const distance = conversation.scrollHeight - conversation.clientHeight;
+      const next = {
+        overflow: distance > 2,
+        progress:
+          distance > 2
+            ? Math.round((conversation.scrollTop / distance) * 100)
+            : 0,
+        atBottom: distance - conversation.scrollTop < 12,
+      };
+      setScrollState((current) =>
+        current.overflow === next.overflow &&
+        current.progress === next.progress &&
+        current.atBottom === next.atBottom
+          ? current
+          : next,
+      );
+    };
+    const observer = new ResizeObserver(updateScroll);
+    observer.observe(conversation);
+    observer.observe(content);
+    conversation.addEventListener("scroll", updateScroll, { passive: true });
+    updateScroll();
+    return () => {
+      observer.disconnect();
+      conversation.removeEventListener("scroll", updateScroll);
+    };
+  }, []);
+
+  useEffect(() => {
     conversationRef.current?.scrollTo({
       top: conversationRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: reduceMotion ? "instant" : "smooth",
     });
-  }, [messages, loading, limitReached, error]);
+  }, [messages, loading, limitReached, error, reduceMotion]);
 
   async function ask(content) {
     const question = content.trim();
@@ -134,7 +263,9 @@ export default function Assisstant({ onBack, onClose }) {
           {
             role: "assistant",
             text: result.answer,
-            links: Array.isArray(result.links) ? result.links : [],
+            links: Array.isArray(result.links)
+              ? result.links.filter((link) => safeHref(link?.href)).slice(0, 1)
+              : [],
           },
         ]);
       }
@@ -175,7 +306,7 @@ export default function Assisstant({ onBack, onClose }) {
   function handleKeyDown(event) {
     if (event.key !== "Tab") return;
     const focusable = dialogRef.current?.querySelectorAll(
-      "button:not(:disabled), textarea, a[href]",
+      "button:not(:disabled), textarea:not(:disabled), input:not(:disabled), a[href], [tabindex='0']",
     );
     if (!focusable?.length) return;
 
@@ -205,6 +336,7 @@ export default function Assisstant({ onBack, onClose }) {
         aria-labelledby="assistant-modal-title"
         onKeyDown={handleKeyDown}
         className="relative w-full max-w-lg text-foreground"
+        style={{ "--assistant-glow": glowGradient }}
       >
         <h2 id="assistant-modal-title" className="sr-only">
           Recruiter Assistant
@@ -243,98 +375,161 @@ export default function Assisstant({ onBack, onClose }) {
               <div className="relative min-h-0 flex-1">
                 <div
                   ref={conversationRef}
+                  id="assistant-conversation"
                   role="region"
                   aria-label="Conversation"
-                  className="h-full overflow-y-auto overscroll-contain px-4 py-5 sm:px-5"
+                  tabIndex={0}
+                  className="assistant-conversation h-full overflow-y-auto overscroll-contain px-4 py-5 sm:px-5"
                 >
-                  <AnimatePresence mode="wait" initial={false}>
-                    {messages.length === 0 ? (
-                      <motion.div
-                        key="empty"
-                        initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.28 }}
-                        className="flex h-full flex-col items-center justify-center px-4 text-center"
+                  <div
+                    ref={conversationContentRef}
+                    className="flex min-h-full flex-col"
+                  >
+                    <AnimatePresence mode="wait" initial={false}>
+                      {messages.length === 0 ? (
+                        <motion.div
+                          key="empty"
+                          initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+                          transition={{ duration: reduceMotion ? 0 : 0.28 }}
+                          className="flex flex-1 flex-col items-center justify-center px-4 text-center"
+                        >
+                          <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground">
+                            <MessageSquareDashed
+                              className="size-6"
+                              aria-hidden="true"
+                            />
+                          </span>
+                          <h4 className="mt-4 text-base font-medium text-foreground">
+                            Ask me anything about my work
+                          </h4>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="conversation"
+                          initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
+                          transition={{ duration: reduceMotion ? 0 : 0.28 }}
+                          className="flex flex-col gap-4"
+                          aria-live="polite"
+                        >
+                          {messages.map((message, index) => (
+                            <div
+                              key={index}
+                              className={`max-w-[95%] rounded-2xl px-4 py-3 text-sm leading-6 ${
+                                message.role === "user"
+                                  ? "message-enter ml-auto bg-[#232322] text-white"
+                                  : "mr-auto text-foreground"
+                              }`}
+                            >
+                              {message.role === "assistant" ? (
+                                <AnimatedAnswer
+                                  text={message.text}
+                                  reduceMotion={reduceMotion}
+                                />
+                              ) : (
+                                <p className="whitespace-pre-wrap">
+                                  {message.text}
+                                </p>
+                              )}
+                              {message.role === "assistant" && (
+                                <CopyAnswer text={message.text} />
+                              )}
+                              {message.links?.length > 0 && (
+                                <div className="mt-2">
+                                  {message.links.slice(0, 1).map((link) => (
+                                    <AssistantLink
+                                      key={`${link.href}-${link.label}`}
+                                      href={link.href}
+                                      label={link.label}
+                                      onClose={onClose}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    {loading && (
+                      <p
+                        role="status"
+                        className="mt-4 text-sm text-muted-foreground"
                       >
-                        <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-foreground">
-                          <MessageSquareDashed
-                            className="size-6"
-                            aria-hidden="true"
-                          />
-                        </span>
-                        <h4 className="mt-4 text-base font-medium text-foreground">
-                          Ask me anythign about my work
-                        </h4>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="conversation"
-                        initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.28 }}
-                        className="flex flex-col gap-4"
-                        aria-live="polite"
-                      >
-                        {messages.map((message, index) => (
-                          <div
-                            key={index}
-                            className={`message-enter max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-6 ${
-                              message.role === "user"
-                                ? "ml-auto bg-[#232322] text-white"
-                                : "mr-auto   text-foreground"
-                            }`}
-                          >
-                            <p className="whitespace-pre-wrap">
-                              {message.text}
-                            </p>
-                            {message.links?.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
-                                {message.links.map((link) => (
-                                  <AssistantLink
-                                    key={`${link.href}-${link.label}`}
-                                    href={link.href}
-                                    label={link.label}
-                                    onClose={onClose}
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </motion.div>
+                        Thinking…
+                      </p>
                     )}
-                  </AnimatePresence>
-                  {loading && (
-                    <p
-                      role="status"
-                      className="mt-4 text-sm text-muted-foreground"
-                    >
-                      Thinking…
-                    </p>
-                  )}
-                  {error && (
-                    <p
-                      role="alert"
-                      className="mt-4 text-sm text-muted-foreground"
-                    >
-                      {error}
-                    </p>
-                  )}
-                  {limitReached && !error && (
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      {remaining === 0
-                        ? "You’ve reached the AI assistant’s demo limit for this session. You can still explore Kamal’s projects, skills, resume and contact information below."
-                        : "The AI assistant has reached its daily demo capacity. You can still explore Kamal’s portfolio below."}
-                    </p>
-                  )}
-                  {!apiUrl && (
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      The assistant is not configured yet.
-                    </p>
-                  )}
+                    {error && (
+                      <p
+                        role="alert"
+                        className="mt-4 text-sm text-muted-foreground"
+                      >
+                        {error}
+                      </p>
+                    )}
+                    {limitReached && !error && (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        {remaining === 0
+                          ? "You’ve reached the AI assistant’s demo limit for this session. You can still explore Kamal’s projects, skills, resume and contact information below."
+                          : "The AI assistant has reached its daily demo capacity. You can still explore Kamal’s portfolio below."}
+                      </p>
+                    )}
+                    {!apiUrl && (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        The assistant is not configured yet.
+                      </p>
+                    )}
+                  </div>
                 </div>
+                {scrollState.overflow && (
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={scrollState.progress}
+                    onChange={(event) => {
+                      const conversation = conversationRef.current;
+                      if (!conversation) return;
+                      conversation.scrollTo({
+                        top:
+                          (Number(event.target.value) / 100) *
+                          (conversation.scrollHeight -
+                            conversation.clientHeight),
+                        behavior: "instant",
+                      });
+                    }}
+                    aria-label="Scroll conversation"
+                    aria-controls="assistant-conversation"
+                    aria-valuetext={`${scrollState.progress}% through the conversation`}
+                    className="assistant-scroll-navigator absolute bottom-4 right-1 top-4"
+                  />
+                )}
+                <AnimatePresence>
+                  {scrollState.overflow && !scrollState.atBottom && (
+                    <motion.button
+                      type="button"
+                      initial={{ opacity: 0, y: reduceMotion ? 0 : 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduceMotion ? 0 : 0.18 }}
+                      onClick={() =>
+                        conversationRef.current?.scrollTo({
+                          top: conversationRef.current.scrollHeight,
+                          behavior: reduceMotion ? "instant" : "smooth",
+                        })
+                      }
+                      aria-label="Scroll to latest message"
+                      aria-controls="assistant-conversation"
+                      className="ui-press absolute bottom-2 left-1/2 flex size-8 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-sm backdrop-blur"
+                    >
+                      <ArrowDown className="size-4" aria-hidden="true" />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
 
               <form
@@ -346,8 +541,7 @@ export default function Assisstant({ onBack, onClose }) {
                     aria-hidden="true"
                     className="pointer-events-none absolute -inset-2 rounded-3xl blur-xl opacity-0 transition-opacity duration-500 group-focus-within:opacity-[0.12]"
                     style={{
-                      background:
-                        "linear-gradient(115deg, rgb(236, 72, 153), rgb(139, 92, 246), rgb(59, 130, 246), rgb(236, 72, 153))",
+                      background: "var(--assistant-glow)",
                     }}
                   />
                   <div className="relative w-full rounded-[19px] border border-border bg-background/95 backdrop-blur transition-colors duration-200 focus-within:border-border-strong">

@@ -1,4 +1,4 @@
-const MAX_WORDS = 45;
+const MAX_WORDS = 80;
 
 export function compactAnswer(value: string): string {
   const clean = value.replace(/\s+/g, " ").trim();

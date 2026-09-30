@@ -1,4 +1,5 @@
 import { visitorIdentity } from "./cookie";
+import { answerLinks } from "./answer-links";
 import { embedSections, embedText } from "./embedding";
 import { knowledge, knowledgeVersion, type KnowledgeLink } from "./knowledge";
 import { generateAnswer } from "./providers";
@@ -53,23 +54,19 @@ function response(
   return Response.json(body, { status, headers });
 }
 
-function safeLinks(sections: typeof knowledge): KnowledgeLink[] {
-  const seen = new Set<string>();
-  return sections
-    .flatMap((section) => section.links)
+function safeLinks(links: KnowledgeLink[]): KnowledgeLink[] {
+  return links
     .filter((link) => {
-      if (seen.has(link.href)) return false;
       if (
-        !link.href.startsWith("/") &&
+        !(link.href.startsWith("/") && !link.href.startsWith("//")) &&
         !link.href.startsWith("mailto:") &&
         !link.href.startsWith("https://")
       ) {
         return false;
       }
-      seen.add(link.href);
       return true;
     })
-    .slice(0, 3);
+    .slice(0, 1);
 }
 
 async function relevantSections(question: string, env: Env) {
@@ -255,7 +252,13 @@ export default {
       env,
       {
         answer,
-        links: safeLinks(sections),
+        links: safeLinks(
+          answerLinks(
+            question,
+            sections,
+            Boolean(policyAnswer) || !sections.length,
+          ),
+        ),
         source,
         remaining,
         limitReached: remaining === 0,

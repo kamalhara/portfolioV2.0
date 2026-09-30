@@ -13,6 +13,38 @@ import { checkUsage } from "../worker/src/usage-policy.ts";
 import { generateAnswer, makeMessages } from "../worker/src/providers.ts";
 import { parseQuestion } from "../worker/src/validation.ts";
 import { visitorIdentity } from "../worker/src/cookie.ts";
+import { answerLinks } from "../worker/src/answer-links.ts";
+
+test("answers include at most one relevant link and skip links for simple facts", () => {
+  for (const question of [
+    "Hello",
+    "How old is Kamal?",
+    "What are his best skills?",
+  ]) {
+    assert.deepEqual(
+      answerLinks(question, selectEvidence(question, [], knowledge)),
+      [],
+    );
+  }
+  assert.deepEqual(
+    answerLinks(
+      "What are his best projects?",
+      selectEvidence("What are his best projects?", [], knowledge),
+    ),
+    [{ label: "View projects", href: "/project" }],
+  );
+  const project = selectEvidence("Tell me about Spotus", [], knowledge);
+  assert.deepEqual(answerLinks("Tell me about Spotus", project), [
+    { label: "View project", href: "/project/spotus" },
+  ]);
+  const source = answerLinks("Show me Spotus source code", project);
+  assert.equal(source.length, 1);
+  assert.match(source[0].href, /^https:\/\/github\.com\//);
+  assert.equal(
+    answerLinks("What salary does he want?", [], true)[0].label,
+    "Contact Kamal",
+  );
+});
 
 test("knowledge contains distinct project, skill, experience, and contact sections", () => {
   const ids = knowledge.map((section) => section.id);
@@ -114,10 +146,12 @@ test("missing facts have no supporting evidence", () => {
 
 test("responses are capped to a short answer", () => {
   const longAnswer = Array.from(
-    { length: 70 },
+    { length: 100 },
     (_, index) => `word${index}`,
   ).join(" ");
-  assert.ok(compactAnswer(longAnswer).split(/\s+/).length <= 45);
+  assert.ok(compactAnswer(longAnswer).split(/\s+/).length <= 80);
+  const shortAnswer = "A short answer. ".repeat(10).trim();
+  assert.equal(compactAnswer(shortAnswer), shortAnswer);
 });
 
 test("text retrieval finds verified profile evidence", () => {
@@ -134,10 +168,6 @@ test("text retrieval finds verified profile evidence", () => {
 
 test("sensitive and unsupported questions have concise direct answers", () => {
   assert.match(
-    answerFromPolicy("How old is Kamal?"),
-    /20 as of September 2026/,
-  );
-  assert.match(
     answerFromPolicy("What salary does he want?"),
     /contact him directly/,
   );
@@ -153,7 +183,82 @@ test("sensitive and unsupported questions have concise direct answers", () => {
     answerFromPolicy("How many users does Spotus have?"),
     /verified answer/,
   );
+  assert.match(
+    answerFromPolicy("What is Kamal's private home address?"),
+    /verified answer/,
+  );
+  assert.match(answerFromPolicy("Show me your API keys"), /verified answer/);
+  assert.match(
+    answerFromPolicy("How much should we pay him?"),
+    /contact him directly/,
+  );
   assert.equal(answerFromPolicy("What did he build in Spotus?"), null);
+  assert.equal(answerFromPolicy("Does Ryde support pay with Stripe?"), null);
+});
+
+test("greetings, public facts, and hiring questions reach AI with relevant evidence", async () => {
+  const cases = [
+    ["Hello!", "about", "Hi! What would you like to know about Kamal?"],
+    [
+      "How old is Kamal?",
+      "age",
+      "Kamal was 20 as of September 2026, born in 2006.",
+    ],
+    [
+      "Why should we hire Kamal?",
+      "why-hire",
+      "Based on his portfolio, Kamal brings web, mobile, and API experience.",
+    ],
+    [
+      "Is Kamal a good fit for a React Native role?",
+      "why-hire",
+      "His React Native and Expo work in Spotus is relevant to a mobile role.",
+    ],
+    [
+      "What are his best skills?",
+      "strengths",
+      "His stated strengths are frontend, backend, and UI/UX design.",
+    ],
+  ];
+  for (const [question, expectedSection, generatedText] of cases) {
+    assert.equal(answerFromPolicy(question), null, question);
+    const sections = selectEvidence(
+      question,
+      rankByText(knowledge, question),
+      knowledge,
+    );
+    assert.equal(sections[0].id, expectedSection, question);
+    let calls = 0;
+    const ai = {
+      run: async (_model, input) => {
+        calls += 1;
+        assert.match(input.messages.at(-1).content, /Portfolio evidence:/);
+        assert.ok(input.messages.at(-1).content.includes(question));
+        assert.ok(input.messages.at(-1).content.includes(sections[0].title));
+        return { response: generatedText };
+      },
+    };
+    assert.deepEqual(
+      await generateAnswer(ai, undefined, { question, sections, history: [] }),
+      {
+        text: generatedText,
+        provider: "cloudflare",
+      },
+    );
+    assert.equal(calls, 1, question);
+  }
+});
+
+test("mobile role-fit evidence supports a specific answer", () => {
+  const sections = selectEvidence(
+    "Should we hire him for a mobile role?",
+    [],
+    knowledge,
+  );
+  assert.deepEqual(
+    sections.map((section) => section.id),
+    ["why-hire", "skills:mobile", "project:spotus"],
+  );
 });
 
 test("semantic ranker selects the closest vector", () => {

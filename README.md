@@ -111,7 +111,10 @@ Public profile facts and portfolio assessments are curated in
 should match the linked repositories; planned features must be identified as
 planned. StateGlyph, Spotus, Productify, and Ryde are portfolio highlights,
 while World Wise is not recommended as a showcase project. The Worker sends
-short evidence to the model, asks for a one-sentence answer, and caps replies
-at 45 words. It answers age, salary, and other sensitive questions from fixed
-rules and refers unsupported questions to Kamal or the portfolio. Update the
+short evidence to the model and generates natural answers, usually two or three
+short sentences capped at 80 words. Greetings, verified public facts (including
+age), project explanations, and role-fit assessments use AI-generated wording.
+Salary, private information, and weakness questions keep controlled replies;
+unsupported questions are referred to Kamal or the portfolio. If AI providers
+fail, the Worker falls back to verified portfolio text. Update the
 public resume and these data files together when facts change.

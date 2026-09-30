@@ -302,8 +302,130 @@ img {
   outline: none;
 }
 
+.assistant-conversation {
+  scrollbar-width: none;
+}
+
+.assistant-link {
+  color: var(--color-background);
+}
+
+.assistant-conversation::-webkit-scrollbar {
+  display: none;
+}
+
+.assistant-scroll-navigator {
+  appearance: none;
+  writing-mode: vertical-lr;
+  direction: ltr;
+  width: 12px;
+  height: calc(100% - 2rem);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.assistant-scroll-navigator:is(:hover, :focus-visible) {
+  opacity: 1;
+}
+
+.assistant-scroll-navigator::-webkit-slider-runnable-track {
+  width: 3px;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+}
+
+.assistant-scroll-navigator::-webkit-slider-thumb {
+  appearance: none;
+  width: 3px;
+  height: 22px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-foreground) 60%, transparent);
+}
+
+.assistant-scroll-navigator::-moz-range-track {
+  width: 3px;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+}
+
+.assistant-scroll-navigator::-moz-range-thumb {
+  width: 3px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-foreground) 60%, transparent);
+}
+
+@keyframes assistant-word-reveal {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(4px);
+    color: var(--reveal-color);
+  }
+  45% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+    color: var(--reveal-color);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+    color: var(--color-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .assistant-reply-word {
+    display: inline-block;
+    animation: assistant-word-reveal 0.65s ease-out both;
+    animation-delay: var(--reveal-delay);
+  }
+}
+
 .command-menu :is(a, button):focus-visible {
   outline: none;
+}
+
+.footer-monogram {
+  --monogram-strong: color-mix(
+    in srgb,
+    var(--color-foreground) 26%,
+    transparent
+  );
+  --monogram-soft: color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  color: var(--color-foreground);
+}
+
+.monogram-guides {
+  opacity: 0.14;
+}
+
+.monogram-outline {
+  opacity: 0.2;
+}
+
+@keyframes monogram-dash-flow {
+  to {
+    stroke-dashoffset: -52;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .monogram-dashes {
+    animation: monogram-dash-flow 18s linear infinite;
+  }
+
+  .monogram-dashes-reverse {
+    animation-direction: reverse;
+    animation-duration: 24s;
+  }
 }
 
 .music-player-range {
