@@ -66,9 +66,8 @@ No model credentials are included in the browser bundle.
 1. Copy `worker/.dev.vars.example` to `worker/.dev.vars` and replace
    `PORTFOLIO_CHAT_COOKIE_SECRET` with a random secret of at least 32 characters.
    Add `GEMINI_API_KEY` only if your Google AI project can access the configured
-   model; Cloudflare AI and direct search work without it. The local example sets
-   `ASSISTANT_DEV_MODE=true`, which removes question and cooldown limits while
-   testing. Leave this variable unset in production.
+   model; Cloudflare AI and direct search work without it. Local development
+   uses the same visitor limits and cooldown as production.
 2. Set `NEXT_PUBLIC_ASSISTANT_API_URL=http://localhost:8787/chat` in
    `.env.local`. The development build uses that URL by default when the variable
    is absent.
@@ -98,10 +97,18 @@ may use `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as server-side secret
    the portfolio host and redeploy the Next.js app. Adjust the hostname if the
    production site uses another domain.
 
-The Worker allows six AI-generated replies per anonymous cookie over a rolling
-24 hours, one question every five seconds, and 200 AI-generated replies across
-all visitors per UTC day. Direct text fallback does not spend an AI reply.
-These limits apply in production; local dev mode allows unlimited testing.
+The Worker allows 10 AI-generated replies per anonymous cookie per UTC day,
+one question every five seconds, and 200 AI-generated replies across all visitors
+per UTC day. Both allowances reset at midnight UTC (5:30 AM in India), and an
+open chat refreshes its allowance automatically. Direct text fallback does not
+spend an AI reply. The same limits apply in local development and production;
+there is no unlimited mode. The remaining count appears only at five replies
+or fewer. A confirmed provider quota exhaustion shows a short disclaimer beside
+the verified portfolio fallback; temporary capacity errors are not described as
+an exhausted daily allowance.
+The switch to this policy clears previous reply counts and cooldowns once.
+The stored reset version prevents subsequent restarts or deployments from
+clearing them again; conversation history and cached evidence remain available.
 The limit state links to projects, skills, the resume, GitHub, and contact.
 Updating portfolio content changes the knowledge version and rebuilds the
 stored embedding index on the next request.

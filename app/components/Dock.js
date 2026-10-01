@@ -130,6 +130,8 @@ export default function PortfolioDock() {
   const [query, setQuery] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const searchButtonRef = useRef(null);
+  const navigationButtonRef = useRef(null);
+  const dockRef = useRef(null);
   const assistantTriggerRef = useRef(null);
   const dialogRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -174,6 +176,16 @@ export default function PortfolioDock() {
   }, []);
 
   useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnOutsidePress = (event) => {
+      if (!dockRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    return () =>
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+  }, [menuOpen]);
+
+  useEffect(() => {
     function handleShortcut(event) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -187,6 +199,7 @@ export default function PortfolioDock() {
         setSearchOpen(false);
         setAssistantOpen(false);
         setMenuOpen(false);
+        if (menuOpen) navigationButtonRef.current?.focus();
       }
     }
 
@@ -470,24 +483,50 @@ export default function PortfolioDock() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-16.5 backdrop-blur-[32px] mask-[linear-gradient(to_bottom,transparent,black_35%)]"
       />
 
-      <div className="pointer-events-none fixed bottom-4.5 left-1/2 z-50 -translate-x-1/2">
-        <div className="pointer-events-auto">
-          {menuOpen && (
-            <nav
-              className="content-enter mx-auto mb-2 grid w-52 gap-px rounded-2xl border border-border bg-card p-2 shadow-2xl sm:hidden [&_a]:rounded-lg [&_a]:px-3 [&_a]:py-2 [&_a]:text-sm [&_a]:text-muted-foreground [&_a:hover]:bg-foreground/5 [&_a:hover]:text-foreground"
-              aria-label="Quick navigation"
-            >
-              {quickLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          )}
+      <div className="pointer-events-none fixed bottom-4.5 left-1/2 z-50 max-w-[calc(100%_-_2rem)] -translate-x-1/2">
+        <div ref={dockRef} className="pointer-events-auto">
+          <AnimatePresence>
+            {menuOpen && (
+              <motion.nav
+                id="portfolio-mobile-navigation"
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
+                transition={{ duration: reduceMotion ? 0 : 0.18 }}
+                className="absolute bottom-[calc(100%_+_12px)] right-0 flex max-h-[calc(100dvh_-_100px)] w-40 flex-col gap-2.5 overflow-y-auto py-1 [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
+                aria-label="Quick navigation"
+              >
+                {quickLinks.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: reduceMotion ? 0 : 8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: reduceMotion ? 0 : 0.2,
+                        delay: reduceMotion ? 0 : index * 0.025,
+                      }}
+                    >
+                      <Link
+                        href={
+                          item.label === "Projects" ? "/project" : item.href
+                        }
+                        onClick={() => setMenuOpen(false)}
+                        className="ui-press flex min-h-10 items-center gap-2.5 rounded-full border border-border bg-card px-4 py-2.5 text-[13px] font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                      >
+                        <Icon
+                          className="size-3.5 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </motion.nav>
+            )}
+          </AnimatePresence>
 
           <nav
             className="relative z-10 flex h-12 items-center gap-1 rounded-full border border-border bg-background px-2 text-foreground/80 shadow-none sm:shadow-2xl"
@@ -604,6 +643,21 @@ export default function PortfolioDock() {
                 </svg>
               </div>
             )}
+            <button
+              ref={navigationButtonRef}
+              type="button"
+              aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={menuOpen}
+              aria-controls="portfolio-mobile-navigation"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="ui-press flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:hidden [html.dark_&]:hover:bg-foreground/10"
+            >
+              {menuOpen ? (
+                <FiX className="size-4" aria-hidden="true" />
+              ) : (
+                <FiMenu className="size-4" aria-hidden="true" />
+              )}
+            </button>
           </nav>
         </div>
       </div>

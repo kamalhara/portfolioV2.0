@@ -144,7 +144,8 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
   const [draft, setDraft] = useState(initialQuestion);
   const [loading, setLoading] = useState(false);
   const [remaining, setRemaining] = useState(null);
-  const [developmentMode, setDevelopmentMode] = useState(false);
+  const [resetsAt, setResetsAt] = useState(null);
+  const [statusRefresh, setStatusRefresh] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
   const [statusReady, setStatusReady] = useState(false);
@@ -177,13 +178,11 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
         return response.json();
       })
       .then((status) => {
-        setDevelopmentMode(Boolean(status.developmentMode));
         setRemaining(status.remaining);
-        setLimitReached(
-          !status.developmentMode &&
-            (status.remaining === 0 || !status.globalAvailable),
-        );
+        setResetsAt(status.resetsAt);
+        setLimitReached(status.remaining === 0 || !status.globalAvailable);
         setStatusReady(true);
+        setError("");
       })
       .catch((cause) => {
         if (cause.name !== "AbortError") {
@@ -191,7 +190,16 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
         }
       });
     return () => controller.abort();
-  }, []);
+  }, [statusRefresh]);
+
+  useEffect(() => {
+    if (typeof resetsAt !== "number") return;
+    const timeout = window.setTimeout(
+      () => setStatusRefresh((value) => value + 1),
+      Math.max(0, resetsAt - Date.now()) + 100,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [resetsAt]);
 
   useEffect(() => {
     const conversation = conversationRef.current;
@@ -250,13 +258,9 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
           body: JSON.stringify({ question }),
         });
         const result = await response.json();
-        if (result.developmentMode) {
-          setDevelopmentMode(true);
-          setRemaining(null);
-          setLimitReached(false);
-        }
         if (typeof result.remaining === "number")
           setRemaining(result.remaining);
+        if (typeof result.resetsAt === "number") setResetsAt(result.resetsAt);
         if (result.limitReached) setLimitReached(true);
         if (!response.ok) {
           setError(
@@ -268,6 +272,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
             {
               role: "assistant",
               text: result.answer,
+              notice: typeof result.notice === "string" ? result.notice : null,
               links: Array.isArray(result.links)
                 ? result.links
                     .filter((link) => safeHref(link?.href))
@@ -460,6 +465,11 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                               {message.role === "assistant" && (
                                 <CopyAnswer text={message.text} />
                               )}
+                              {message.notice && (
+                                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                                  {message.notice}
+                                </p>
+                              )}
                               {message.links?.length > 0 && (
                                 <div className="mt-2">
                                   {message.links.slice(0, 1).map((link) => (
@@ -496,8 +506,8 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                     {limitReached && !error && (
                       <p className="mt-3 text-xs text-muted-foreground">
                         {remaining === 0
-                          ? "You’ve reached the AI assistant’s demo limit for this session. You can still explore Kamal’s projects, skills, resume and contact information below."
-                          : "The AI assistant has reached its daily demo capacity. You can still explore Kamal’s portfolio below."}
+                          ? "You’ve used your 10 AI replies for today. Your allowance resets at midnight UTC. You can still explore Kamal’s projects, resume and contact information below."
+                          : "The assistant’s shared daily AI allowance has been used up. Please try again tomorrow or explore Kamal’s portfolio below."}
                       </p>
                     )}
                     {!apiUrl && (
@@ -591,7 +601,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                       }}
                       placeholder={
                         limitReached
-                          ? "Demo limit reached"
+                          ? "AI allowance reached"
                           : "Ask about projects, stack, or availability"
                       }
                       aria-label="Message"
@@ -600,12 +610,13 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                       style={{ height: 40 }}
                     />
                     <div className="flex items-center justify-between gap-2 px-2.5 pb-2 pt-0.5">
-                      <span className="px-1.5 text-[11px] text-muted-foreground/70">
-                        {developmentMode
-                          ? "Dev mode · unlimited questions"
-                          : remaining === null
-                            ? "Enter to send"
-                            : `${remaining} AI replies left`}
+                      <span
+                        aria-live="polite"
+                        className="px-1.5 text-[11px] text-muted-foreground/70"
+                      >
+                        {remaining !== null && remaining <= 5
+                          ? `${remaining} ${remaining === 1 ? "reply" : "replies"} left`
+                          : "Enter to send"}
                       </span>
                       <button
                         type="submit"

@@ -52,9 +52,24 @@ export function isRetryableProviderError(error: unknown): boolean {
     (error as Error & { status?: number; statusCode?: number }).status ??
       (error as Error & { statusCode?: number }).statusCode,
   );
-  if (status === 429 || status >= 500) return true;
+  if (status === 429 || status >= 500 || isProviderQuotaExhausted(error))
+    return true;
   return /\b(429|5\d\d|timeout|timed out|network|connection)\b/i.test(
     error.message,
+  );
+}
+
+export function isProviderQuotaExhausted(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  const details = error as Error & { code?: number; quotaExhausted?: boolean };
+  // Cloudflare error 3036 specifically means the daily free allowance is spent.
+  // A generic 429 can also mean temporary capacity or a per-minute rate limit.
+  return (
+    details.quotaExhausted === true ||
+    Number(details.code) === 3036 ||
+    /\b3036\b|used (?:up|all of) your daily free allocation|daily (?:free )?(?:allowance|quota).*(?:exhausted|exceeded|used up)/i.test(
+      error.message,
+    )
   );
 }
 
@@ -120,8 +135,15 @@ async function generateGemini(
   if (!response.ok) {
     const error = new Error("Gemini request failed") as Error & {
       status: number;
+      quotaExhausted?: boolean;
     };
     error.status = response.status;
+    if (response.status === 429) {
+      const details = await response.json().catch(() => null);
+      error.quotaExhausted = /per_day|perday|daily/i.test(
+        JSON.stringify(details),
+      );
+    }
     throw error;
   }
   const body = (await response.json()) as {
@@ -147,6 +169,14 @@ export async function generateAnswer(
     };
   } catch (error) {
     if (!geminiKey || !isRetryableProviderError(error)) throw error;
-    return { text: await generateGemini(geminiKey, input), provider: "gemini" };
+    try {
+      return {
+        text: await generateGemini(geminiKey, input),
+        provider: "gemini",
+      };
+    } catch (backupError) {
+      // Preserve confirmed primary quota exhaustion when the backup also fails.
+      throw isProviderQuotaExhausted(error) ? error : backupError;
+    }
   }
 }

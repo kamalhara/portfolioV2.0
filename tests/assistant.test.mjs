@@ -9,8 +9,12 @@ import {
   selectEvidence,
 } from "../worker/src/retrieval.ts";
 import { compactAnswer } from "../worker/src/response-format.ts";
-import { checkUsage } from "../worker/src/usage-policy.ts";
-import { generateAnswer, makeMessages } from "../worker/src/providers.ts";
+import { checkUsage, nextDailyReset } from "../worker/src/usage-policy.ts";
+import {
+  generateAnswer,
+  isProviderQuotaExhausted,
+  makeMessages,
+} from "../worker/src/providers.ts";
 import { parseQuestion } from "../worker/src/validation.ts";
 import { visitorIdentity } from "../worker/src/cookie.ts";
 import { answerLinks } from "../worker/src/answer-links.ts";
@@ -284,7 +288,7 @@ test("direct search fallback returns relevant facts", () => {
 test("visitor and global limits, plus cooldown, are enforced", () => {
   const now = 100_000;
   assert.equal(
-    checkUsage({ visitorCount: 6, globalCount: 0, lastQuestionAt: 0, now })
+    checkUsage({ visitorCount: 10, globalCount: 0, lastQuestionAt: 0, now })
       .reason,
     "visitor_limit",
   );
@@ -302,14 +306,13 @@ test("visitor and global limits, plus cooldown, are enforced", () => {
     }).retryAfterSeconds,
     4,
   );
-  assert.equal(
-    checkUsage({ visitorCount: 5, globalCount: 199, lastQuestionAt: 0, now })
-      .allowed,
-    true,
+  assert.deepEqual(
+    checkUsage({ visitorCount: 9, globalCount: 199, lastQuestionAt: 0, now }),
+    { allowed: true, remaining: 1 },
   );
 });
 
-test("local development can bypass question and cooldown limits", () => {
+test("legacy development flags cannot bypass the visitor limit", () => {
   assert.deepEqual(
     checkUsage({
       visitorCount: 20,
@@ -318,8 +321,39 @@ test("local development can bypass question and cooldown limits", () => {
       now: 100_001,
       unlimited: true,
     }),
-    { allowed: true, remaining: null },
+    { allowed: false, reason: "visitor_limit", remaining: 0 },
   );
+});
+
+test("daily reset is the next midnight UTC, including across month boundaries", () => {
+  for (const [now, expected] of [
+    ["2026-10-02T00:00:00Z", "2026-10-03T00:00:00Z"],
+    ["2026-10-02T23:59:59Z", "2026-10-03T00:00:00Z"],
+    ["2026-10-31T23:59:59Z", "2026-11-01T00:00:00Z"],
+  ]) {
+    assert.equal(nextDailyReset(Date.parse(now)), Date.parse(expected));
+  }
+});
+
+test("provider quota exhaustion is distinct from temporary rate limits and capacity", () => {
+  assert.equal(
+    isProviderQuotaExhausted(
+      Object.assign(new Error("Account limited"), { code: 3036 }),
+    ),
+    true,
+  );
+  assert.equal(
+    isProviderQuotaExhausted(new Error("3036: Account limited")),
+    true,
+  );
+  for (const message of [
+    "429: rate limit",
+    "3040: capacity temporarily exceeded",
+    "Provider timed out",
+    "unauthorized",
+  ]) {
+    assert.equal(isProviderQuotaExhausted(new Error(message)), false);
+  }
 });
 
 test("questions longer than 300 characters are rejected", () => {

@@ -3,7 +3,9 @@ import {
   checkUsage,
   GLOBAL_DAILY_LIMIT,
   VISITOR_LIMIT,
-  VISITOR_WINDOW_MS,
+  USAGE_DAY_MS,
+  USAGE_RESET_VERSION,
+  nextDailyReset,
   type UsageDecision,
 } from "./usage-policy";
 import type { Exchange } from "./providers";
@@ -51,7 +53,24 @@ export class UsageStore extends DurableObject<Env> {
         version TEXT PRIMARY KEY,
         vectors TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS usage_settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      );
     `);
+    ctx.storage.transactionSync(() => {
+      const version = ctx.storage.sql
+        .exec("SELECT value FROM usage_settings WHERE key = 'reset_version'")
+        .toArray()[0] as { value: string } | undefined;
+      if (version?.value === USAGE_RESET_VERSION) return;
+      ctx.storage.sql.exec("DELETE FROM responses");
+      ctx.storage.sql.exec("DELETE FROM reservations");
+      ctx.storage.sql.exec("UPDATE visitors SET last_at = 0");
+      ctx.storage.sql.exec(
+        "INSERT INTO usage_settings (key, value) VALUES ('reset_version', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+        USAGE_RESET_VERSION,
+      );
+    });
   }
 
   private count(query: string, ...params: Array<string | number>): number {
@@ -61,18 +80,17 @@ export class UsageStore extends DurableObject<Env> {
 
   private counts(visitorId: string, now: number) {
     const day = utcDay(now);
-    const cutoff = now - VISITOR_WINDOW_MS;
     const sql = this.ctx.storage.sql;
     const visitorCount =
       this.count(
-        "SELECT COUNT(*) AS count FROM responses WHERE visitor_id = ? AND created_at > ?",
+        "SELECT COUNT(*) AS count FROM responses WHERE visitor_id = ? AND day = ?",
         visitorId,
-        cutoff,
+        day,
       ) +
       this.count(
-        "SELECT COUNT(*) AS count FROM reservations WHERE visitor_id = ? AND created_at > ?",
+        "SELECT COUNT(*) AS count FROM reservations WHERE visitor_id = ? AND day = ?",
         visitorId,
-        cutoff,
+        day,
       );
     const globalCount =
       this.count("SELECT COUNT(*) AS count FROM responses WHERE day = ?", day) +
@@ -89,12 +107,11 @@ export class UsageStore extends DurableObject<Env> {
   async status(
     visitorId: string,
     now: number,
-    unlimited = false,
   ): Promise<{
-    remaining: number | null;
+    remaining: number;
     globalAvailable: boolean;
+    resetsAt: number;
   }> {
-    if (unlimited) return { remaining: null, globalAvailable: true };
     this.ctx.storage.sql.exec(
       "DELETE FROM reservations WHERE expires_at <= ?",
       now,
@@ -103,20 +120,20 @@ export class UsageStore extends DurableObject<Env> {
     return {
       remaining: Math.max(0, VISITOR_LIMIT - visitorCount),
       globalAvailable: globalCount < GLOBAL_DAILY_LIMIT,
+      resetsAt: nextDailyReset(now),
     };
   }
 
   async reserve(
     visitorId: string,
     now: number,
-    unlimited = false,
   ): Promise<UsageDecision & { ticket?: string; history?: Exchange[] }> {
     return this.ctx.storage.transactionSync(() => {
       const sql = this.ctx.storage.sql;
       sql.exec("DELETE FROM reservations WHERE expires_at <= ?", now);
       sql.exec(
         "DELETE FROM responses WHERE created_at <= ?",
-        now - VISITOR_WINDOW_MS,
+        now - USAGE_DAY_MS,
       );
       const { visitorCount, globalCount, visitor, day } = this.counts(
         visitorId,
@@ -127,7 +144,6 @@ export class UsageStore extends DurableObject<Env> {
         globalCount,
         lastQuestionAt: visitor?.last_at ?? 0,
         now,
-        unlimited,
       });
       if (!decision.allowed) return decision;
 
@@ -155,8 +171,7 @@ export class UsageStore extends DurableObject<Env> {
     answer: string,
     aiGenerated: boolean,
     now: number,
-    unlimited = false,
-  ): Promise<number | null> {
+  ): Promise<number> {
     return this.ctx.storage.transactionSync(() => {
       const sql = this.ctx.storage.sql;
       const reservation = sql
@@ -165,7 +180,7 @@ export class UsageStore extends DurableObject<Env> {
           ticket,
         )
         .toArray()[0] as ReservationRow | undefined;
-      if (!reservation) return unlimited ? null : 0;
+      if (!reservation) return 0;
       sql.exec("DELETE FROM reservations WHERE ticket = ?", ticket);
       if (aiGenerated) {
         sql.exec(
@@ -191,7 +206,6 @@ export class UsageStore extends DurableObject<Env> {
         JSON.stringify(history),
         reservation.visitor_id,
       );
-      if (unlimited) return null;
       return Math.max(
         0,
         VISITOR_LIMIT - this.counts(reservation.visitor_id, now).visitorCount,

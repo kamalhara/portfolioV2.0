@@ -2,7 +2,7 @@ import { visitorIdentity } from "./cookie";
 import { answerLinks } from "./answer-links";
 import { embedSections, embedText } from "./embedding";
 import { knowledge, knowledgeVersion, type KnowledgeLink } from "./knowledge";
-import { generateAnswer } from "./providers";
+import { generateAnswer, isProviderQuotaExhausted } from "./providers";
 import {
   answerFromPolicy,
   directAnswer,
@@ -12,18 +12,20 @@ import {
 } from "./retrieval";
 import { compactAnswer } from "./response-format";
 import { parseQuestion } from "./validation";
+import { nextDailyReset } from "./usage-policy";
 export { UsageStore } from "./UsageStore";
 
 type RuntimeEnv = Env & {
   GEMINI_API_KEY?: string;
   PORTFOLIO_CHAT_COOKIE_SECRET?: string;
-  ASSISTANT_DEV_MODE?: string;
 };
 
 const LIMIT_MESSAGE =
-  "You've reached the AI assistant's demo limit for this session. You can still explore Kamal's projects, skills, resume and contact information below.";
+  "You've used your 10 AI replies for today. Your allowance resets at midnight UTC. You can still explore Kamal's projects, resume and contact information below.";
 const GLOBAL_LIMIT_MESSAGE =
-  "The AI assistant has reached its daily demo capacity. You can still explore Kamal's portfolio below.";
+  "The assistant's shared daily AI allowance has been used up. Please try again tomorrow or explore Kamal's portfolio below.";
+const PROVIDER_LIMIT_MESSAGE =
+  "The free AI allowance has been used up, so this reply uses verified portfolio information. Please try again later or contact Kamal directly.";
 
 function allowedOrigin(origin: string | null, env: Env): boolean {
   return (
@@ -109,7 +111,6 @@ async function relevantSections(question: string, env: Env) {
 export default {
   async fetch(request, env): Promise<Response> {
     const runtime = env as RuntimeEnv;
-    const developmentMode = runtime.ASSISTANT_DEV_MODE === "true";
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");
 
@@ -153,18 +154,8 @@ export default {
     const store = env.USAGE.getByName("portfolio-assistant");
 
     if (request.method === "GET" && url.pathname === "/status") {
-      const status = await store.status(
-        identity.id,
-        Date.now(),
-        developmentMode,
-      );
-      return response(
-        request,
-        env,
-        { ...status, developmentMode },
-        200,
-        identity.setCookie,
-      );
+      const status = await store.status(identity.id, Date.now());
+      return response(request, env, status, 200, identity.setCookie);
     }
     if (request.method === "POST" && url.pathname === "/reset") {
       await store.resetHistory(identity.id);
@@ -187,11 +178,7 @@ export default {
       );
     }
 
-    const reserved = await store.reserve(
-      identity.id,
-      Date.now(),
-      developmentMode,
-    );
+    const reserved = await store.reserve(identity.id, Date.now());
     if (!reserved.allowed || !reserved.ticket) {
       const limitReached =
         reserved.reason === "visitor_limit" ||
@@ -210,6 +197,7 @@ export default {
           limitReached,
           remaining: reserved.remaining,
           retryAfterSeconds: reserved.retryAfterSeconds,
+          resetsAt: nextDailyReset(Date.now()),
         },
         429,
         identity.setCookie,
@@ -219,6 +207,7 @@ export default {
     const policyAnswer = answerFromPolicy(question);
     const sections = policyAnswer ? [] : await relevantSections(question, env);
     let answer: string;
+    let notice: string | undefined;
     let source: "cloudflare" | "gemini" | "portfolio" = "portfolio";
     if (policyAnswer) {
       answer = policyAnswer;
@@ -233,8 +222,9 @@ export default {
         });
         answer = generated.text;
         source = generated.provider;
-      } catch {
+      } catch (error) {
         answer = directAnswer(sections);
+        if (isProviderQuotaExhausted(error)) notice = PROVIDER_LIMIT_MESSAGE;
       }
     }
     answer = compactAnswer(answer);
@@ -245,7 +235,6 @@ export default {
       answer,
       source !== "portfolio",
       Date.now(),
-      developmentMode,
     );
     return response(
       request,
@@ -260,9 +249,10 @@ export default {
           ),
         ),
         source,
+        notice,
         remaining,
         limitReached: remaining === 0,
-        developmentMode,
+        resetsAt: nextDailyReset(Date.now()),
       },
       200,
       identity.setCookie,
