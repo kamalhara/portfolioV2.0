@@ -29,7 +29,7 @@ export default function ProjectsSection() {
           return (
             <li
               key={project.slug}
-              className="group -ml-3 w-120 max-w-[calc(100%_+_1.5rem)] rounded-2xl px-3 py-2 transition-colors duration-300 dark:hover:bg-[#1C1C1A] dark:focus-within:bg-[#1C1C1A] focus-within:bg-[#EEECE9] hover:bg-[#EEECE9]"
+              className="group -ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 transition-colors duration-300 dark:hover:bg-[#1C1C1A] dark:focus-within:bg-[#1C1C1A] focus-within:bg-[#EEECE9] hover:bg-[#EEECE9]"
             >
               <Link
                 href={`/project/${project.slug}`}

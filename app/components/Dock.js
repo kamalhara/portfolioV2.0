@@ -444,7 +444,7 @@ export default function PortfolioDock() {
                               className="size-4 shrink-0"
                               aria-hidden="true"
                             />
-                            <span className="min-w-0 flex-1 break-words">
+                            <span className="min-w-0 flex-1 wrap-break-word">
                               Ask Assistant: &ldquo;{query.trim()}&rdquo;
                             </span>
                             <kbd
@@ -483,7 +483,7 @@ export default function PortfolioDock() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-16.5 backdrop-blur-[32px] mask-[linear-gradient(to_bottom,transparent,black_35%)]"
       />
 
-      <div className="pointer-events-none fixed bottom-4.5 left-1/2 z-50 max-w-[calc(100%_-_2rem)] -translate-x-1/2">
+      <div className="pointer-events-none fixed bottom-4.5 left-1/2 z-50 max-w-[calc(100%-2rem)] -translate-x-1/2">
         <div ref={dockRef} className="pointer-events-auto">
           <AnimatePresence>
             {menuOpen && (
@@ -493,7 +493,7 @@ export default function PortfolioDock() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
                 transition={{ duration: reduceMotion ? 0 : 0.18 }}
-                className="absolute bottom-[calc(100%_+_12px)] right-0 flex max-h-[calc(100dvh_-_100px)] w-40 flex-col gap-2.5 overflow-y-auto py-1 [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
+                className="absolute bottom-[calc(100%+12px)] right-0 flex max-h-[calc(100dvh-100px)] w-40 flex-col gap-2.5 overflow-y-auto py-1 [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
                 aria-label="Quick navigation"
               >
                 {quickLinks.map((item, index) => {

@@ -378,7 +378,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                 aria-label="Back to search"
                 className="ui-press inline-flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
               >
-                <ArrowLeft className="size-[18px]" aria-hidden="true" />
+                <ArrowLeft className="size-4.5" aria-hidden="true" />
               </button>
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-sm font-semibold tracking-[-0.01em]">
@@ -606,7 +606,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                       }
                       aria-label="Message"
                       enterKeyHint="send"
-                      className="block max-h-[160px] w-full resize-none overflow-y-auto bg-transparent px-4 pb-1 pt-3 text-[15px] leading-6 text-foreground outline-none placeholder:text-muted-foreground/60"
+                      className="block max-h-40 w-full resize-none overflow-y-auto bg-transparent px-4 pb-1 pt-3 text-[15px] leading-6 text-foreground outline-none placeholder:text-muted-foreground/60"
                       style={{ height: 40 }}
                     />
                     <div className="flex items-center justify-between gap-2 px-2.5 pb-2 pt-0.5">
@@ -626,7 +626,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                         aria-label="Send message"
                         className="ui-press inline-flex size-8 items-center justify-center rounded-lg bg-foreground text-background transition-colors hover:opacity-80 disabled:bg-foreground/10 disabled:text-muted-foreground"
                       >
-                        <ArrowUp className="size-[18px]" aria-hidden="true" />
+                        <ArrowUp className="size-4.5" aria-hidden="true" />
                       </button>
                     </div>
                   </div>
