@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import test from "node:test";
 import { projects } from "../app/data/project.js";
+import { experiences } from "../app/data/experience.js";
 import {
   getProjectImages,
   getProjectCategory,
@@ -52,6 +53,13 @@ test("project descriptions match the linked repositories' core facts", () => {
 test("referenced optimized covers exist", () => {
   for (const project of projects.filter((item) => item.cover)) {
     assert.ok(existsSync(`public${project.cover}`), project.cover);
+  }
+});
+
+test("company logos used in the experience section exist", () => {
+  for (const experience of experiences) {
+    assert.match(experience.logo, /^\/[^/]/);
+    assert.ok(existsSync(`public${experience.logo}`), experience.company);
   }
 });
 

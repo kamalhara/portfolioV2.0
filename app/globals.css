@@ -295,6 +295,47 @@ img {
   border-radius: 0.5rem;
 }
 
+.hover-badge {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 20;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 7px) scale(0.96);
+  transform-origin: 50% 100%;
+  filter: blur(2px);
+  transition:
+    opacity 160ms ease,
+    transform 280ms var(--motion-ease-emphasized),
+    filter 200ms ease;
+}
+
+.hover-badge-trigger:focus-visible:not([aria-expanded="true"]) > .hover-badge {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  filter: blur(0);
+  transition-delay: 80ms;
+}
+
+@media (hover: hover) {
+  .hover-badge-trigger:hover:not([aria-expanded="true"]) > .hover-badge {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    filter: blur(0);
+    transition-delay: 80ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-badge {
+    transform: translate(-50%, 0);
+    filter: none;
+    transition: none;
+  }
+}
+
 #portfolio-search-dialog input:focus-visible {
   outline: none;
 }

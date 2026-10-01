@@ -26,6 +26,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Assisstant from "@/app/components/Assisstant";
 import { assistantOpenEvent } from "@/app/lib/assistantEvents";
 import { setTheme, useTheme } from "@/app/lib/useTheme";
+import HoverBadge from "@/app/components/HoverBadge";
 
 const quickLinks = [
   {
@@ -503,7 +504,7 @@ export default function PortfolioDock() {
                 setMenuOpen(false);
                 setSearchOpen(true);
               }}
-              className="ui-press flex h-8 w-40 cursor-pointer items-center gap-2 rounded-full bg-foreground/5 px-3 text-muted-foreground transition-colors hover:bg-foreground/8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-52.5 [html.dark_&]:bg-foreground/8 [html.dark_&]:hover:bg-foreground/12"
+              className="hover-badge-trigger ui-press relative flex h-8 w-40 cursor-pointer items-center gap-2 rounded-full bg-foreground/5 px-3 text-muted-foreground transition-colors hover:bg-foreground/8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:w-52.5 [html.dark_&]:bg-foreground/8 [html.dark_&]:hover:bg-foreground/12"
             >
               <FiSearch className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="flex-1 truncate text-left text-[12.5px]">
@@ -520,6 +521,7 @@ export default function PortfolioDock() {
                   K
                 </kbd>
               </span>
+              <HoverBadge label="Search" />
             </button>
 
             <span

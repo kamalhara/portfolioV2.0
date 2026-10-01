@@ -52,7 +52,7 @@ export default function StateglyphDownloadsBadge() {
   const count = new Intl.NumberFormat("en-US").format(stats.downloads);
   return (
     <span
-      className="inline-flex items-center gap-1.25 rounded-full border border-brand/20 bg-brand/5 px-2 py-0.75 text-[11px] leading-[1.2] tracking-normal text-brand"
+      className="inline-flex items-center gap-1.25 rounded-full border border-border dark:bg-[#171717] bg-[#F9F8F8] px-2 py-0.75 text-[11px] leading-[1.2] tracking-normal text-muted-foreground"
       aria-label={`${count} weekly npm downloads across all four StateGlyph packages`}
       title={`Combined npm downloads · ${stats.start} to ${stats.end} · npm updates daily`}
     >

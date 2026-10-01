@@ -6,11 +6,10 @@ import {
   magneticLogoDots,
 } from "@/app/components/magneticLogo/magneticLogo";
 
-const RIPPLE_DURATION = 820;
-
-function rippleRadius(progress, size) {
-  return size * 0.58 * (1 - (1 - progress) ** 2);
-}
+import {
+  RIPPLE_DURATION,
+  getRippleFrame,
+} from "@/app/components/magneticLogo/rippleAnimation";
 
 export default function MagneticLogoCard() {
   const canvasRef = useRef(null);
@@ -47,7 +46,7 @@ export default function MagneticLogoCard() {
     }
 
     function render(now) {
-      const step = Math.min((now - previousTime) / 16.67, 2);
+      const step = Math.min(Math.max(0, (now - previousTime) / 16.67), 2);
       previousTime = now;
       context.clearRect(0, 0, size, size);
 
@@ -55,14 +54,16 @@ export default function MagneticLogoCard() {
       ripplesRef.current = ripplesRef.current.filter(
         (ripple) => now - ripple.start < RIPPLE_DURATION,
       );
-      const ripples = ripplesRef.current;
+      const ripples = ripplesRef.current.map((ripple) => ({
+        ...ripple,
+        ...getRippleFrame(ripple.start, now, size),
+      }));
       const fieldRadius = size * 0.175;
       const dotRadius = Math.max(0.9, (size / logoViewBox) * 8.7);
 
       if (!reducedMotion.matches) {
         for (const ripple of ripples) {
-          const progress = (now - ripple.start) / RIPPLE_DURATION;
-          const radius = rippleRadius(progress, size);
+          const { progress, radius } = ripple;
           const opacity = (1 - progress) ** 2 * 0.17;
           context.strokeStyle = `rgba(255, 77, 13, ${opacity})`;
           context.lineWidth = 1;
@@ -99,9 +100,7 @@ export default function MagneticLogoCard() {
 
         if (!reducedMotion.matches) {
           for (const ripple of ripples) {
-            const elapsed = now - ripple.start;
-            const progress = elapsed / RIPPLE_DURATION;
-            const radius = rippleRadius(progress, size);
+            const { progress, radius } = ripple;
             const dx = dot.homeX - ripple.x;
             const dy = dot.homeY - ripple.y;
             const distance = Math.hypot(dx, dy);

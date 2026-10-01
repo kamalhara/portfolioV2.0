@@ -5,6 +5,7 @@ import { FiCheck, FiCopy } from "react-icons/fi";
 import { portfolio } from "@/app/data/portfolio";
 import MusicCard from "@/app/components/music/MusicCard";
 import MagneticLogoCard from "../components/magneticLogo/MagneticLogoCard";
+import HoverBadge from "@/app/components/HoverBadge";
 
 function getIndiaTime() {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -100,11 +101,12 @@ function ClockCard() {
 
   return (
     <div
-      className="relative aspect-square min-w-0 overflow-hidden rounded-2xl border bg-neutral-50/80 backdrop-blur-xl backdrop-saturate-150 border-border dark:bg-neutral-900/95"
+      className="hover-badge-trigger group relative aspect-square min-w-0 rounded-2xl border bg-neutral-50/80 backdrop-blur-xl backdrop-saturate-150 border-border dark:bg-neutral-900/95"
       aria-label="Analog clock showing current time in India"
     >
+      <HoverBadge label="Punjab, India" />
       <svg
-        className="absolute inset-0 h-full w-full transition-opacity duration-300"
+        className="absolute inset-0 h-full w-full transition-opacity duration-300 overflow-hidden rounded-2xl"
         viewBox="0 0 200 200"
         role="img"
         aria-hidden="true"
