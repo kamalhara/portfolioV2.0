@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const glowColors = [
   "rgb(236, 72, 153)",
@@ -139,14 +139,16 @@ function CopyAnswer({ text }) {
   );
 }
 
-export default function Assisstant({ onBack, onClose }) {
+export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
   const [messages, setMessages] = useState([]);
-  const [draft, setDraft] = useState("");
+  const [draft, setDraft] = useState(initialQuestion);
   const [loading, setLoading] = useState(false);
   const [remaining, setRemaining] = useState(null);
   const [developmentMode, setDevelopmentMode] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
+  const [statusReady, setStatusReady] = useState(false);
+  const initialQuestionSentRef = useRef(false);
   const [scrollState, setScrollState] = useState({
     overflow: false,
     progress: 0,
@@ -181,6 +183,7 @@ export default function Assisstant({ onBack, onClose }) {
           !status.developmentMode &&
             (status.remaining === 0 || !status.globalAvailable),
         );
+        setStatusReady(true);
       })
       .catch((cause) => {
         if (cause.name !== "AbortError") {
@@ -230,52 +233,71 @@ export default function Assisstant({ onBack, onClose }) {
     });
   }, [messages, loading, limitReached, error, reduceMotion]);
 
-  async function ask(content) {
-    const question = content.trim();
-    if (!question || loading || limitReached || !apiUrl) return;
-    setError("");
-    setDraft("");
-    setLoading(true);
-    setMessages((current) => [...current, { role: "user", text: question }]);
-    if (inputRef.current) inputRef.current.style.height = "40px";
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
-      });
-      const result = await response.json();
-      if (result.developmentMode) {
-        setDevelopmentMode(true);
-        setRemaining(null);
-        setLimitReached(false);
+  const ask = useCallback(
+    async (content) => {
+      const question = content.trim();
+      if (!question || loading || limitReached || !apiUrl) return;
+      setError("");
+      setDraft("");
+      setLoading(true);
+      setMessages((current) => [...current, { role: "user", text: question }]);
+      if (inputRef.current) inputRef.current.style.height = "40px";
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question }),
+        });
+        const result = await response.json();
+        if (result.developmentMode) {
+          setDevelopmentMode(true);
+          setRemaining(null);
+          setLimitReached(false);
+        }
+        if (typeof result.remaining === "number")
+          setRemaining(result.remaining);
+        if (result.limitReached) setLimitReached(true);
+        if (!response.ok) {
+          setError(
+            result.error || "The assistant could not answer. Please try again.",
+          );
+        } else {
+          setMessages((current) => [
+            ...current,
+            {
+              role: "assistant",
+              text: result.answer,
+              links: Array.isArray(result.links)
+                ? result.links
+                    .filter((link) => safeHref(link?.href))
+                    .slice(0, 1)
+                : [],
+            },
+          ]);
+        }
+      } catch {
+        setError("The assistant is temporarily unavailable.");
+      } finally {
+        setLoading(false);
+        inputRef.current?.focus();
       }
-      if (typeof result.remaining === "number") setRemaining(result.remaining);
-      if (result.limitReached) setLimitReached(true);
-      if (!response.ok) {
-        setError(
-          result.error || "The assistant could not answer. Please try again.",
-        );
-      } else {
-        setMessages((current) => [
-          ...current,
-          {
-            role: "assistant",
-            text: result.answer,
-            links: Array.isArray(result.links)
-              ? result.links.filter((link) => safeHref(link?.href)).slice(0, 1)
-              : [],
-          },
-        ]);
-      }
-    } catch {
-      setError("The assistant is temporarily unavailable.");
-    } finally {
-      setLoading(false);
-      inputRef.current?.focus();
-    }
-  }
+    },
+    [loading, limitReached],
+  );
+
+  useEffect(() => {
+    if (
+      !initialQuestion.trim() ||
+      !statusReady ||
+      loading ||
+      limitReached ||
+      initialQuestionSentRef.current
+    )
+      return;
+    initialQuestionSentRef.current = true;
+    void ask(initialQuestion);
+  }, [initialQuestion, statusReady, loading, limitReached, ask]);
 
   function sendMessage(event) {
     event.preventDefault();

@@ -31,6 +31,7 @@ const quickLinks = [
     description: "Back to the homepage",
     href: "/",
     icon: House,
+    shortcut: "H",
   },
 
   {
@@ -38,18 +39,21 @@ const quickLinks = [
     description: "Selected work",
     href: "/#projects",
     icon: FolderKanban,
+    shortcut: "P",
   },
   {
     label: "Experience",
     description: "Where I've worked",
     href: "/#experience",
     icon: BriefcaseBusiness,
+    shortcut: "E",
   },
   {
     label: "About",
     description: "A little about me",
     href: "/#about",
     icon: UserRound,
+    shortcut: "A",
   },
   {
     label: "Tech stack",
@@ -119,6 +123,7 @@ export default function PortfolioDock() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
+  const [assistantQuestion, setAssistantQuestion] = useState("");
   const [query, setQuery] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const searchButtonRef = useRef(null);
@@ -191,6 +196,12 @@ export default function PortfolioDock() {
     setSearchOpen(false);
   }
 
+  function openAssistant(question = "") {
+    setAssistantQuestion(question.trim());
+    setSearchOpen(false);
+    setAssistantOpen(true);
+  }
+
   function trapDialogFocus(event) {
     if (event.key !== "Tab") return;
     const focusable = dialogRef.current?.querySelectorAll(
@@ -243,6 +254,7 @@ export default function PortfolioDock() {
             transition={{ duration: reduceMotion ? 0 : 0.22 }}
           >
             <Assisstant
+              initialQuestion={assistantQuestion}
               onBack={() => {
                 setAssistantOpen(false);
                 setSearchOpen(true);
@@ -287,8 +299,20 @@ export default function PortfolioDock() {
                     <input
                       ref={focusSearchInput}
                       type="search"
+                      maxLength={300}
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (
+                          event.key === "Enter" &&
+                          !event.nativeEvent.isComposing &&
+                          !filteredGroups.length &&
+                          !showSettings
+                        ) {
+                          event.preventDefault();
+                          openAssistant(query);
+                        }
+                      }}
                       placeholder="Type something or Ask Assistant..."
                       aria-label="Search commands"
                       className="w-full appearance-none border-none bg-transparent text-base font-medium text-foreground outline-none placeholder:text-muted-foreground focus:outline-none"
@@ -305,9 +329,11 @@ export default function PortfolioDock() {
                           key={group.label}
                           className="content-enter mb-2 mt-4"
                         >
-                          <h3 className="mx-1 px-2 py-2 text-xs font-medium text-muted-foreground">
-                            {group.label}
-                          </h3>
+                          <div className="flex justify-between items-center">
+                            <h3 className="mx-1 px-2 py-2 text-xs font-medium text-muted-foreground">
+                              {group.label}
+                            </h3>
+                          </div>
                           <div className="flex flex-col gap-0.5">
                             {group.items.map((item) => {
                               const Icon = item.icon;
@@ -331,8 +357,7 @@ export default function PortfolioDock() {
                                   }
                                   onClick={() => {
                                     if (item.action === "assistant") {
-                                      setSearchOpen(false);
-                                      setAssistantOpen(true);
+                                      openAssistant();
                                     } else {
                                       closeSearch();
                                     }
@@ -344,6 +369,11 @@ export default function PortfolioDock() {
                                     aria-hidden="true"
                                   />
                                   <span className="flex-1">{item.label}</span>
+                                  {item.shortcut && (
+                                    <div className="border border-border bg-background/70 px-1.5 py-0.5 rounded-md text-muted-foreground text-[12px]">
+                                      {item.shortcut}
+                                    </div>
+                                  )}
                                 </ItemLink>
                               );
                             })}
@@ -378,9 +408,30 @@ export default function PortfolioDock() {
                       )}
 
                       {!filteredGroups.length && !showSettings && (
-                        <p className="content-enter px-3 py-4 text-sm text-muted-foreground">
-                          No matching commands.
-                        </p>
+                        <div>
+                          <div className="mx-1 px-2.5 py-1.5 text-xs font-medium text-muted-foreground">
+                            Ask Assistant
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => openAssistant(query)}
+                            className="ui-press content-enter flex w-full items-center gap-3 rounded-lg border border-brand/30 bg-brand-soft px-3 py-3 text-left text-sm text-foreground transition-colors hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-ring/40"
+                          >
+                            <LuBot
+                              className="size-4 shrink-0"
+                              aria-hidden="true"
+                            />
+                            <span className="min-w-0 flex-1 break-words">
+                              Ask Assistant: &ldquo;{query.trim()}&rdquo;
+                            </span>
+                            <kbd
+                              aria-hidden="true"
+                              className="shrink-0 text-xs text-muted-foreground"
+                            >
+                              ↵
+                            </kbd>
+                          </button>
+                        </div>
                       )}
                     </nav>
                     <div className="flex items-center justify-between border-t border-border bg-card/80 px-4 py-3 text-xs text-muted-foreground backdrop-blur-md">
@@ -391,7 +442,7 @@ export default function PortfolioDock() {
                         className="flex cursor-pointer items-center gap-2 rounded-sm transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                       >
                         <span>Close</span>
-                        <kbd className="hidden rounded border border-border bg-background/70 px-1.5 py-0.5 text-[10px] text-muted-foreground shadow-sm sm:block dark:shadow-none">
+                        <kbd className="hidden  rounded-md border border-border bg-background/70 px-1.5 py-0.5 text-[10px] text-muted-foreground shadow-sm sm:block dark:shadow-none">
                           Esc
                         </kbd>
                       </button>
