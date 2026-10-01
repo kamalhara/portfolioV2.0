@@ -67,7 +67,7 @@ No model credentials are included in the browser bundle.
    `PORTFOLIO_CHAT_COOKIE_SECRET` with a random secret of at least 32 characters.
    Add `GEMINI_API_KEY` only if your Google AI project can access the configured
    model; Cloudflare AI and direct search work without it. Local development
-   uses the same visitor limits and cooldown as production.
+   uses the same visitor limits as production.
 2. Set `NEXT_PUBLIC_ASSISTANT_API_URL=http://localhost:8787/chat` in
    `.env.local`. The development build uses that URL by default when the variable
    is absent.
@@ -97,11 +97,12 @@ may use `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as server-side secret
    the portfolio host and redeploy the Next.js app. Adjust the hostname if the
    production site uses another domain.
 
-The Worker allows 10 AI-generated replies per anonymous cookie per UTC day,
-one question every five seconds, and 200 AI-generated replies across all visitors
-per UTC day. Both allowances reset at midnight UTC (5:30 AM in India), and an
-open chat refreshes its allowance automatically. Direct text fallback does not
-spend an AI reply. The same limits apply in local development and production;
+The Worker allows 10 answered questions per anonymous cookie per UTC day,
+including generated, fixed, and fallback replies. There is no delay between
+questions. The shared limit remains 200 AI-generated replies across all visitors
+per UTC day; fixed and fallback replies do not spend that shared AI allowance.
+Both allowances reset at midnight UTC (5:30 AM in India), and an open chat
+refreshes its allowance automatically. The same limits apply in local development and production;
 there is no unlimited mode. The remaining count appears only at five replies
 or fewer. A confirmed provider quota exhaustion shows a short disclaimer beside
 the verified portfolio fallback; temporary capacity errors are not described as

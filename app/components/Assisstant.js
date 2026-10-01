@@ -506,7 +506,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                     {limitReached && !error && (
                       <p className="mt-3 text-xs text-muted-foreground">
                         {remaining === 0
-                          ? "You’ve used your 10 AI replies for today. Your allowance resets at midnight UTC. You can still explore Kamal’s projects, resume and contact information below."
+                          ? "You’ve used your 10 replies for today. Your allowance resets at midnight UTC. You can still explore Kamal’s projects, resume and contact information below."
                           : "The assistant’s shared daily AI allowance has been used up. Please try again tomorrow or explore Kamal’s portfolio below."}
                       </p>
                     )}

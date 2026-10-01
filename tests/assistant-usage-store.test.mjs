@@ -82,7 +82,7 @@ test("fresh-start migration clears previous limits once and preserves conversati
   );
   const restarted = new UsageStore(store.ctx, {});
   assert.equal((await restarted.status("visitor", now)).remaining, 9);
-  assert.equal((await restarted.reserve("visitor", now)).reason, "cooldown");
+  assert.equal((await restarted.reserve("visitor", now)).allowed, true);
 });
 
 test("ten replies exhaust today's allowance and midnight resets the same visitor", async (t) => {
@@ -112,7 +112,7 @@ test("ten replies exhaust today's allowance and midnight resets the same visitor
   assert.equal((await store.reserve("visitor", midnight)).allowed, true);
 });
 
-test("verified fallbacks do not spend a reply, and earlier-day reservations do not spend the new allowance", async (t) => {
+test("verified fallbacks count toward visitor replies and earlier-day reservations do not spend the new allowance", async (t) => {
   const store = createStore(t);
   const now = Date.parse("2026-10-02T23:59:50Z");
   const reservation = await store.reserve("visitor", now);
@@ -124,7 +124,7 @@ test("verified fallbacks do not spend a reply, and earlier-day reservations do n
       false,
       now,
     ),
-    10,
+    9,
   );
   await store.reserve("visitor", now + 6000);
   assert.equal(
@@ -134,7 +134,7 @@ test("verified fallbacks do not spend a reply, and earlier-day reservations do n
   );
 });
 
-test("HTTP chat enforces ten replies even with a legacy dev flag, then resets daily", async (t) => {
+test("HTTP chat counts generated, fixed, and fallback answers, without cooldown, and resets daily", async (t) => {
   const store = createStore(t);
   const originalNow = Date.now;
   let now = Date.parse("2026-10-02T12:00:00Z");
@@ -163,12 +163,23 @@ test("HTTP chat enforces ten replies even with a legacy dev flag, then resets da
   assert.equal(initial.remaining, 10);
   assert.equal(initial.developmentMode, undefined);
   for (let index = 0; index < 11; index++) {
-    now += 6000;
+    const kind = index % 3;
+    env.AI.run = async () => {
+      if (kind === 2) throw new Error("Provider timed out");
+      return {
+        response: "Kamal's strengths are frontend, backend, and UI/UX design.",
+      };
+    };
     const response = await worker.fetch(
       new Request("http://localhost/chat", {
         method: "POST",
         headers: { Cookie: cookie, "Content-Type": "application/json" },
-        body: JSON.stringify({ question: "What are his strongest skills?" }),
+        body: JSON.stringify({
+          question:
+            kind === 1
+              ? "What salary does he want?"
+              : "What are his strongest skills?",
+        }),
       }),
       env,
     );
@@ -176,7 +187,15 @@ test("HTTP chat enforces ten replies even with a legacy dev flag, then resets da
     const result = await response.json();
     assert.equal(result.remaining, Math.max(0, 9 - index));
     assert.equal(result.limitReached, index >= 9);
+    if (index < 10)
+      assert.equal(result.source, kind === 0 ? "cloudflare" : "portfolio");
   }
+  assert.equal(
+    store.ctx.storage.sql
+      .exec("SELECT count(*) AS count FROM responses WHERE ai_generated = 1")
+      .one().count,
+    4,
+  );
   now = Date.parse("2026-10-03T00:00:00Z");
   const reset = await worker.fetch(
     new Request("http://localhost/status", { headers: { Cookie: cookie } }),
@@ -213,7 +232,7 @@ test("HTTP fallback shows a disclaimer for confirmed quota exhaustion only", asy
     const result = await response.json();
     assert.equal(response.status, 200);
     assert.equal(result.source, "portfolio");
-    assert.equal(result.remaining, 10);
+    assert.equal(result.remaining, 9);
     if (quota)
       assert.match(result.notice, /free AI allowance.*verified portfolio/);
     else assert.equal(result.notice, undefined);

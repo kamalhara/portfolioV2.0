@@ -40,7 +40,8 @@ export class UsageStore extends DurableObject<Env> {
         ticket TEXT PRIMARY KEY,
         visitor_id TEXT NOT NULL,
         created_at INTEGER NOT NULL,
-        day TEXT NOT NULL
+        day TEXT NOT NULL,
+        ai_generated INTEGER NOT NULL DEFAULT 1
       );
       CREATE TABLE IF NOT EXISTS reservations (
         ticket TEXT PRIMARY KEY,
@@ -58,6 +59,14 @@ export class UsageStore extends DurableObject<Env> {
         value TEXT NOT NULL
       );
     `);
+    const columns = ctx.storage.sql
+      .exec("PRAGMA table_info(responses)")
+      .toArray();
+    if (!columns.some((column) => column.name === "ai_generated")) {
+      ctx.storage.sql.exec(
+        "ALTER TABLE responses ADD COLUMN ai_generated INTEGER NOT NULL DEFAULT 1",
+      );
+    }
     ctx.storage.transactionSync(() => {
       const version = ctx.storage.sql
         .exec("SELECT value FROM usage_settings WHERE key = 'reset_version'")
@@ -93,7 +102,10 @@ export class UsageStore extends DurableObject<Env> {
         day,
       );
     const globalCount =
-      this.count("SELECT COUNT(*) AS count FROM responses WHERE day = ?", day) +
+      this.count(
+        "SELECT COUNT(*) AS count FROM responses WHERE day = ? AND ai_generated = 1",
+        day,
+      ) +
       this.count(
         "SELECT COUNT(*) AS count FROM reservations WHERE day = ?",
         day,
@@ -142,8 +154,6 @@ export class UsageStore extends DurableObject<Env> {
       const decision = checkUsage({
         visitorCount,
         globalCount,
-        lastQuestionAt: visitor?.last_at ?? 0,
-        now,
       });
       if (!decision.allowed) return decision;
 
@@ -182,15 +192,14 @@ export class UsageStore extends DurableObject<Env> {
         .toArray()[0] as ReservationRow | undefined;
       if (!reservation) return 0;
       sql.exec("DELETE FROM reservations WHERE ticket = ?", ticket);
-      if (aiGenerated) {
-        sql.exec(
-          "INSERT INTO responses (ticket, visitor_id, created_at, day) VALUES (?, ?, ?, ?)",
-          ticket,
-          reservation.visitor_id,
-          now,
-          utcDay(now),
-        );
-      }
+      sql.exec(
+        "INSERT INTO responses (ticket, visitor_id, created_at, day, ai_generated) VALUES (?, ?, ?, ?, ?)",
+        ticket,
+        reservation.visitor_id,
+        now,
+        utcDay(now),
+        aiGenerated ? 1 : 0,
+      );
       const visitor = sql
         .exec(
           "SELECT history FROM visitors WHERE id = ?",

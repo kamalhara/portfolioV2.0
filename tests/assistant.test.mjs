@@ -285,31 +285,19 @@ test("direct search fallback returns relevant facts", () => {
   assert.match(directAnswer(sections), /Ludhiana, Punjab, India/);
 });
 
-test("visitor and global limits, plus cooldown, are enforced", () => {
-  const now = 100_000;
+test("visitor and global limits are enforced without a question cooldown", () => {
   assert.equal(
-    checkUsage({ visitorCount: 10, globalCount: 0, lastQuestionAt: 0, now })
-      .reason,
+    checkUsage({ visitorCount: 10, globalCount: 0 }).reason,
     "visitor_limit",
   );
   assert.equal(
-    checkUsage({ visitorCount: 1, globalCount: 200, lastQuestionAt: 0, now })
-      .reason,
+    checkUsage({ visitorCount: 1, globalCount: 200 }).reason,
     "global_limit",
   );
-  assert.equal(
-    checkUsage({
-      visitorCount: 1,
-      globalCount: 0,
-      lastQuestionAt: now - 1_000,
-      now,
-    }).retryAfterSeconds,
-    4,
-  );
-  assert.deepEqual(
-    checkUsage({ visitorCount: 9, globalCount: 199, lastQuestionAt: 0, now }),
-    { allowed: true, remaining: 1 },
-  );
+  assert.deepEqual(checkUsage({ visitorCount: 9, globalCount: 199 }), {
+    allowed: true,
+    remaining: 1,
+  });
 });
 
 test("legacy development flags cannot bypass the visitor limit", () => {

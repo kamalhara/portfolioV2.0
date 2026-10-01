@@ -21,7 +21,7 @@ type RuntimeEnv = Env & {
 };
 
 const LIMIT_MESSAGE =
-  "You've used your 10 AI replies for today. Your allowance resets at midnight UTC. You can still explore Kamal's projects, resume and contact information below.";
+  "You've used your 10 replies for today. Your allowance resets at midnight UTC. You can still explore Kamal's projects, resume and contact information below.";
 const GLOBAL_LIMIT_MESSAGE =
   "The assistant's shared daily AI allowance has been used up. Please try again tomorrow or explore Kamal's portfolio below.";
 const PROVIDER_LIMIT_MESSAGE =
@@ -190,13 +190,10 @@ export default {
           error:
             reserved.reason === "visitor_limit"
               ? LIMIT_MESSAGE
-              : reserved.reason === "global_limit"
-                ? GLOBAL_LIMIT_MESSAGE
-                : "Please wait before asking again.",
+              : GLOBAL_LIMIT_MESSAGE,
           reason: reserved.reason,
           limitReached,
           remaining: reserved.remaining,
-          retryAfterSeconds: reserved.retryAfterSeconds,
           resetsAt: nextDailyReset(Date.now()),
         },
         429,
