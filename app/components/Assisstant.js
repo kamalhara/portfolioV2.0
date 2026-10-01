@@ -346,6 +346,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
   return (
     <div
       className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
+      data-click-sound="dismiss"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}

@@ -141,6 +141,7 @@ export default function ProjectGallery({ project }) {
       <dialog
         ref={dialog}
         className="project-gallery-dialog"
+        data-click-sound="backdrop"
         aria-label={`${project.title} screenshot viewer`}
         onCancel={() => setOpen(false)}
         onClick={(event) => {

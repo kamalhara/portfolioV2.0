@@ -7,6 +7,7 @@ import {
   JetBrains_Mono,
 } from "next/font/google";
 import ScrollReveal from "@/app/components/ScrollReveal";
+import InteractionSounds from "@/app/components/InteractionSounds";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -65,6 +66,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning>
         {children}
         <ScrollReveal />
+        <InteractionSounds />
       </body>
     </html>
   );

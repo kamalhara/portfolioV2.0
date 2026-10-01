@@ -505,6 +505,43 @@ img {
 }
 
 /* Project collection and case-study surfaces share the portfolio's tokens. */
+.project-section-link {
+  border-bottom: 2px solid transparent;
+  padding: 0 0 14px;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.project-section-link[aria-current="location"] {
+  border-color: var(--color-brand);
+  color: var(--color-foreground);
+}
+.project-section-link:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.motion-ready .project-detail [data-scroll-reveal] {
+    transition-duration: 0.4s;
+  }
+  html.motion-ready .project-detail [data-scroll-reveal="pending"] {
+    transform: translateY(14px);
+  }
+  :where(button, a[href], summary, [role="button"]):where(
+    :not(:disabled):not([aria-disabled="true"]):not(.ui-press)
+  ) {
+    transition-property:
+      color, background-color, border-color, transform, opacity, scale;
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-ease-standard);
+  }
+  :where(button, a[href], summary, [role="button"]):where(
+      :not(:disabled):not([aria-disabled="true"]):not(.ui-press)
+    ):active {
+    scale: 0.985;
+  }
+}
 .project-card {
   display: flex;
   min-width: 0;

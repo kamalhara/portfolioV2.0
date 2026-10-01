@@ -24,6 +24,7 @@ import { BsArrowLeftCircle, BsHouse } from "react-icons/bs";
 import { TfiArrowCircleLeft } from "react-icons/tfi";
 import { usePathname, useRouter } from "next/navigation";
 import Assisstant from "@/app/components/Assisstant";
+import { assistantOpenEvent } from "@/app/lib/assistantEvents";
 
 const quickLinks = [
   {
@@ -127,12 +128,27 @@ export default function PortfolioDock() {
   const [query, setQuery] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
   const searchButtonRef = useRef(null);
+  const assistantTriggerRef = useRef(null);
   const dialogRef = useRef(null);
   const searchInputRef = useRef(null);
   const reduceMotion = useReducedMotion();
   const focusSearchInput = useCallback((node) => {
     searchInputRef.current = node;
     node?.focus();
+  }, []);
+
+  useEffect(() => {
+    const onProjectQuestion = (event) => {
+      if (typeof event.detail?.question !== "string") return;
+      assistantTriggerRef.current = event.detail.trigger;
+      setAssistantQuestion(event.detail.question.trim());
+      setMenuOpen(false);
+      setSearchOpen(false);
+      setAssistantOpen(true);
+    };
+    window.addEventListener(assistantOpenEvent, onProjectQuestion);
+    return () =>
+      window.removeEventListener(assistantOpenEvent, onProjectQuestion);
   }, []);
 
   useEffect(() => {
@@ -241,7 +257,10 @@ export default function PortfolioDock() {
         onExitComplete={() => {
           if (!searchOpen && !assistantOpen) {
             setQuery("");
-            searchButtonRef.current?.focus();
+            const trigger = assistantTriggerRef.current;
+            if (trigger?.isConnected) trigger.focus();
+            else searchButtonRef.current?.focus();
+            assistantTriggerRef.current = null;
           }
         }}
       >
@@ -274,6 +293,7 @@ export default function PortfolioDock() {
           >
             <div
               className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
+              data-click-sound="dismiss"
               onMouseDown={(event) => {
                 if (event.target === event.currentTarget) closeSearch();
               }}

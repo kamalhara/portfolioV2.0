@@ -7,6 +7,8 @@ import { ArrowUpRight, CodeXml, Layers, Server } from "lucide-react";
 import ProjectPreview from "@/app/components/projects/ProjectPreview";
 import ProjectGallery from "@/app/components/projects/ProjectGallery";
 import ProjectCard from "@/app/components/projects/ProjectCard";
+import AskAboutProject from "@/app/components/projects/AskAboutProject";
+import ProjectSectionNav from "@/app/components/projects/ProjectSectionNav";
 import {
   getProjectCategory,
   getProjectImages,
@@ -91,7 +93,7 @@ export default async function ProjectDetailPage({ params }) {
         id="main"
         className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5"
       >
-        <article>
+        <article className="project-detail">
           <header>
             <Link
               href="/project"
@@ -133,26 +135,14 @@ export default async function ProjectDetailPage({ params }) {
                   <ArrowUpRight size={13} />
                 </a>
               )}
+              <AskAboutProject title={project.title} />
             </div>
           </header>
 
           <figure className="mt-9 overflow-hidden rounded-[15px] border border-border bg-card p-2">
             <ProjectPreview project={project} large preload />
           </figure>
-          <nav
-            className="mt-7 flex flex-wrap gap-5 border-b border-border pb-4 text-xs text-muted-foreground"
-            aria-label="Project sections"
-          >
-            {sections.map((section) => (
-              <a
-                className="hover:text-foreground focus-visible:text-foreground"
-                href={`#${section.toLowerCase()}`}
-                key={section}
-              >
-                {section}
-              </a>
-            ))}
-          </nav>
+          <ProjectSectionNav sections={sections} />
 
           <section id="overview" className="project-detail-section">
             <p className="project-section-kicker">01 / The idea</p>
@@ -207,6 +197,7 @@ export default async function ProjectDetailPage({ params }) {
                 <li
                   className="flex gap-3 rounded-[15px] border border-border bg-card p-4"
                   key={feature}
+                  style={{ "--reveal-delay": `${(index % 2) * 60}ms` }}
                 >
                   <span className="pt-0.5 text-[10px] text-brand [font-family:var(--font-geist-mono)]">
                     {String(index + 1).padStart(2, "0")}
