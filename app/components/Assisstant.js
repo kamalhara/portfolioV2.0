@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { observeDialogViewport } from "@/app/lib/dialogViewport";
 
 const glowColors = [
   "rgb(236, 72, 153)",
@@ -155,14 +156,19 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
     progress: 0,
     atBottom: true,
   });
+  const overlayRef = useRef(null);
   const dialogRef = useRef(null);
   const inputRef = useRef(null);
   const conversationRef = useRef(null);
   const conversationContentRef = useRef(null);
   const reduceMotion = useReducedMotion();
 
+  useEffect(() => observeDialogViewport(overlayRef.current), []);
+
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => inputRef.current?.focus());
+    const frame = window.requestAnimationFrame(() =>
+      inputRef.current?.focus({ preventScroll: true }),
+    );
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
@@ -285,7 +291,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
         setError("The assistant is temporarily unavailable.");
       } finally {
         setLoading(false);
-        inputRef.current?.focus();
+        inputRef.current?.focus({ preventScroll: true });
       }
     },
     [loading, limitReached],
@@ -327,7 +333,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
     setDraft("");
     setError("");
     if (inputRef.current) inputRef.current.style.height = "40px";
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
   }
 
   function handleKeyDown(event) {
@@ -350,7 +356,8 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
 
   return (
     <div
-      className="fixed inset-0 z-9999 flex items-center justify-center overflow-y-auto bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
+      ref={overlayRef}
+      className="assistant-overlay fixed z-9999 flex items-center justify-center overflow-hidden overscroll-none bg-black/20 p-4 backdrop-blur-sm dark:bg-black/40"
       data-click-sound="dismiss"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -363,15 +370,15 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
         aria-modal="true"
         aria-labelledby="assistant-modal-title"
         onKeyDown={handleKeyDown}
-        className="relative w-full max-w-lg text-foreground"
+        className="relative flex max-h-full min-h-0 w-full max-w-lg flex-col text-foreground"
         style={{ "--assistant-glow": glowGradient }}
       >
         <h2 id="assistant-modal-title" className="sr-only">
           Recruiter Assistant
         </h2>
-        <div className="rounded-3xl border border-border bg-background p-2 shadow-2xl">
-          <div className="relative flex flex-col">
-            <div className="flex items-center gap-3 px-3 py-1">
+        <div className="flex min-h-0 flex-col rounded-3xl border border-border bg-background p-2 shadow-2xl">
+          <div className="relative flex min-h-0 flex-col">
+            <div className="flex shrink-0 items-center gap-3 px-3 py-1">
               <button
                 type="button"
                 onClick={onBack}
@@ -399,7 +406,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
               </button>
             </div>
 
-            <div className="mt-2 flex h-[50dvh] min-h-64 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            <div className="assistant-chat-body mt-2 flex min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
               <div className="relative min-h-0 flex-1">
                 <div
                   ref={conversationRef}
@@ -567,7 +574,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
 
               <form
                 onSubmit={sendMessage}
-                className="relative z-30 px-3 pb-3 pt-1"
+                className="relative z-30 shrink-0 px-3 pb-3 pt-1"
               >
                 <div className="group relative w-full">
                   <div
@@ -606,7 +613,7 @@ export default function Assisstant({ onBack, onClose, initialQuestion = "" }) {
                       }
                       aria-label="Message"
                       enterKeyHint="send"
-                      className="block max-h-40 w-full resize-none overflow-y-auto bg-transparent px-4 pb-1 pt-3 text-[15px] leading-6 text-foreground outline-none placeholder:text-muted-foreground/60"
+                      className="assistant-input block w-full resize-none overflow-y-auto bg-transparent px-4 pb-1 pt-3 text-base leading-6 text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-[15px]"
                       style={{ height: 40 }}
                     />
                     <div className="flex items-center justify-between gap-2 px-2.5 pb-2 pt-0.5">

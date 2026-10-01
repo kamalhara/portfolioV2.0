@@ -27,6 +27,7 @@ import Assisstant from "@/app/components/Assisstant";
 import { assistantOpenEvent } from "@/app/lib/assistantEvents";
 import { setTheme, useTheme } from "@/app/lib/useTheme";
 import HoverBadge from "@/app/components/HoverBadge";
+import { lockDialogScroll } from "@/app/lib/dialogViewport";
 
 const quickLinks = [
   {
@@ -136,10 +137,15 @@ export default function PortfolioDock() {
   const dialogRef = useRef(null);
   const searchInputRef = useRef(null);
   const reduceMotion = useReducedMotion();
+  const dialogOpen = searchOpen || assistantOpen;
   const focusSearchInput = useCallback((node) => {
     searchInputRef.current = node;
-    node?.focus();
+    node?.focus({ preventScroll: true });
   }, []);
+
+  useEffect(() => {
+    if (dialogOpen) return lockDialogScroll();
+  }, [dialogOpen]);
 
   useEffect(() => {
     const onProjectQuestion = (event) => {
@@ -261,8 +267,8 @@ export default function PortfolioDock() {
           if (!searchOpen && !assistantOpen) {
             setQuery("");
             const trigger = assistantTriggerRef.current;
-            if (trigger?.isConnected) trigger.focus();
-            else searchButtonRef.current?.focus();
+            if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+            else searchButtonRef.current?.focus({ preventScroll: true });
             assistantTriggerRef.current = null;
           }
         }}

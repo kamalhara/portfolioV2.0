@@ -344,6 +344,31 @@ img {
   outline: none;
 }
 
+.assistant-overlay {
+  top: var(--dialog-viewport-top, 0px);
+  left: var(--dialog-viewport-left, 0px);
+  width: var(--dialog-viewport-width, 100%);
+  height: var(--dialog-viewport-height, 100dvh);
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+.assistant-chat-body {
+  height: max(16rem, 50dvh);
+}
+
+.assistant-input {
+  max-height: min(10rem, calc(var(--dialog-viewport-height, 100dvh) * 0.25));
+}
+
+@media (pointer: coarse) {
+  .assistant-input {
+    font-size: 16px;
+  }
+}
+
 .assistant-conversation {
   scrollbar-width: none;
 }
