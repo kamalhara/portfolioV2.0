@@ -135,11 +135,10 @@ export default function PortfolioDock() {
   const dockRef = useRef(null);
   const assistantTriggerRef = useRef(null);
   const dialogRef = useRef(null);
-  const searchInputRef = useRef(null);
   const reduceMotion = useReducedMotion();
   const dialogOpen = searchOpen || assistantOpen;
-  const focusSearchInput = useCallback((node) => {
-    searchInputRef.current = node;
+  const focusSearchDialog = useCallback((node) => {
+    dialogRef.current = node;
     node?.focus({ preventScroll: true });
   }, []);
 
@@ -308,13 +307,14 @@ export default function PortfolioDock() {
               }}
             >
               <div
-                ref={dialogRef}
+                ref={focusSearchDialog}
                 id="portfolio-search-dialog"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="command-modal-title"
+                tabIndex={-1}
                 onKeyDown={trapDialogFocus}
-                className="command-menu dialog-panel w-full max-w-lg text-foreground"
+                className="command-menu dialog-panel w-full max-w-lg text-foreground outline-none"
               >
                 <h2 id="command-modal-title" className="sr-only">
                   Command menu
@@ -326,7 +326,6 @@ export default function PortfolioDock() {
                       aria-hidden="true"
                     />
                     <input
-                      ref={focusSearchInput}
                       type="search"
                       maxLength={300}
                       value={query}
