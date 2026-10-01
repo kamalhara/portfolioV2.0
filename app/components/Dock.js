@@ -25,6 +25,7 @@ import { TfiArrowCircleLeft } from "react-icons/tfi";
 import { usePathname, useRouter } from "next/navigation";
 import Assisstant from "@/app/components/Assisstant";
 import { assistantOpenEvent } from "@/app/lib/assistantEvents";
+import { setTheme, useTheme } from "@/app/lib/useTheme";
 
 const quickLinks = [
   {
@@ -63,9 +64,9 @@ const quickLinks = [
     icon: Layers3,
   },
   {
-    label: "Interfaces",
-    description: "Interface explorations",
-    href: "/#interfaces",
+    label: "How I work",
+    description: "From user flow to finished feature",
+    href: "/#approach",
     icon: PanelsTopLeft,
   },
   {
@@ -120,7 +121,7 @@ const ringCircumference = 2 * Math.PI * 7.75;
 export default function PortfolioDock() {
   const pathname = usePathname();
   const router = useRouter();
-  const [light, setLight] = useState(false);
+  const light = useTheme() === "light";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
@@ -149,15 +150,6 @@ export default function PortfolioDock() {
     window.addEventListener(assistantOpenEvent, onProjectQuestion);
     return () =>
       window.removeEventListener(assistantOpenEvent, onProjectQuestion);
-  }, []);
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      const frame = window.requestAnimationFrame(() => setLight(true));
-      return () => window.cancelAnimationFrame(frame);
-    }
   }, []);
 
   useEffect(() => {
@@ -202,10 +194,7 @@ export default function PortfolioDock() {
   }, [assistantOpen, menuOpen, searchOpen]);
 
   function toggleTheme() {
-    const next = !light;
-    setLight(next);
-    document.documentElement.classList.toggle("dark", !next);
-    window.localStorage.setItem("portfolio-theme", next ? "light" : "dark");
+    setTheme(light ? "dark" : "light");
   }
 
   function closeSearch() {

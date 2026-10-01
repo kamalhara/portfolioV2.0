@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { projects } from "@/app/data/project";
 import PortfolioDock from "@/app/components/Dock";
 import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
+import StateglyphDownloadsBadge from "@/app/components/StateglyphDownloadsBadge";
 import { ArrowUpRight, CodeXml, Layers, Server } from "lucide-react";
 import ProjectPreview from "@/app/components/projects/ProjectPreview";
 import ProjectGallery from "@/app/components/projects/ProjectGallery";
@@ -101,8 +102,9 @@ export default async function ProjectDetailPage({ params }) {
             >
               ← all projects
             </Link>
-            <div className="mb-4">
+            <div className="mb-4 flex flex-wrap items-center gap-2">
               <ProjectTypeBadge type={project.type} />
+              {slug === "stateglyph" && <StateglyphDownloadsBadge />}
             </div>
             <h1 className="max-w-175 text-[clamp(32px,6vw,54px)] leading-[1.15] font-medium tracking-[-.055em]">
               {project.title}

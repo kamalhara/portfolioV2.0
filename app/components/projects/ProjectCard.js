@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
+import StateglyphDownloadsBadge from "@/app/components/StateglyphDownloadsBadge";
 import { projectSummaries } from "@/app/data/portfolio";
 import ProjectPreview from "./ProjectPreview";
 
@@ -30,8 +31,9 @@ export default function ProjectCard({ project, featured = false }) {
             className="mt-1 shrink-0 text-muted-foreground"
           />
         </div>
-        <div className="mt-2">
+        <div className="mt-2 flex flex-wrap items-center gap-2">
           <ProjectTypeBadge type={project.type} />
+          {project.slug === "stateglyph" && <StateglyphDownloadsBadge />}
         </div>
         <p className="mt-3 text-sm leading-[1.65] text-muted-foreground">
           {projectSummaries[project.slug] ?? project.description}

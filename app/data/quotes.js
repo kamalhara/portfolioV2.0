@@ -35,6 +35,11 @@ export const animeQuotes = [
     character: "Naruto Uzumaki",
     anime: "Naruto",
   },
+  {
+    content: "I never go back on my word. That's my nindo: my ninja way!",
+    character: "Naruto Uzumaki",
+    anime: "Naruto",
+  },
 
   // — Itachi Uchiha
   {
@@ -67,6 +72,11 @@ export const animeQuotes = [
     character: "Itachi Uchiha",
     anime: "Naruto Shippuden",
   },
+  {
+    content: "You are weak. Why are you so weak? Because you lack... hatred.",
+    character: "Itachi Uchiha",
+    anime: "Naruto",
+  },
 
   // — Madara Uchiha
   {
@@ -87,6 +97,18 @@ export const animeQuotes = [
   {
     content: "The longer you live, the more you realize that reality is just made of pain.",
     character: "Madara Uchiha",
+    anime: "Naruto Shippuden",
+  },
+  {
+    content: "Power is not will, it is the phenomenon of physically making things happen.",
+    character: "Madara Uchiha",
+    anime: "Naruto Shippuden",
+  },
+
+  // — Deidara
+  {
+    content: "Art is an explosion!",
+    character: "Deidara",
     anime: "Naruto Shippuden",
   },
 
@@ -212,6 +234,11 @@ export const animeQuotes = [
     character: "Gojo Satoru",
     anime: "Jujutsu Kaisen",
   },
+  {
+    content: "Domain Expansion: Infinite Void.",
+    character: "Gojo Satoru",
+    anime: "Jujutsu Kaisen",
+  },
 
   // — Yuji Itadori
   {
@@ -241,6 +268,11 @@ export const animeQuotes = [
     character: "Ryomen Sukuna",
     anime: "Jujutsu Kaisen",
   },
+  {
+    content: "Stand proud. You are strong.",
+    character: "Ryomen Sukuna",
+    anime: "Jujutsu Kaisen",
+  },
 
   // — Megumi Fushiguro
   {
@@ -266,6 +298,11 @@ export const animeQuotes = [
   // — Suguru Geto
   {
     content: "Are you the strongest because you're Gojo? Or are you Gojo because you're the strongest?",
+    character: "Suguru Geto",
+    anime: "Jujutsu Kaisen",
+  },
+  {
+    content: "Let's curse each other to our hearts' content!",
     character: "Suguru Geto",
     anime: "Jujutsu Kaisen",
   },
@@ -333,11 +370,28 @@ export const animeQuotes = [
     character: "Zenitsu Agatsuma",
     anime: "Demon Slayer",
   },
+  {
+    content: "Thunder Breathing, First Form: Thunderclap and Flash.",
+    character: "Zenitsu Agatsuma",
+    anime: "Demon Slayer",
+  },
 
   // — Inosuke Hashibira
   {
     content: "Don't underestimate me! I'm Inosuke Hashibira and I can do anything!",
     character: "Inosuke Hashibira",
+    anime: "Demon Slayer",
+  },
+  {
+    content: "Pig Assault! Pig Assault!",
+    character: "Inosuke Hashibira",
+    anime: "Demon Slayer",
+  },
+
+  // — Tengen Uzui
+  {
+    content: "Things are gonna get real flashy from here on out!",
+    character: "Tengen Uzui",
     anime: "Demon Slayer",
   },
 

@@ -19,9 +19,11 @@ export default function ProjectTypeBadge({ type, className = "" }) {
 
   return (
     <span
-      className={`inline-flex min-h-4.75 items-center gap-1 rounded-full bg-[#3f251b] px-2 py-px text-[11px] leading-[1.2] tracking-normal text-[#f8f7f4] ${className}`}
+      className={`inline-flex min-h-4.75 items-center gap-1 rounded-full bg-[#3f251b] dark:bg-[#F0D9D1] px-2 py-px text-[11px] leading-[1.2] tracking-normal text-primary-fg dark:text-gray-900 ${className}`}
     >
-      {Icon && <Icon aria-hidden="true" className="size-3.5 shrink-0 text-brand" />}
+      {Icon && (
+        <Icon aria-hidden="true" className="size-3.5 shrink-0 text-brand" />
+      )}
       {type}
     </span>
   );

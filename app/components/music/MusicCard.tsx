@@ -223,7 +223,7 @@ export default function MusicCard() {
     <>
       <div
         onClick={() => setPlayerOpen(true)}
-        className="ui-lift media-zoom relative col-span-1 flex h-full min-h-38 min-w-0 cursor-pointer items-center gap-5 rounded-2xl border border-border bg-[#171717] p-4 text-foreground backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[480px]:gap-3"
+        className="ui-lift media-zoom relative col-span-1 flex h-full min-h-38 min-w-0 cursor-pointer items-center gap-5 rounded-2xl border border-border dark:bg-[#171717] bg-[#F9F8F8] p-4 text-foreground backdrop-blur-xl backdrop-saturate-150 max-[700px]:col-span-2 max-[480px]:gap-3"
       >
         <div className="relative aspect-square shrink-0 self-stretch overflow-hidden rounded-xl bg-muted shadow-md shadow-black/20">
           <AnimatePresence mode="wait" initial={false}>

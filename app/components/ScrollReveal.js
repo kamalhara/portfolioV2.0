@@ -5,7 +5,6 @@ import { useEffect } from "react";
 const revealSelector = [
   "#main-content > *",
   "#projects > ul > li",
-  "#interfaces > div > a",
   "#stack > div > div",
   "#main > header",
   "#main > ul > li",

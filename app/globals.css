@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @source "../app";
 @source "../components";
 
@@ -147,13 +148,11 @@ body {
   }
 
   #projects > ul > li:nth-child(2),
-  #interfaces > div > a:nth-child(2),
   #main > ul > li:nth-child(3n + 2) {
     --reveal-delay: 60ms;
   }
 
   #projects > ul > li:nth-child(3),
-  #interfaces > div > a:nth-child(3),
   #main > ul > li:nth-child(3n) {
     --reveal-delay: 120ms;
   }
@@ -551,6 +550,12 @@ img {
   border: 1px solid var(--color-border);
   border-radius: 15px;
   background: var(--color-card);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.project-card:is(:hover, :focus-visible) {
+  border-color: var(--color-border-strong);
 }
 .project-card-featured {
   grid-column: 1 / -1;
@@ -678,6 +683,17 @@ img {
   border-radius: 9px;
   padding: 8px 13px;
   background: var(--color-card);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.project-action:not(.project-action-primary):hover,
+.project-icon-button:hover,
+.quote-control:not(:disabled):hover,
+.project-filter:not(.project-filter-active):hover {
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  border-color: var(--color-border-strong);
 }
 .project-action-primary {
   border-color: var(--color-foreground);
@@ -803,5 +819,69 @@ img {
   }
   .project-api-preview-large {
     padding: 20px;
+  }
+}
+
+/* One connected process, with a vertical reading order on smaller screens. */
+.approach-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 15px;
+  background: var(--color-card);
+}
+
+.approach-step {
+  position: relative;
+  min-width: 0;
+}
+
+.approach-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 42px;
+  right: -14px;
+  border-top: 1px dashed var(--color-border-strong);
+}
+
+.approach-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-brand) 25%, transparent);
+  border-radius: 50%;
+  /* background: var(--color-background); */
+  color: var(--color-primary);
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+@media (max-width: 600px) {
+  .approach-flow {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 20px;
+  }
+
+  .approach-step {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .approach-step:not(:last-child)::after {
+    top: 42px;
+    bottom: -18px;
+    left: 15px;
+    right: auto;
+    border-top: 0;
+    border-left: 1px dashed var(--color-border-strong);
   }
 }

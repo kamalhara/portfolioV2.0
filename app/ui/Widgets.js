@@ -100,7 +100,7 @@ function ClockCard() {
 
   return (
     <div
-      className="relative aspect-square min-w-0 overflow-hidden rounded-2xl border bg-neutral-50/80 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 dark:bg-neutral-900/95"
+      className="relative aspect-square min-w-0 overflow-hidden rounded-2xl border bg-neutral-50/80 backdrop-blur-xl backdrop-saturate-150 border-border dark:bg-neutral-900/95"
       aria-label="Analog clock showing current time in India"
     >
       <svg

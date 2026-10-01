@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
+import StateglyphDownloadsBadge from "@/app/components/StateglyphDownloadsBadge";
 import ProjectHoverPreview from "@/app/components/home/ProjectHoverPreview";
 import { mainProjects } from "@/app/data/project";
 import { projectSummaries } from "@/app/data/portfolio";
@@ -19,7 +20,7 @@ export default function ProjectsSection() {
       >
         Projects
       </h2>
-      <ul className="relative grid gap-1.5">
+      <ul className="relative grid min-w-0 grid-cols-1 gap-1.5">
         {previewProjects.map((project) => {
           const screenshot = project.screenshot?.[2] ?? project.screenshot?.[0];
           const previewImage =
@@ -28,7 +29,7 @@ export default function ProjectsSection() {
           return (
             <li
               key={project.slug}
-              className="group -ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 transition-colors duration-300 hover:bg-[#1C1C1A] focus-within:bg-[#1C1C1A]"
+              className="group -ml-3 w-120 max-w-[calc(100%+1.5rem)] rounded-2xl px-3 py-2 transition-colors duration-300 dark:hover:bg-[#1C1C1A] focus-within:bg-[#1C1C1A] hover:bg-[#EEECE9]"
             >
               <Link
                 href={`/project/${project.slug}`}
@@ -40,6 +41,9 @@ export default function ProjectsSection() {
                     type={project.type}
                     className="font-semibold"
                   />
+                  {project.slug === "stateglyph" && (
+                    <StateglyphDownloadsBadge />
+                  )}
                 </span>
                 <span className="block text-muted-foreground transition-colors group-hover:text-[#a19e99] group-focus-within:text-[#a19e99]">
                   {projectSummaries[project.slug] ?? project.description}

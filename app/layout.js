@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import InteractionSounds from "@/app/components/InteractionSounds";
+import { themeInitScript } from "@/app/lib/theme";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrument = Instrument_Serif({
@@ -63,6 +64,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`dark ${inter.variable} ${instrument.variable} ${jetbrains.variable} ${geist.variable} ${geistMono.variable}`}
     >
+      <head>
+        <script
+          id="portfolio-theme"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+      </head>
       <body suppressHydrationWarning>
         {children}
         <ScrollReveal />
