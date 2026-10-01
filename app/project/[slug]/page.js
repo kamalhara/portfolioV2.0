@@ -1,9 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/app/data/project";
 import PortfolioDock from "@/app/components/Dock";
 import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
+import { ArrowUpRight, CodeXml, Layers, Server } from "lucide-react";
+import ProjectPreview from "@/app/components/projects/ProjectPreview";
+import ProjectGallery from "@/app/components/projects/ProjectGallery";
+import ProjectCard from "@/app/components/projects/ProjectCard";
+import {
+  getProjectCategory,
+  getProjectImages,
+} from "@/app/components/projects/projectMedia";
+import { projectSummaries } from "@/app/data/portfolio";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -13,8 +21,9 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) return { title: "Project not found" };
-  const images = project.cover
-    ? [{ url: project.cover, alt: `${project.title} interface preview` }]
+  const preview = getProjectImages(project)[0];
+  const images = preview
+    ? [{ url: preview, alt: `${project.title} interface preview` }]
     : [];
   return {
     title: project.title,
@@ -35,10 +44,46 @@ export async function generateMetadata({ params }) {
   };
 }
 
+function StackPanel({ label, icon: Icon, content }) {
+  return (
+    <div className="rounded-[15px] border border-border bg-card p-5">
+      <h3 className="mb-4 flex items-center gap-2 text-sm font-medium">
+        <Icon size={15} className="text-muted-foreground" />
+        {label}
+      </h3>
+      <div className="flex flex-wrap gap-2">
+        {content.split(",").map((tech) => (
+          <span
+            className="rounded-md border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground"
+            key={tech.trim()}
+          >
+            {tech.trim()}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
   if (!project) notFound();
+  const images = getProjectImages(project);
+  const related = projects
+    .filter((item) => item.slug !== slug)
+    .sort(
+      (a, b) =>
+        Number(getProjectCategory(b) === getProjectCategory(project)) -
+        Number(getProjectCategory(a) === getProjectCategory(project)),
+    )
+    .slice(0, 2);
+  const sections = [
+    "Overview",
+    "Stack",
+    "Features",
+    ...(images.length ? ["Screens"] : []),
+  ];
 
   return (
     <div className="min-h-screen bg-background text-[15.7px] leading-[1.64] tracking-[-0.025em] text-foreground [font-family:var(--font-geist)] max-[480px]:text-[15.5px]">
@@ -50,104 +95,158 @@ export default async function ProjectDetailPage({ params }) {
           <header>
             <Link
               href="/project"
-              className="ui-nudge mb-7 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              className="mb-8 inline-block text-xs text-muted-foreground"
             >
               ← all projects
             </Link>
-            <div className="mb-2">
+            <div className="mb-4">
               <ProjectTypeBadge type={project.type} />
             </div>
-            <h1 className="text-[clamp(32px,6vw,60px)] leading-[1.15] font-medium tracking-[-.06em]">
+            <h1 className="max-w-175 text-[clamp(32px,6vw,54px)] leading-[1.15] font-medium tracking-[-.055em]">
               {project.title}
             </h1>
-            <p className="mt-2.5 max-w-175 text-muted-foreground">
-              {project.description}
+            <p className="mt-4 max-w-150 text-base leading-[1.65] text-muted-foreground">
+              {projectSummaries[slug] ?? project.description}
             </p>
-            <div className="mt-5 flex flex-wrap gap-4 text-sm">
-              <a
-                className="ui-nudge inline-block underline underline-offset-4"
-                href={project.code}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Source ↗
-              </a>
+            <div className="mt-6 flex flex-wrap gap-2.5 text-xs">
               {project.live && (
                 <a
-                  className="ui-nudge inline-block underline underline-offset-4"
+                  className="project-action project-action-primary"
                   href={project.live}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Live site ↗
+                  {project.type === "Open Source"
+                    ? "Documentation"
+                    : "Visit project"}
+                  <ArrowUpRight size={14} />
+                </a>
+              )}
+              {project.code && (
+                <a
+                  className="project-action"
+                  href={project.code}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <CodeXml size={14} /> Source code
+                  <ArrowUpRight size={13} />
                 </a>
               )}
             </div>
           </header>
 
-          {project.cover && (
-            <figure className="media-zoom relative mt-10.75 h-95 overflow-hidden rounded-[15px] border border-border bg-card max-[700px]:h-75 max-[480px]:h-57.5">
-              <Image
-                src={project.cover}
-                alt={`${project.title} interface preview`}
-                fill
-                preload
-                sizes="(max-width: 800px) 100vw, 800px"
-                className={
-                  project.coverFit === "contain"
-                    ? "object-contain"
-                    : "object-cover object-top"
-                }
-              />
-            </figure>
-          )}
+          <figure className="mt-9 overflow-hidden rounded-[15px] border border-border bg-card p-2">
+            <ProjectPreview project={project} large preload />
+          </figure>
+          <nav
+            className="mt-7 flex flex-wrap gap-5 border-b border-border pb-4 text-xs text-muted-foreground"
+            aria-label="Project sections"
+          >
+            {sections.map((section) => (
+              <a
+                className="hover:text-foreground focus-visible:text-foreground"
+                href={`#${section.toLowerCase()}`}
+                key={section}
+              >
+                {section}
+              </a>
+            ))}
+          </nav>
 
-          <section className="mt-13.5">
-            <h2 className="mb-3 text-base font-medium">What it does</h2>
-            <p className="text-muted-foreground">{project.overview}</p>
+          <section id="overview" className="project-detail-section">
+            <p className="project-section-kicker">01 / The idea</p>
+            <h2 className="mb-4 text-xl font-medium tracking-[-.035em]">
+              Overview
+            </h2>
+            <p className="text-sm leading-[1.8] text-muted-foreground">
+              {project.description}
+            </p>
+            <p className="mt-4 text-sm leading-[1.8] text-muted-foreground">
+              {project.overview}
+            </p>
           </section>
-          <section className="mt-13.5">
-            <h2 className="mb-3 text-base font-medium">Built with</h2>
-            <p className="text-muted-foreground">{project.technologies}</p>
+          <section id="stack" className="project-detail-section">
+            <p className="project-section-kicker">02 / Under the hood</p>
+            <h2 className="mb-5 text-xl font-medium tracking-[-.035em]">
+              Built with
+            </h2>
+            <div
+              className={`grid gap-3 ${project.frontEnd && project.backEnd ? "min-[600px]:grid-cols-2" : ""}`}
+            >
+              {project.frontEnd && (
+                <StackPanel
+                  label="Frontend"
+                  icon={Layers}
+                  content={project.frontEnd}
+                />
+              )}
+              {project.backEnd && (
+                <StackPanel
+                  label={
+                    project.type === "Open Source"
+                      ? "Tooling & documentation"
+                      : "Backend"
+                  }
+                  icon={Server}
+                  content={project.backEnd}
+                />
+              )}
+            </div>
+            <p className="mt-4 text-xs leading-[1.8] text-muted-foreground">
+              Technologies: {project.technologies}
+            </p>
           </section>
-          <section className="mt-13.5">
-            <h2 className="mb-3 text-base font-medium">Core features</h2>
-            <ul>
-              {project.keyFeatures.map((feature) => (
+          <section id="features" className="project-detail-section">
+            <p className="project-section-kicker">03 / In the details</p>
+            <h2 className="mb-5 text-xl font-medium tracking-[-.035em]">
+              Core features
+            </h2>
+            <ol className="grid gap-3 min-[600px]:grid-cols-2">
+              {project.keyFeatures.map((feature, index) => (
                 <li
-                  className="border-b border-border py-2.5 text-muted-foreground"
+                  className="flex gap-3 rounded-[15px] border border-border bg-card p-4"
                   key={feature}
                 >
-                  {feature}
+                  <span className="pt-0.5 text-[10px] text-brand [font-family:var(--font-geist-mono)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm leading-[1.7] text-muted-foreground">
+                    {feature}
+                  </p>
                 </li>
               ))}
-            </ul>
+            </ol>
           </section>
-          {project.screenshot?.length > 0 && (
-            <section className="mt-13.5">
-              <h2 className="mb-3 text-base font-medium">Screens</h2>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
-                {project.screenshot.map((src, index) => (
-                  <Image
-                    className="ui-lift h-auto w-full rounded-xl border border-border"
-                    key={src}
-                    src={`/${src}`}
-                    alt={`${project.title} screen ${index + 1}`}
-                    width={400}
-                    height={800}
-                    sizes="(max-width: 480px) 45vw, 200px"
-                  />
-                ))}
-              </div>
+          {images.length > 0 && (
+            <section id="screens" className="project-detail-section">
+              <p className="project-section-kicker">04 / A closer look</p>
+              <h2 className="mb-5 text-xl font-medium tracking-[-.035em]">
+                Screens
+              </h2>
+              <ProjectGallery project={project} />
             </section>
           )}
-          <Link
-            href="/project"
-            className="ui-nudge mt-13.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
-          >
-            ← back to projects
-          </Link>
         </article>
+
+        <section
+          className="mt-16 border-t border-border pt-8"
+          aria-labelledby="related-heading"
+        >
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <h2 id="related-heading" className="text-base font-medium">
+              More to explore
+            </h2>
+            <Link href="/project" className="text-xs text-muted-foreground">
+              All projects ↗
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-[600px]:grid-cols-1">
+            {related.map((item) => (
+              <ProjectCard project={item} key={item.slug} />
+            ))}
+          </div>
+        </section>
       </main>
       <PortfolioDock />
     </div>

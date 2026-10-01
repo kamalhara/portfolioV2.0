@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { projects } from "@/app/data/project";
-import { portfolio, projectSummaries } from "@/app/data/portfolio";
+import { portfolio } from "@/app/data/portfolio";
 import PortfolioDock from "@/app/components/Dock";
-import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
+import ProjectCollection from "@/app/components/projects/ProjectCollection";
 
 export const metadata = {
   title: "Projects",
@@ -18,30 +18,24 @@ export default function ProjectPage() {
         className="mx-auto w-[min(800px,calc(100%-50px))] pt-24.75 pb-40 max-[700px]:pt-13.5"
       >
         <header className="mb-9.75">
-          <h1 className="text-xl leading-[1.4] font-medium">Projects</h1>
-          <p className="text-muted-foreground">
+          <Link
+            href="/"
+            className="mb-7 inline-block text-xs text-muted-foreground"
+          >
+            ← back home
+          </Link>
+          <p className="mb-3 text-[10px] tracking-[.14em] text-muted-foreground uppercase [font-family:var(--font-geist-mono)]">
+            The collection / {String(projects.length).padStart(2, "0")} projects
+          </p>
+          <h1 className="text-[clamp(32px,6vw,48px)] leading-[1.15] font-medium tracking-[-.055em]">
+            Things I&apos;ve built.
+          </h1>
+          <p className="mt-3 max-w-130 text-sm text-muted-foreground">
             A collection of things I&apos;ve built, from open-source tools to
             full-stack and mobile products.
           </p>
         </header>
-        <ul className="grid max-w-130 gap-1.5">
-          {projects.map((project) => (
-            <li key={project.slug}>
-              <Link
-                href={`/project/${project.slug}`}
-                className="ui-nudge group block w-fit max-w-full"
-              >
-                <span className="flex flex-wrap items-center gap-2.25 text-foreground transition-colors group-hover:text-muted-foreground group-focus-visible:text-muted-foreground">
-                  {project.title}
-                  <ProjectTypeBadge type={project.type} />
-                </span>
-                <span className="block max-w-127.5 text-muted-foreground">
-                  {projectSummaries[project.slug] ?? project.description}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <ProjectCollection projects={projects} />
         <Link
           href="/"
           className="ui-nudge mt-11.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"

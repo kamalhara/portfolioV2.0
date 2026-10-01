@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import test from "node:test";
 import { projects } from "../app/data/project.js";
+import {
+  getProjectImages,
+  getProjectCategory,
+} from "../app/components/projects/projectMedia.js";
 
 test("project slugs are unique", () => {
   const slugs = projects.map((project) => project.slug);
@@ -58,4 +62,36 @@ test("screenshot references are valid public asset paths", () => {
       assert.ok(existsSync(`public/${screenshot}`), screenshot);
     }
   }
+});
+
+test("gallery assets are unique, normalized, and real for every project", () => {
+  for (const project of projects) {
+    const images = getProjectImages(project);
+    assert.equal(new Set(images).size, images.length, project.slug);
+    for (const src of images) {
+      assert.match(src, /^\/[^/]/);
+      assert.ok(existsSync(`public${src}`), src);
+    }
+  }
+  assert.deepEqual(
+    getProjectImages(
+      projects.find((project) => project.slug === "natours-backend-api"),
+    ),
+    [],
+  );
+  assert.equal(
+    getProjectImages(
+      projects.find((project) => project.slug === "dine-time-app"),
+    )[0],
+    "/dine-time/welcome.webp",
+  );
+});
+
+test("collection filters account for every project type", () => {
+  const counts = {};
+  for (const project of projects) {
+    const category = getProjectCategory(project);
+    counts[category] = (counts[category] ?? 0) + 1;
+  }
+  assert.deepEqual(counts, { "Open Source": 1, Mobile: 3, Web: 5, APIs: 1 });
 });
