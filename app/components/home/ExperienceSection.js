@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { experiences } from "@/app/data/experience";
+import { RiArrowRightUpLongLine } from "react-icons/ri";
 
 export default function ExperienceSection() {
   return (
@@ -72,12 +73,12 @@ export default function ExperienceSection() {
               ))}
             </ul>
             <a
-              className="mt-3 inline-block text-foreground underline underline-offset-4"
+              className="mt-3 inline-block text-foreground underline underline-offset-4 "
               href={experience.link}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Visit {experience.company} ↗
+              Visit {experience.company}
             </a>
           </div>
         </details>

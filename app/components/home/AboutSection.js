@@ -38,7 +38,7 @@ export default function AboutSection() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          view résumé ↗
+          view résumé
         </a>
       </div>
     </section>
