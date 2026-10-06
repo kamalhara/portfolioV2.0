@@ -125,4 +125,4 @@ age), project explanations, and role-fit assessments use AI-generated wording.
 Salary, private information, and weakness questions keep controlled replies;
 unsupported questions are referred to Kamal or the portfolio. If AI providers
 fail, the Worker falls back to verified portfolio text. Update the
-public resume and these data files together when facts change.
+public resume and these data files together when facts change
