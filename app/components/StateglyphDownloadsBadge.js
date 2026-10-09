@@ -53,11 +53,11 @@ export default function StateglyphDownloadsBadge() {
   return (
     <span
       className="inline-flex items-center gap-1.25 rounded-full border border-border dark:bg-[#171717] bg-[#F9F8F8] px-2 py-0.75 text-[11px] leading-[1.2] tracking-normal text-muted-foreground"
-      aria-label={`${count} lifetime npm downloads across all four StateGlyph packages`}
+      aria-label={`${count} npm downloads across all four StateGlyph packages`}
       title={`Combined npm downloads since ${stats.start} · through ${stats.end} · npm updates daily`}
     >
       <Download size={12} aria-hidden="true" />
-      <span>{count} lifetime downloads</span>
+      <span>{count} downloads</span>
     </span>
   );
 }
