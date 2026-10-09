@@ -5,68 +5,123 @@ export const stateglyphPackages = [
   "@stateglyph/react",
 ];
 
+// All four packages were first published on this date.
+export const firstPublishedDate = "2026-09-24";
 export const downloadsRefreshMs = 5 * 60 * 1000;
 
-export function showDownloadsBadge(downloads) {
-  return Number.isSafeInteger(downloads) && downloads >= 150;
+const dayMs = 24 * 60 * 60 * 1000;
+const maxPeriodDays = 365;
+
+function dateTime(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new Error("Invalid npm reporting date");
+  }
+
+  const time = Date.parse(`${value}T00:00:00Z`);
+  if (
+    !Number.isFinite(time) ||
+    new Date(time).toISOString().slice(0, 10) !== value
+  ) {
+    throw new Error("Invalid npm reporting date");
+  }
+  return time;
 }
 
-export function combineDownloads(results) {
-  if (!Array.isArray(results) || results.length !== stateglyphPackages.length) {
-    throw new Error("Incomplete npm download statistics");
-  }
+function dateString(time) {
+  return new Date(time).toISOString().slice(0, 10);
+}
 
-  const packages = new Set();
-  const { start, end } = results[0] ?? {};
-  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-  if (!datePattern.test(start) || !datePattern.test(end)) {
-    throw new Error("Invalid npm reporting dates");
+export function downloadPeriods(end) {
+  const lastDay = dateTime(end);
+  const firstDay = dateTime(firstPublishedDate);
+  if (lastDay < firstDay)
+    throw new Error("npm reporting date precedes publication");
+
+  const periods = [];
+  for (let start = firstDay; start <= lastDay; start += maxPeriodDays * dayMs) {
+    periods.push({
+      start: dateString(start),
+      end: dateString(Math.min(start + (maxPeriodDays - 1) * dayMs, lastDay)),
+    });
   }
-  const startTime = Date.parse(`${start}T00:00:00Z`);
-  const endTime = Date.parse(`${end}T00:00:00Z`);
-  if (
-    new Date(startTime).toISOString().slice(0, 10) !== start ||
-    new Date(endTime).toISOString().slice(0, 10) !== end ||
-    endTime - startTime !== 6 * 24 * 60 * 60 * 1000
-  ) {
-    throw new Error("Invalid npm weekly reporting period");
+  return periods;
+}
+
+export function showDownloadsBadge(downloads) {
+  return Number.isSafeInteger(downloads) && downloads >= 0;
+}
+
+export function combineDownloads(results, end) {
+  const periods = downloadPeriods(end);
+  const expected = new Set(
+    stateglyphPackages.flatMap((packageName) =>
+      periods.map(({ start, end: periodEnd }) =>
+        [packageName, start, periodEnd].join("|"),
+      ),
+    ),
+  );
+  if (!Array.isArray(results) || results.length !== expected.size) {
+    throw new Error("Incomplete npm download statistics");
   }
 
   let downloads = 0;
   for (const result of results) {
+    const key = [result?.package, result?.start, result?.end].join("|");
     if (
-      !result ||
-      !stateglyphPackages.includes(result.package) ||
-      packages.has(result.package) ||
+      !expected.delete(key) ||
       !Number.isSafeInteger(result.downloads) ||
-      result.downloads < 0 ||
-      result.start !== start ||
-      result.end !== end
+      result.downloads < 0
     ) {
       throw new Error("Inconsistent npm download statistics");
     }
-    packages.add(result.package);
     downloads += result.downloads;
   }
-  if (!Number.isSafeInteger(downloads)) {
+  if (expected.size || !Number.isSafeInteger(downloads)) {
     throw new Error("Invalid npm download total");
   }
-  return { downloads, start, end, packages: packages.size };
+  return {
+    downloads,
+    start: firstPublishedDate,
+    end,
+    packages: stateglyphPackages.length,
+  };
 }
 
 export async function loadStateglyphDownloads(fetcher = fetch) {
-  const results = await Promise.all(
-    stateglyphPackages.map(async (packageName) => {
-      const response = await fetcher(
-        `https://api.npmjs.org/downloads/point/last-week/${packageName}`,
-        {
-          next: { revalidate: downloadsRefreshMs / 1000 },
-          signal: AbortSignal.timeout(8000),
-        },
-      );
-      if (!response.ok) throw new Error("npm download request failed");
-      return response.json();
-    }),
+  const latestResponse = await fetcher(
+    `https://api.npmjs.org/downloads/point/last-day/${stateglyphPackages[0]}`,
+    {
+      next: { revalidate: downloadsRefreshMs / 1000 },
+      signal: AbortSignal.timeout(8000),
+    },
   );
-  return combineDownloads(results);
+  if (!latestResponse.ok) throw new Error("npm download request failed");
+
+  const latest = await latestResponse.json();
+  if (
+    latest?.package !== stateglyphPackages[0] ||
+    latest.start !== latest.end ||
+    !Number.isSafeInteger(latest.downloads) ||
+    latest.downloads < 0
+  ) {
+    throw new Error("Invalid latest npm download statistics");
+  }
+
+  const periods = downloadPeriods(latest.end);
+  const results = await Promise.all(
+    stateglyphPackages.flatMap((packageName) =>
+      periods.map(async ({ start, end }) => {
+        const response = await fetcher(
+          `https://api.npmjs.org/downloads/point/${start}:${end}/${packageName}`,
+          {
+            next: { revalidate: downloadsRefreshMs / 1000 },
+            signal: AbortSignal.timeout(8000),
+          },
+        );
+        if (!response.ok) throw new Error("npm download request failed");
+        return response.json();
+      }),
+    ),
+  );
+  return combineDownloads(results, latest.end);
 }
