@@ -4,7 +4,7 @@ import { projects } from "@/app/data/project";
 import PortfolioDock from "@/app/components/Dock";
 import ProjectTypeBadge from "@/app/components/ProjectTypeBadge";
 import StateglyphDownloadsBadge from "@/app/components/StateglyphDownloadsBadge";
-import { ArrowUpRight, CodeXml, Layers, Server } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CodeXml, Layers, Server } from "lucide-react";
 import ProjectPreview from "@/app/components/projects/ProjectPreview";
 import ProjectGallery from "@/app/components/projects/ProjectGallery";
 import ProjectCard from "@/app/components/projects/ProjectCard";
@@ -98,9 +98,9 @@ export default async function ProjectDetailPage({ params }) {
           <header>
             <Link
               href="/project"
-              className="mb-8 inline-block text-xs text-muted-foreground"
+              className="mb-8 inline-flex items-center gap-1 text-xs text-muted-foreground"
             >
-              ← all projects
+              <ArrowLeft size={12} /> all projects
             </Link>
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <ProjectTypeBadge type={project.type} />
@@ -230,8 +230,8 @@ export default async function ProjectDetailPage({ params }) {
             <h2 id="related-heading" className="text-base font-medium">
               More to explore
             </h2>
-            <Link href="/project" className="text-xs text-muted-foreground">
-              All projects ↗
+            <Link href="/project" className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              All projects <ArrowUpRight size={12} />
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-4 max-[600px]:grid-cols-1">

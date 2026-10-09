@@ -3,6 +3,7 @@
 import {
   Activity,
   BriefcaseBusiness,
+  CornerDownLeft,
   FileText,
   FolderKanban,
   House,
@@ -456,7 +457,7 @@ export default function PortfolioDock() {
                               aria-hidden="true"
                               className="shrink-0 text-xs text-muted-foreground"
                             >
-                              ↵
+                              <CornerDownLeft size={12} />
                             </kbd>
                           </button>
                         </div>

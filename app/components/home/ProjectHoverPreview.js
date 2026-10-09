@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 
 export function IPhoneFrame({ children }) {
   return (
@@ -61,7 +62,7 @@ export default function ProjectHoverPreview({ project, src }) {
             className="flex shrink-0 items-center justify-between gap-2 border-t border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
           >
             <span>View source code</span>
-            <span aria-hidden="true">↗</span>
+            <ArrowUpRight size={12} aria-hidden="true" />
           </a>
         )}
       </div>

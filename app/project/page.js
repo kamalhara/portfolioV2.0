@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { projects } from "@/app/data/project";
 import { portfolio } from "@/app/data/portfolio";
 import PortfolioDock from "@/app/components/Dock";
@@ -20,9 +21,9 @@ export default function ProjectPage() {
         <header className="mb-9.75">
           <Link
             href="/"
-            className="mb-7 inline-block text-xs text-muted-foreground"
+            className="mb-7 inline-flex items-center gap-1 text-xs text-muted-foreground"
           >
-            ← back home
+            <ArrowLeft size={12} /> back home
           </Link>
           <p className="mb-3 text-[10px] tracking-[.14em] text-muted-foreground uppercase [font-family:var(--font-geist-mono)]">
             The collection / {String(projects.length).padStart(2, "0")} projects
@@ -38,9 +39,9 @@ export default function ProjectPage() {
         <ProjectCollection projects={projects} />
         <Link
           href="/"
-          className="ui-nudge mt-11.5 inline-block text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          className="ui-nudge mt-11.5 inline-flex items-center gap-1 text-muted-foreground underline underline-offset-4 hover:text-foreground"
         >
-          ← back home
+          <ArrowLeft size={12} /> back home
         </Link>
       </main>
       <PortfolioDock />

@@ -1,4 +1,5 @@
 import { portfolio } from "@/app/data/portfolio";
+import { ArrowUpRight } from "lucide-react";
 
 export default function AboutSection() {
   return (
@@ -34,11 +35,11 @@ export default function AboutSection() {
         </ul>
         <a
           href={portfolio.resume}
-          className="ui-nudge inline-block underline underline-offset-4 transition-colors hover:text-foreground"
+          className="ui-nudge inline-flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-foreground"
           target="_blank"
           rel="noopener noreferrer"
         >
-          view résumé
+          view resume <ArrowUpRight size={12} />
         </a>
       </div>
     </section>
