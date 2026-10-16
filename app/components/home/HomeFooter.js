@@ -18,12 +18,8 @@ export default function HomeFooter() {
 
       <RotatingQuote initialIndex={animeQuotes.indexOf(quote)} />
 
-      <div className="mt-8 flex justify-center">
-        <VisitorCount />
-      </div>
-
       <nav
-        className="mt-7 flex flex-wrap justify-center gap-4 text-xs [font-family:var(--font-geist-mono)]"
+        className="mt-8 flex flex-wrap justify-center gap-4 text-xs [font-family:var(--font-geist-mono)]"
         aria-label="Social links"
       >
         <a
@@ -65,6 +61,10 @@ export default function HomeFooter() {
           Résumé
         </a>
       </nav>
+
+      <div className="mt-7 flex justify-center">
+        <VisitorCount />
+      </div>
     </footer>
   );
 }

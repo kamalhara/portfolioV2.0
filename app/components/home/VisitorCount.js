@@ -30,18 +30,23 @@ export default function VisitorCount() {
   if (count == null) return null;
 
   return (
-    <span
-      className="visitor-count inline-flex items-center gap-1.5 text-xs text-muted-foreground [font-family:var(--font-geist-mono)]"
+    <div
+      className="visitor-count group inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/60 px-3 py-1 text-[11.5px] text-muted-foreground shadow-xs backdrop-blur-md transition-all duration-200 hover:border-border-strong hover:bg-card hover:text-foreground [font-family:var(--font-geist-mono)]"
+      title={`${count.toLocaleString()} unique visitors to this portfolio`}
       aria-label={`${count.toLocaleString()} unique visitors`}
     >
-      <span
-        aria-hidden="true"
-        className="relative flex size-1.5"
-      >
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
-        <span className="relative inline-flex size-1.5 rounded-full bg-success" />
+      <span aria-hidden="true" className="relative flex size-2 items-center justify-center">
+        <span className="absolute inline-flex size-full animate-pulse rounded-full bg-success/35" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-success shadow-[0_0_6px_var(--color-success)]" />
       </span>
-      {count.toLocaleString()} visitors
-    </span>
+      <span className="flex items-center gap-1.25">
+        <span className="font-semibold text-foreground tracking-tight">
+          {count.toLocaleString()}
+        </span>
+        <span className="text-muted-foreground/85 font-normal">
+          visitors
+        </span>
+      </span>
+    </div>
   );
 }
