@@ -35,17 +35,18 @@ export default function VisitorCount() {
       title={`${count.toLocaleString()} unique visitors to this portfolio`}
       aria-label={`${count.toLocaleString()} unique visitors`}
     >
-      <span aria-hidden="true" className="relative flex size-2 items-center justify-center">
-        <span className="absolute inline-flex size-full animate-pulse rounded-full bg-success/35" />
-        <span className="relative inline-flex size-1.5 rounded-full bg-success shadow-[0_0_6px_var(--color-success)]" />
+      <span
+        aria-hidden="true"
+        className="relative flex size-2 items-center justify-center"
+      >
+        <span className="absolute inline-flex size-full  rounded-full bg-success/35" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-success" />
       </span>
       <span className="flex items-center gap-1.25">
         <span className="font-semibold text-foreground tracking-tight">
           {count.toLocaleString()}
         </span>
-        <span className="text-muted-foreground/85 font-normal">
-          visitors
-        </span>
+        <span className="text-muted-foreground/85 font-normal">visitors</span>
       </span>
     </div>
   );
