@@ -2,22 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * Derives the worker base URL from NEXT_PUBLIC_ASSISTANT_API_URL
- * (which ends with /chat) so we can hit /visitors on the same origin.
- */
-function getWorkerBase() {
-  const chatUrl =
-    process.env.NEXT_PUBLIC_ASSISTANT_API_URL ?? "http://localhost:8787/chat";
-  return chatUrl.replace(/\/chat$/, "");
-}
+const configuredUrl = process.env.NEXT_PUBLIC_ASSISTANT_API_URL;
+const apiBase = configuredUrl
+  ? configuredUrl.replace(/\/chat$/, "")
+  : process.env.NODE_ENV === "development"
+    ? "http://localhost:8787"
+    : null;
 
 export default function VisitorCount() {
   const [count, setCount] = useState(null);
 
   useEffect(() => {
+    if (!apiBase) return;
     const controller = new AbortController();
-    fetch(`${getWorkerBase()}/visitors`, {
+    fetch(`${apiBase}/visitors`, {
       credentials: "include",
       signal: controller.signal,
     })
