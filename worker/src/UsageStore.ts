@@ -58,6 +58,13 @@ export class UsageStore extends DurableObject<Env> {
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS page_views (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visitor_id TEXT NOT NULL,
+        day TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        UNIQUE(visitor_id, day)
+      );
     `);
     const columns = ctx.storage.sql
       .exec("PRAGMA table_info(responses)")
@@ -245,5 +252,45 @@ export class UsageStore extends DurableObject<Env> {
         JSON.stringify(vectors),
       );
     });
+  }
+
+  async hit(
+    visitorId: string,
+    now: number,
+  ): Promise<{ total: number; isNew: boolean }> {
+    const day = utcDay(now);
+    let isNew = false;
+    this.ctx.storage.transactionSync(() => {
+      const existing = this.ctx.storage.sql
+        .exec(
+          "SELECT 1 FROM page_views WHERE visitor_id = ? AND day = ?",
+          visitorId,
+          day,
+        )
+        .toArray();
+      if (existing.length === 0) {
+        this.ctx.storage.sql.exec(
+          "INSERT INTO page_views (visitor_id, day, created_at) VALUES (?, ?, ?)",
+          visitorId,
+          day,
+          now,
+        );
+        isNew = true;
+      }
+    });
+    const total = (
+      this.ctx.storage.sql
+        .exec("SELECT COUNT(DISTINCT visitor_id) AS count FROM page_views")
+        .one() as CountRow
+    ).count;
+    return { total, isNew };
+  }
+
+  async getVisitorCount(): Promise<number> {
+    return (
+      this.ctx.storage.sql
+        .exec("SELECT COUNT(DISTINCT visitor_id) AS count FROM page_views")
+        .one() as CountRow
+    ).count;
   }
 }

@@ -136,6 +136,23 @@ export default {
         service: "portfolio-assistant",
       });
     }
+    if (request.method === "GET" && url.pathname === "/visitors") {
+      const secret = runtime.PORTFOLIO_CHAT_COOKIE_SECRET;
+      const store = env.USAGE.getByName("portfolio-assistant");
+      if (secret && secret.length >= 32) {
+        const identity = await visitorIdentity(request, secret);
+        const result = await store.hit(identity.id, Date.now());
+        return response(
+          request,
+          env,
+          { visitors: result.total },
+          200,
+          identity.setCookie,
+        );
+      }
+      const count = await store.getVisitorCount();
+      return response(request, env, { visitors: count });
+    }
     if (
       !runtime.PORTFOLIO_CHAT_COOKIE_SECRET ||
       runtime.PORTFOLIO_CHAT_COOKIE_SECRET.length < 32
