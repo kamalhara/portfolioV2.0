@@ -53,4 +53,4 @@ A concise description of what changed and why.
 Workspace-relative links to the modified files.
 
 **Validation**
-Commands run and their outcomes, including unrelated failures if present
+Commands run and their outcomes, including unrelated failures if present.
