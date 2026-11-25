@@ -14,6 +14,8 @@ type VisitorRow = { last_at: number; history: string };
 type CountRow = { count: number };
 type ReservationRow = { visitor_id: string; day: string };
 
+const LIVE_TTL_MS = 45_000;
+
 function utcDay(now: number): string {
   return new Date(now).toISOString().slice(0, 10);
 }
@@ -64,6 +66,10 @@ export class UsageStore extends DurableObject<Env> {
         day TEXT NOT NULL,
         created_at INTEGER NOT NULL,
         UNIQUE(visitor_id, day)
+      );
+      CREATE TABLE IF NOT EXISTS live_viewers (
+        session_id TEXT PRIMARY KEY,
+        last_seen INTEGER NOT NULL
       );
     `);
     const columns = ctx.storage.sql
@@ -254,12 +260,26 @@ export class UsageStore extends DurableObject<Env> {
     });
   }
 
+  private pruneAndCountLive(now: number): number {
+    this.ctx.storage.sql.exec(
+      "DELETE FROM live_viewers WHERE last_seen < ?",
+      now - LIVE_TTL_MS,
+    );
+    return (
+      this.ctx.storage.sql
+        .exec("SELECT COUNT(*) AS count FROM live_viewers")
+        .one() as CountRow
+    ).count;
+  }
+
   async hit(
     visitorId: string,
     now: number,
-  ): Promise<{ total: number; isNew: boolean }> {
+    sessionId?: string,
+  ): Promise<{ total: number; isNew: boolean; live: number }> {
     const day = utcDay(now);
     let isNew = false;
+    let live = 0;
     this.ctx.storage.transactionSync(() => {
       const existing = this.ctx.storage.sql
         .exec(
@@ -277,13 +297,50 @@ export class UsageStore extends DurableObject<Env> {
         );
         isNew = true;
       }
+      if (sessionId) {
+        this.ctx.storage.sql.exec(
+          "INSERT INTO live_viewers (session_id, last_seen) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET last_seen = excluded.last_seen",
+          sessionId,
+          now,
+        );
+      }
+      live = this.pruneAndCountLive(now);
     });
     const total = (
       this.ctx.storage.sql
         .exec("SELECT COUNT(DISTINCT visitor_id) AS count FROM page_views")
         .one() as CountRow
     ).count;
-    return { total, isNew };
+    return { total, isNew, live };
+  }
+
+  async heartbeat(sessionId: string, now: number): Promise<number> {
+    let live = 0;
+    this.ctx.storage.transactionSync(() => {
+      this.ctx.storage.sql.exec(
+        "INSERT INTO live_viewers (session_id, last_seen) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET last_seen = excluded.last_seen",
+        sessionId,
+        now,
+      );
+      live = this.pruneAndCountLive(now);
+    });
+    return live;
+  }
+
+  async leave(sessionId: string, now: number): Promise<number> {
+    let live = 0;
+    this.ctx.storage.transactionSync(() => {
+      this.ctx.storage.sql.exec(
+        "DELETE FROM live_viewers WHERE session_id = ?",
+        sessionId,
+      );
+      live = this.pruneAndCountLive(now);
+    });
+    return live;
+  }
+
+  async getLiveCount(now: number): Promise<number> {
+    return this.pruneAndCountLive(now);
   }
 
   async getVisitorCount(): Promise<number> {

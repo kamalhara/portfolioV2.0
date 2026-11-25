@@ -137,21 +137,40 @@ export default {
       });
     }
     if (request.method === "GET" && url.pathname === "/visitors") {
+      const sid = url.searchParams.get("sid")?.slice(0, 64) || undefined;
+      const now = Date.now();
       const secret = runtime.PORTFOLIO_CHAT_COOKIE_SECRET;
       const store = env.USAGE.getByName("portfolio-assistant");
       if (secret && secret.length >= 32) {
         const identity = await visitorIdentity(request, secret);
-        const result = await store.hit(identity.id, Date.now());
+        const result = await store.hit(identity.id, now, sid);
         return response(
           request,
           env,
-          { visitors: result.total },
+          { visitors: result.total, live: result.live },
           200,
           identity.setCookie,
         );
       }
-      const count = await store.getVisitorCount();
-      return response(request, env, { visitors: count });
+      const [count, live] = await Promise.all([
+        store.getVisitorCount(),
+        sid ? store.heartbeat(sid, now) : store.getLiveCount(now),
+      ]);
+      return response(request, env, { visitors: count, live });
+    }
+    if (request.method === "POST" && url.pathname === "/live") {
+      const sid = url.searchParams.get("sid")?.slice(0, 64);
+      if (!sid) {
+        return response(request, env, { error: "Missing session id" }, 400);
+      }
+      const action = url.searchParams.get("action");
+      const store = env.USAGE.getByName("portfolio-assistant");
+      const now = Date.now();
+      const live =
+        action === "leave"
+          ? await store.leave(sid, now)
+          : await store.heartbeat(sid, now);
+      return response(request, env, { live });
     }
     if (
       !runtime.PORTFOLIO_CHAT_COOKIE_SECRET ||

@@ -2,7 +2,6 @@ import { portfolio } from "@/app/data/portfolio";
 import { animeQuotes } from "@/app/data/quotes";
 import MonogramFooter from "./MonogramFooter";
 import RotatingQuote from "./RotatingQuote";
-import VisitorCount from "./VisitorCount";
 
 /** Pick a random quote — runs once per server render (SSR/ISR). */
 function getRandomQuote() {
@@ -61,10 +60,6 @@ export default function HomeFooter() {
           Résumé
         </a>
       </nav>
-
-      <div className="mt-7 flex justify-center">
-        <VisitorCount />
-      </div>
     </footer>
   );
 }

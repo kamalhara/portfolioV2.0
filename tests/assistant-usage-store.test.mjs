@@ -238,3 +238,49 @@ test("HTTP fallback shows a disclaimer for confirmed quota exhaustion only", asy
     else assert.equal(result.notice, undefined);
   }
 });
+
+test("visitors and live endpoints track unique visitors and active live viewers", async (t) => {
+  const store = createStore(t);
+  const env = {
+    USAGE: { getByName: () => store },
+    ALLOWED_ORIGINS: "http://localhost:3000",
+    PORTFOLIO_CHAT_COOKIE_SECRET:
+      "a-public-test-secret-of-at-least-32-characters",
+  };
+
+  const first = await worker.fetch(
+    new Request("http://localhost/visitors?sid=tab-1"),
+    env,
+  );
+  assert.equal(first.status, 200);
+  assert.deepEqual(await first.json(), { visitors: 1, live: 1 });
+
+  const second = await worker.fetch(
+    new Request("http://localhost/visitors?sid=tab-2"),
+    env,
+  );
+  assert.equal(second.status, 200);
+  assert.deepEqual(await second.json(), { visitors: 2, live: 2 });
+
+  const ping = await worker.fetch(
+    new Request("http://localhost/live?sid=tab-1", { method: "POST" }),
+    env,
+  );
+  assert.equal(ping.status, 200);
+  assert.deepEqual(await ping.json(), { live: 2 });
+
+  const leave = await worker.fetch(
+    new Request("http://localhost/live?sid=tab-2&action=leave", {
+      method: "POST",
+    }),
+    env,
+  );
+  assert.equal(leave.status, 200);
+  assert.deepEqual(await leave.json(), { live: 1 });
+
+  // Stale sessions expire after 45 seconds without heartbeat.
+  const base = Date.now();
+  await store.heartbeat("tab-3", base);
+  assert.equal(await store.getLiveCount(base + 10_000), 2);
+  assert.equal(await store.getLiveCount(base + 60_000), 0);
+});
