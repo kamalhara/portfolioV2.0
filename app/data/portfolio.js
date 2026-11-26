@@ -14,7 +14,7 @@ export const portfolio = {
   aboutHeading: "Thoughtful interfaces. Complete applications.",
   aboutDetail:
     "I work primarily in TypeScript and JavaScript, building across React, React Native, and Node.js. My work spans real-time conversations, authentication, maps, and open-source tools. I’m especially interested in bringing AI into useful, everyday product experiences.",
-  aboutContext: ["Ludhiana, Punjab", "BCA · Expected 2027"],
+  aboutContext: ["Ludhiana, Punjab"],
   signoff: "I care about the point where software meets real life.",
 };
 
