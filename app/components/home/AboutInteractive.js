@@ -1,36 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { assistantOpenEvent } from "@/app/lib/assistantEvents";
 
-function formatIndiaClock() {
-  return new Intl.DateTimeFormat("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  }).format(new Date());
-}
-
 export default function AboutInteractive({ highlights, languages }) {
   const reducedMotion = useReducedMotion();
   const [selectedId, setSelectedId] = useState(highlights[0]?.id ?? null);
+  const [stageByCard, setStageByCard] = useState({});
   const [langId, setLangId] = useState(languages[0]?.id ?? "pa");
-  const [istTime, setIstTime] = useState(null);
-
-  useEffect(() => {
-    const sync = () => setIstTime(formatIndiaClock());
-    const initId = window.requestAnimationFrame(sync);
-    const intervalId = window.setInterval(sync, 30000);
-    return () => {
-      window.cancelAnimationFrame(initId);
-      window.clearInterval(intervalId);
-    };
-  }, []);
 
   const activeHighlight = highlights.find((item) => item.id === selectedId);
+  const activeStages = activeHighlight?.stages ?? [];
+  const activeStageId =
+    stageByCard[activeHighlight?.id] ?? activeStages[0]?.id ?? null;
+  const activeStage = activeStages.find((stage) => stage.id === activeStageId);
   const activeLanguage =
     languages.find((item) => item.id === langId) ?? languages[0];
 
@@ -50,7 +35,7 @@ export default function AboutInteractive({ highlights, languages }) {
       <div
         className="grid grid-cols-2 gap-2.5 max-[560px]:grid-cols-1"
         role="tablist"
-        aria-label="More details about Kamal"
+        aria-label="How Kamal thinks and builds"
       >
         {highlights.map((item) => {
           const isSelected = item.id === selectedId;
@@ -84,9 +69,7 @@ export default function AboutInteractive({ highlights, languages }) {
                 {item.title}
               </span>
               <span className="mt-0.5 text-xs text-muted-foreground">
-                {item.id === "availability" && istTime
-                  ? `${item.summary} · ${istTime}`
-                  : item.summary}
+                {item.summary}
               </span>
             </button>
           );
@@ -111,14 +94,89 @@ export default function AboutInteractive({ highlights, languages }) {
               <span className="text-xs font-medium text-foreground">
                 {activeHighlight.kicker} — {activeHighlight.title}
               </span>
-              <span className="rounded-full border border-border bg-muted/60 px-2 py-0.5 text-[10px] text-muted-foreground [font-family:var(--font-geist-mono)]">
-                {activeHighlight.meta}
-              </span>
+              <div className="flex items-center gap-2">
+                {activeHighlight.swatches && (
+                  <span
+                    className="flex items-center gap-1"
+                    aria-label="Signature warm dark palette"
+                  >
+                    {activeHighlight.swatches.map((hex) => (
+                      <span
+                        key={hex}
+                        title={hex}
+                        style={{ backgroundColor: hex }}
+                        className="size-2.5 rounded-full border border-border-strong"
+                      />
+                    ))}
+                  </span>
+                )}
+                <span className="rounded-full border border-border bg-muted/60 px-2 py-0.5 text-[10px] text-muted-foreground [font-family:var(--font-geist-mono)]">
+                  {activeHighlight.meta}
+                </span>
+              </div>
             </div>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               {activeHighlight.detail}
             </p>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
+
+            {activeStages.length > 0 && (
+              <div className="mt-3.5 rounded-lg border border-border/80 bg-background/60 p-2.5">
+                <div className="flex flex-wrap items-center gap-1">
+                  {activeStages.map((stage) => {
+                    const isStageActive = stage.id === activeStageId;
+                    return (
+                      <button
+                        key={stage.id}
+                        type="button"
+                        aria-pressed={isStageActive}
+                        onClick={() =>
+                          setStageByCard((prev) => ({
+                            ...prev,
+                            [activeHighlight.id]: stage.id,
+                          }))
+                        }
+                        className={`ui-press relative cursor-pointer rounded-full px-2.5 py-1 text-[11px] leading-none transition-colors [font-family:var(--font-geist-mono)] ${
+                          isStageActive
+                            ? "text-background"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {isStageActive && (
+                          <motion.span
+                            layoutId={`about-stage-${activeHighlight.id}`}
+                            transition={{
+                              type: "spring",
+                              stiffness: 420,
+                              damping: 32,
+                            }}
+                            className="absolute inset-0 rounded-full bg-foreground"
+                          />
+                        )}
+                        <span className="relative z-10">{stage.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <AnimatePresence mode="wait">
+                  {activeStage && (
+                    <motion.p
+                      key={activeStage.id}
+                      initial={reducedMotion ? false : { opacity: 0, y: 3 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={
+                        reducedMotion ? { opacity: 0 } : { opacity: 0, y: -3 }
+                      }
+                      transition={{ duration: reducedMotion ? 0 : 0.16 }}
+                      className="mt-2 text-xs leading-relaxed text-muted-foreground"
+                    >
+                      {activeStage.text}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            <div className="mt-3.5 flex flex-wrap items-center gap-3">
               <button
                 type="button"
                 onClick={(event) =>
@@ -130,14 +188,12 @@ export default function AboutInteractive({ highlights, languages }) {
                 <Sparkles size={11} aria-hidden="true" className="text-brand" />
                 Ask AI about this
               </button>
-              {activeHighlight.id === "focus" && (
-                <a
-                  href="#projects"
-                  className="ui-nudge inline-flex items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-                >
-                  Jump to projects <ArrowUpRight size={12} />
-                </a>
-              )}
+              <a
+                href="#projects"
+                className="ui-nudge inline-flex items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+              >
+                See it in projects <ArrowUpRight size={12} />
+              </a>
             </div>
           </motion.div>
         )}

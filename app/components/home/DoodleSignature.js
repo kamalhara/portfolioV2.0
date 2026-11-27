@@ -10,7 +10,6 @@ const STROKES = [
     delay: 0.05,
     duration: 0.28,
     width: 2.3,
-    brand: false,
   },
   {
     id: "k-arms",
@@ -18,7 +17,6 @@ const STROKES = [
     delay: 0.28,
     duration: 0.36,
     width: 2.1,
-    brand: false,
   },
   {
     id: "amal-cursive",
@@ -26,7 +24,6 @@ const STROKES = [
     delay: 0.56,
     duration: 0.95,
     width: 2.0,
-    brand: false,
   },
   {
     id: "underline-swash",
@@ -34,7 +31,7 @@ const STROKES = [
     delay: 1.4,
     duration: 0.45,
     width: 1.9,
-    brand: true,
+    underline: true,
   },
 ];
 
@@ -63,7 +60,12 @@ export default function DoodleSignature() {
             <motion.path
               key={stroke.id}
               d={stroke.d}
-              stroke={stroke.brand ? "var(--color-brand)" : "currentColor"}
+              stroke={stroke.underline ? undefined : "currentColor"}
+              className={
+                stroke.underline
+                  ? "stroke-foreground/90 dark:stroke-white"
+                  : undefined
+              }
               strokeWidth={stroke.width}
               strokeLinecap="round"
               strokeLinejoin="round"
