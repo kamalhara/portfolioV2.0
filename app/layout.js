@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import InteractionSounds from "@/app/components/InteractionSounds";
+import CursorCompanion from "@/app/components/CursorCompanion";
 import { themeInitScript } from "@/app/lib/theme";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -74,6 +75,7 @@ export default function RootLayout({ children }) {
         {children}
         <ScrollReveal />
         <InteractionSounds />
+        <CursorCompanion />
       </body>
     </html>
   );
