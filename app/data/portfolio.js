@@ -110,7 +110,6 @@ export const portfolio = {
         "Drawn to warm dark surfaces, clean typographic hierarchy, and restrained color accents — letting typography and product clarity speak instead of noisy neon.",
       meta: "Warm dark UI",
       prompt: "What inspires the visual style of Kamal's interfaces?",
-      swatches: ["#111110", "#1c1c1a", "#e9e8e4", "#f04e15"],
       stages: [
         {
           id: "surfaces",
@@ -125,57 +124,13 @@ export const portfolio = {
         {
           id: "restraint",
           label: "Restraint",
-          text: "One terracotta accent reserved for intent and live moments — zero clutter, zero visual glare.",
+          text: "Quiet contrast reserved for clarity and calm — zero clutter, zero visual glare.",
         },
       ],
     },
   ],
-  aboutLanguages: [
-    {
-      id: "pa",
-      label: "Punjabi",
-      native: "ਪੰਜਾਬੀ",
-      greeting: "Sat Sri Akal!",
-      note: "Mother tongue — roots in Ludhiana, Punjab.",
-    },
-    {
-      id: "hi",
-      label: "Hindi",
-      native: "हिन्दी",
-      greeting: "Namaste!",
-      note: "Fluent for everyday conversation and collaboration.",
-    },
-    {
-      id: "en",
-      label: "English",
-      native: "English",
-      greeting: "Hey there!",
-      note: "Fluent — worked remotely with engineering teams in the UK.",
-    },
-  ],
   signoff: "I care about the point where software meets real life.",
 };
-
-export const workingApproach = [
-  {
-    title: "Start with the experience",
-    description:
-      "Understand the goal, map the user flow, and shape an interface that makes the next step clear.",
-    focus: "UI/UX & product thinking",
-  },
-  {
-    title: "Connect the whole product",
-    description:
-      "Build the web or mobile interface alongside the APIs, authentication, and data it needs.",
-    focus: "Frontend & backend",
-  },
-  {
-    title: "Refine the details",
-    description:
-      "Give loading, empty, and error states the same attention as the main flow. Make interactions feel considered.",
-    focus: "States & interactions",
-  },
-];
 
 export const projectSummaries = {
   stateglyph: "An icon system that understands interface state.",

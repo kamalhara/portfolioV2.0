@@ -24,17 +24,14 @@ export default function AboutSection() {
         {portfolio.aboutDetail}
       </p>
       <DoodleSignature />
-      <AboutInteractive
-        highlights={portfolio.aboutHighlights}
-        languages={portfolio.aboutLanguages}
-      />
+      <AboutInteractive highlights={portfolio.aboutHighlights} />
       <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-4 text-xs text-muted-foreground">
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {portfolio.aboutContext.map((context) => (
             <li key={context} className="flex items-center gap-2">
               <span
                 aria-hidden="true"
-                className="size-1 rounded-full bg-brand/70"
+                className="size-1 rounded-full bg-muted-foreground/70"
               />
               {context}
             </li>

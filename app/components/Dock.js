@@ -11,7 +11,6 @@ import {
   Layers3,
   Mail,
   MessageCircle,
-  PanelsTopLeft,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -65,12 +64,6 @@ const quickLinks = [
     description: "Tools I use",
     href: "/#stack",
     icon: Layers3,
-  },
-  {
-    label: "How I work",
-    description: "From user flow to finished feature",
-    href: "/#approach",
-    icon: PanelsTopLeft,
   },
   {
     label: "Activity",

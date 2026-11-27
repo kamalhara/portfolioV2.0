@@ -4,7 +4,6 @@ import AboutSection from "./home/AboutSection";
 import ActivitySection from "./home/ActivitySection";
 import ExperienceSection from "./home/ExperienceSection";
 import HomeFooter from "./home/HomeFooter";
-import ApproachSection from "./home/ApproachSection";
 import IntroSection from "./home/IntroSection";
 import ProjectsSection from "./home/ProjectsSection";
 import StackSection from "./home/StackSection";
@@ -22,7 +21,6 @@ export default function Home() {
         <ExperienceSection />
         <AboutSection />
         <StackSection />
-        <ApproachSection />
         <ActivitySection />
         <HomeFooter />
       </main>
