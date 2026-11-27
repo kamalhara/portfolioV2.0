@@ -1,5 +1,7 @@
 import { portfolio } from "@/app/data/portfolio";
 import { ArrowUpRight } from "lucide-react";
+import AboutInteractive from "./AboutInteractive";
+import DoodleSignature from "./DoodleSignature";
 
 export default function AboutSection() {
   return (
@@ -21,6 +23,11 @@ export default function AboutSection() {
       <p className="mt-3.25 max-w-167.5 text-muted-foreground">
         {portfolio.aboutDetail}
       </p>
+      <DoodleSignature />
+      <AboutInteractive
+        highlights={portfolio.aboutHighlights}
+        languages={portfolio.aboutLanguages}
+      />
       <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-4 text-xs text-muted-foreground">
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {portfolio.aboutContext.map((context) => (

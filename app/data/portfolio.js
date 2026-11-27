@@ -10,11 +10,80 @@ export const portfolio = {
   linkedin: "https://www.linkedin.com/in/kamalveer-singh-bb7250335/",
   resume: "/kamalveer-singh-resume.pdf",
   about:
-    "I’m Kamal Hara, a full-stack developer based in Ludhiana, India. I bring UI/UX, frontend, and backend development together to turn ideas into complete web and mobile applications.",
+    "I’m Kamal Hara (Kamalveer Singh), a 20-year-old software engineer from Ludhiana, Punjab. I bring UI/UX design, frontend craft, and backend APIs together to turn ideas into complete web and mobile applications.",
   aboutHeading: "Thoughtful interfaces. Complete applications.",
   aboutDetail:
-    "I work primarily in TypeScript and JavaScript, building across React, React Native, and Node.js. My work spans real-time conversations, authentication, maps, and open-source tools. I’m especially interested in bringing AI into useful, everyday product experiences.",
-  aboutContext: ["Ludhiana, Punjab"],
+    "I build primarily in TypeScript and JavaScript across React, Next.js, React Native, and Node.js — shipping real-time conversations, location-aware mobile apps, and open-source tools like StateGlyph. After interning remotely with Manchester-based Talmee, I’m focused on joining a software engineering team on-site in India and bringing AI into useful, everyday product experiences.",
+  aboutContext: [
+    "Ludhiana, Punjab",
+    "Web, Mobile & AI",
+    "Open to on-site roles in India",
+  ],
+  aboutHighlights: [
+    {
+      id: "opensource",
+      kicker: "Open source",
+      title: "Creator of StateGlyph",
+      summary: "TS · React · CLI",
+      detail:
+        "Built StateGlyph — an open-source TypeScript and React state-aware icon system with documentation, accessibility support, and a companion CLI.",
+      meta: "npm · OSS",
+      prompt: "Tell me about StateGlyph and Kamal's open-source work.",
+    },
+    {
+      id: "experience",
+      kicker: "Recent role",
+      title: "Ex-Intern @ Talmee (UK)",
+      summary: "Feb – Aug 2026 · Remote",
+      detail:
+        "Contributed remotely from Ludhiana to Manchester-based Talmee across React, Next.js, React Native, and Node.js — building reusable UI components and refining live user flows.",
+      meta: "Web & Mobile",
+      prompt: "What did Kamal build during his internship at Talmee?",
+    },
+    {
+      id: "focus",
+      kicker: "What I build",
+      title: "Full-stack, Mobile & AI",
+      summary: "UI/UX → Frontend → APIs",
+      detail:
+        "Most energized by real-time chat, place-based mobile discovery, open-source React tooling like StateGlyph, and practical AI integrations that improve everyday workflows.",
+      meta: "TS · React · Node",
+      prompt: "Which of Kamal's projects best showcase his full-stack work?",
+    },
+    {
+      id: "availability",
+      kicker: "Location & Role",
+      title: "Ludhiana, India",
+      summary: "On-site India · Global sync",
+      detail:
+        "Looking for a full-time or engineering role on-site in India to grow closely with a product team, while staying comfortable collaborating across international time zones.",
+      meta: "IST · UTC+5:30",
+      prompt: "What software engineering roles is Kamal looking for next?",
+    },
+  ],
+  aboutLanguages: [
+    {
+      id: "pa",
+      label: "Punjabi",
+      native: "ਪੰਜਾਬੀ",
+      greeting: "Sat Sri Akal!",
+      note: "Mother tongue — roots in Ludhiana, Punjab.",
+    },
+    {
+      id: "hi",
+      label: "Hindi",
+      native: "हिन्दी",
+      greeting: "Namaste!",
+      note: "Fluent for everyday conversation and collaboration.",
+    },
+    {
+      id: "en",
+      label: "English",
+      native: "English",
+      greeting: "Hey there!",
+      note: "Fluent — worked remotely with engineering teams in the UK.",
+    },
+  ],
   signoff: "I care about the point where software meets real life.",
 };
 
